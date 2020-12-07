@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OrganizationsController;
+use App\Http\Controllers\StaffsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -127,6 +128,35 @@ Route::delete('contacts/{contact}', [ContactsController::class, 'destroy'])
 
 Route::put('contacts/{contact}/restore', [ContactsController::class, 'restore'])
     ->name('contacts.restore')
+    ->middleware('auth');
+
+// Starffs
+Route::get('staffs', [StaffsController::class, 'index'])
+    ->name('staffs')
+    ->middleware('remember', 'auth');
+
+Route::get('staffs/create', [StaffsController::class, 'create'])
+    ->name('staffs.create')
+    ->middleware('auth');
+
+Route::post('staffs', [StaffsController::class, 'store'])
+    ->name('staffs.store')
+    ->middleware('auth');
+
+Route::get('staffs/{staff}/edit', [StaffsController::class, 'edit'])
+    ->name('staffs.edit')
+    ->middleware('auth');
+
+Route::put('staffs/{staff}', [StaffsController::class, 'update'])
+    ->name('staffs.update')
+    ->middleware('auth');
+
+Route::delete('staffs/{staff}', [StaffsController::class, 'destroy'])
+    ->name('staffs.destroy')
+    ->middleware('auth');
+
+Route::put('staffs/{staff}/restore', [StaffsController::class, 'restore'])
+    ->name('staffs.restore')
     ->middleware('auth');
 
 // Reports
