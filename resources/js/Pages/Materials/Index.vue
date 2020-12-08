@@ -4,8 +4,8 @@
             <h1 class="font-bold text-3xl">MATERIALS</h1>
 
             <inertia-link class="btn-indigo" :href="route('materials.create')">
-                <span>Create</span>
-                <span class="hidden md:inline">Staff</span>
+                <span>Add</span>
+                <span class="hidden md:inline">Material</span>
             </inertia-link>
         </div>
         <div class="mb-6 flex justify-between items-center">

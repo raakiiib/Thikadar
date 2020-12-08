@@ -175,19 +175,19 @@ Route::post('materials', [RawMaterialsController::class, 'store'])
     ->name('materials.store')
     ->middleware('auth');
 
-Route::get('materials/{staff}/edit', [RawMaterialsController::class, 'edit'])
+Route::get('materials/{material}/edit', [RawMaterialsController::class, 'edit'])
     ->name('materials.edit')
     ->middleware('auth');
 
-Route::put('materials/{staff}', [RawMaterialsController::class, 'update'])
+Route::put('materials/{material}', [RawMaterialsController::class, 'update'])
     ->name('materials.update')
     ->middleware('auth');
 
-Route::delete('materials/{staff}', [RawMaterialsController::class, 'destroy'])
+Route::delete('materials/{material}', [RawMaterialsController::class, 'destroy'])
     ->name('materials.destroy')
     ->middleware('auth');
 
-Route::put('materials/{staff}/restore', [RawMaterialsController::class, 'restore'])
+Route::put('materials/{material}/restore', [RawMaterialsController::class, 'restore'])
     ->name('materials.restore')
     ->middleware('auth');
 

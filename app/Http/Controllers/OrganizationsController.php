@@ -47,6 +47,7 @@ class OrganizationsController extends Controller
 
     public function edit(Organization $organization)
     {
+        // dd($organization);
         return Inertia::render('Organizations/Edit', [
             'organization' => [
                 'id' => $organization->id,

@@ -23,4 +23,9 @@ class Account extends Model
     {
         return $this->hasMany(Contact::class);
     }
+
+    public function materials()
+    {
+        return $this->hasMany(RawMaterial::class);
+    }
 }
