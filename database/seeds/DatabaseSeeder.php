@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
                 $contact->update(['organization_id' => $organizations->random()->id]);
             });
 
-        factory(Staff::class, 10)->create();
+        // factory(Staff::class, 10)->create();
 
     }
 }

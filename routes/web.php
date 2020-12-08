@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OrganizationsController;
 use App\Http\Controllers\StaffsController;
+use App\Http\Controllers\RawMaterialsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -157,6 +158,37 @@ Route::delete('staffs/{staff}', [StaffsController::class, 'destroy'])
 
 Route::put('staffs/{staff}/restore', [StaffsController::class, 'restore'])
     ->name('staffs.restore')
+    ->middleware('auth');
+
+
+
+// Raw Materials
+Route::get('materials', [RawMaterialsController::class, 'index'])
+    ->name('materials')
+    ->middleware('remember', 'auth');
+
+Route::get('materials/create', [RawMaterialsController::class, 'create'])
+    ->name('materials.create')
+    ->middleware('auth');
+
+Route::post('materials', [RawMaterialsController::class, 'store'])
+    ->name('materials.store')
+    ->middleware('auth');
+
+Route::get('materials/{staff}/edit', [RawMaterialsController::class, 'edit'])
+    ->name('materials.edit')
+    ->middleware('auth');
+
+Route::put('materials/{staff}', [RawMaterialsController::class, 'update'])
+    ->name('materials.update')
+    ->middleware('auth');
+
+Route::delete('materials/{staff}', [RawMaterialsController::class, 'destroy'])
+    ->name('materials.destroy')
+    ->middleware('auth');
+
+Route::put('materials/{staff}/restore', [RawMaterialsController::class, 'restore'])
+    ->name('materials.restore')
     ->middleware('auth');
 
 // Reports
