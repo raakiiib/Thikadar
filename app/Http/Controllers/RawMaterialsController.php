@@ -15,8 +15,6 @@ class RawMaterialsController extends Controller
 
 	public function index()
 	{
-		
-
 		return Inertia::render('Materials/Index', [
             'filters' => Request::all('search', 'trashed'),
             'materials' => Auth::user()->account->materials()
@@ -26,15 +24,6 @@ class RawMaterialsController extends Controller
 				->only('id', 'product_name', 'unit', 'description', 'deleted_at'),
         ]);
 
-
-        // return Inertia::render('Organizations/Index', [
-        //     'filters' => Request::all('search', 'trashed'),
-        //     'organizations' => Auth::user()->account->organizations()
-        //         ->orderBy('name')
-        //         ->filter(Request::only('search', 'trashed'))
-        //         ->paginate()
-        //         ->only('id', 'name', 'phone', 'city', 'deleted_at'),
-        // ]);
 	}
 
 

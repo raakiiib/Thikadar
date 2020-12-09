@@ -7,6 +7,7 @@ use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OrganizationsController;
 use App\Http\Controllers\StaffsController;
 use App\Http\Controllers\RawMaterialsController;
+use App\Http\Controllers\VehiclesController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -189,6 +190,37 @@ Route::delete('materials/{material}', [RawMaterialsController::class, 'destroy']
 
 Route::put('materials/{material}/restore', [RawMaterialsController::class, 'restore'])
     ->name('materials.restore')
+    ->middleware('auth');
+
+
+
+// Vehicles
+Route::get('vehicles', [VehiclesController::class, 'index'])
+    ->name('vehicles')
+    ->middleware('remember', 'auth');
+
+Route::get('vehicles/create', [VehiclesController::class, 'create'])
+    ->name('vehicles.create')
+    ->middleware('auth');
+
+Route::post('vehicles', [VehiclesController::class, 'store'])
+    ->name('vehicles.store')
+    ->middleware('auth');
+
+Route::get('vehicles/{vehicle}/edit', [VehiclesController::class, 'edit'])
+    ->name('vehicles.edit')
+    ->middleware('auth');
+
+Route::put('vehicles/{vehicle}', [VehiclesController::class, 'update'])
+    ->name('vehicles.update')
+    ->middleware('auth');
+
+Route::delete('vehicles/{vehicle}', [VehiclesController::class, 'destroy'])
+    ->name('vehicles.destroy')
+    ->middleware('auth');
+
+Route::put('vehicles/{vehicle}/restore', [VehiclesController::class, 'restore'])
+    ->name('vehicles.restore')
     ->middleware('auth');
 
 // Reports

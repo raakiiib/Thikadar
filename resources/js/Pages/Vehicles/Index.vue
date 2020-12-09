@@ -1,11 +1,11 @@
 <template>
     <div class="">
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">Materials</h1>
+            <h1 class="font-bold text-3xl">Vehicles</h1>
 
-            <inertia-link class="btn-indigo" :href="route('materials.create')">
-                <span>Add</span>
-                <span class="hidden md:inline">Material</span>
+            <inertia-link class="btn-indigo" :href="route('vehicles.create')">
+                <span>ADD</span>
+                <span class="hidden md:inline">VEHICLES</span>
             </inertia-link>
         </div>
         <div class="mb-6 flex justify-between items-center">
@@ -21,39 +21,51 @@
         <div class="bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4">Name</th>
-                    <th class="px-6 pt-6 pb-4">Unit</th>
+                    <th class="px-6 pt-6 pb-4">Driver name</th>
+                    <th class="px-6 pt-6 pb-4">Driver phone</th>
+                    <th class="px-6 pt-6 pb-4">Chasis number</th>
+                    <th class="px-6 pt-6 pb-4">Registration number</th>
                     <th class="px-6 pt-6 pb-4" colspan="2">Description</th>
                 </tr>
-                <tr v-for="material in materials.data" :key="material.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
+                <tr v-for="vehicle in vehicles.data" :key="vehicle.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
                     <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('materials.edit', material.id)">
-                            {{ material.product_name }}
-                            <icon v-if="material.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
+                        <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('vehicles.edit', vehicle.id)">
+                            {{ vehicle.driver_name }}
+                            <icon v-if="vehicle.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
                         </inertia-link>
                     </td>
                     <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center" :href="route('materials.edit', material.id)" tabindex="-1">
-                            {{ material.unit }}
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('vehicles.edit', vehicle.id)" tabindex="-1">
+                            {{ vehicle.driver_phone }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center" :href="route('materials.edit', material.id)" tabindex="-1">
-                            {{ material.description }}
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('vehicles.edit', vehicle.id)" tabindex="-1">
+                            {{ vehicle.chassis_number }}
+                        </inertia-link>
+                    </td>
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('vehicles.edit', vehicle.id)" tabindex="-1">
+                            {{ vehicle.registration_number }}
+                        </inertia-link>
+                    </td>
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('vehicles.edit', vehicle.id)" tabindex="-1">
+                            {{ vehicle.description }}
                         </inertia-link>
                     </td>
                     <td class="border-t w-px">
-                        <inertia-link class="px-4 flex items-center" :href="route('materials.edit', material.id)" tabindex="-1">
+                        <inertia-link class="px-4 flex items-center" :href="route('vehicles.edit', vehicle.id)" tabindex="-1">
                             <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
                         </inertia-link>
                     </td>
                 </tr>
-                <tr v-if="materials.data.length === 0">
-                    <td class="border-t px-6 py-4" colspan="4">No materials found.</td>
+                <tr v-if="vehicles.data.length === 0">
+                    <td class="border-t px-6 py-4" colspan="4">No vehicles found.</td>
                 </tr>
             </table>
         </div>
-        <pagination :links="materials.links" />
+        <pagination :links="vehicles.links" />
     </div>
 </template>
 
@@ -67,10 +79,7 @@ import SearchFilter from '@/Shared/SearchFilter'
 import throttle from 'lodash/throttle'
 
 export default {
-    created() {
-        console.log(this.materials)
-    },
-    metaInfo: { title: 'MATERIALS' },
+    metaInfo: { title: 'Vehicles' },
     layout: Layout,
     components: {
         Icon,
@@ -78,7 +87,7 @@ export default {
         SearchFilter,
     },
     props: {
-        materials: Object,
+        vehicles: Object,
         filters: Object,
     },
     data() {
@@ -93,12 +102,15 @@ export default {
         form: {
             handler: throttle(function() {
                 let query = pickBy(this.form)
-                this.$inertia.replace(this.route('materials', Object.keys(query).length ? query : { remember: 'forget' }))
+                this.$inertia.replace(this.route('vehicles', Object.keys(query).length ? query : { remember: 'forget' }))
             }, 150),
             deep: true,
         },
     },
     methods: {
+        created() {
+            // console.log(this.vehicles)
+        },
         reset() {
             this.form = mapValues(this.form, () => null)
         },

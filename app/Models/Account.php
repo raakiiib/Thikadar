@@ -28,4 +28,9 @@ class Account extends Model
     {
         return $this->hasMany(RawMaterial::class);
     }
+
+    public function vehicles()
+    {
+        return $this->hasMany(Vehicle::class);
+    }
 }
