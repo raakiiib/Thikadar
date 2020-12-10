@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OrganizationsController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StaffsController;
 use App\Http\Controllers\RawMaterialsController;
 use App\Http\Controllers\VehiclesController;
@@ -222,6 +223,39 @@ Route::delete('vehicles/{vehicle}', [VehiclesController::class, 'destroy'])
 Route::put('vehicles/{vehicle}/restore', [VehiclesController::class, 'restore'])
     ->name('vehicles.restore')
     ->middleware('auth');
+
+
+## Suppliers
+Route::get('suppliers', [SupplierController::class, 'index'])
+    ->name('suppliers')
+    ->middleware('auth');
+
+Route::get('suppliers/create', [SupplierController::class, 'create'])
+    ->name('suppliers.create')
+    ->middleware('auth');
+
+Route::post('suppliers', [SupplierController::class, 'store'])
+    ->name('suppliers.store')
+    ->middleware('auth');
+
+Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])
+    ->name('suppliers.edit')
+    ->middleware('auth');
+
+Route::get('suppliers/{supplier}', [SupplierController::class, 'update'])
+    ->name('suppliers.edit')
+    ->middleware('auth');
+
+Route::delete('suppliers/{supplier}', [uppliersController::class, 'destroy'])
+    ->name('suppliers.destroy')
+    ->middleware('auth');
+
+Route::put('suppliers/{supplier}/restore', [suppliersController::class, 'restore'])
+    ->name('vehicles.restore')
+    ->middleware('auth');
+
+
+
 
 // Reports
 

@@ -14,6 +14,11 @@ class Account extends Model
         return $this->hasMany(Organization::class);
     }
 
+    public function suppliers()
+    {
+        return $this->hasmany(Supplier::class);
+    }
+
     public function staffs()
     {
         return $this->hasMany(Staff::class);
@@ -33,4 +38,6 @@ class Account extends Model
     {
         return $this->hasMany(Vehicle::class);
     }
+
+
 }
