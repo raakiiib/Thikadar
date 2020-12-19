@@ -1,5 +1,5 @@
 <template>
-    <div class="p-8 bg-gray-300">
+    <div class="">
         <div class="mb-8 flex justify-between items-center">
             <h1 class="font-bold text-3xl">Staffs</h1>
 
@@ -22,19 +22,18 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">Name</th>
+                    <th class="px-6 pt-6 pb-4">Phone</th>
+                    <th class="px-6 pt-6 pb-4" >Village</th>
                     <th class="px-6 pt-6 pb-4">District</th>
-                    <th class="px-6 pt-6 pb-4" colspan="2">Phone</th>
                 </tr>
                 <tr v-for="staff in staffs.data" :key="staff.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
+
+
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('staffs.edit', staff.id)">
+                            <img v-if="staff.photo_path" class="block w-5 h-5 rounded-full mr-2 -my-2" :src="staff.photo_path">
                             {{ staff.name }}
                             <icon v-if="staff.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
-                        </inertia-link>
-                    </td>
-                    <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center" :href="route('staffs.edit', staff.id)" tabindex="-1">
-                            {{ staff.district }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
@@ -42,6 +41,18 @@
                             {{ staff.phone }}
                         </inertia-link>
                     </td>
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('staffs.edit', staff.id)" tabindex="-1">
+                            {{ staff.village }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('staffs.edit', staff.id)" tabindex="-1">
+                            {{ staff.district }}
+                        </inertia-link>
+                    </td>
+
                     <td class="border-t w-px">
                         <inertia-link class="px-4 flex items-center" :href="route('staffs.edit', staff.id)" tabindex="-1">
                             <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />

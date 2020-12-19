@@ -21,7 +21,7 @@ class Account extends Model
 
     public function staffs()
     {
-        return $this->hasMany(Staff::class);
+        return $this->hasMany(Staffs::class);
     }
 
     public function contacts()

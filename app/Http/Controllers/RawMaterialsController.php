@@ -27,18 +27,13 @@ class RawMaterialsController extends Controller
 	}
 
 
-	public function create()
+    public function create()
     {
-        return Inertia::render('Materials/Create', [
-            'materials' => Auth::user()->account
-                ->materials()
-                ->orderBy('product_name')
-                ->get()
-                ->map
-                ->only('id', 'product_name'),
-        ]);
+        return Inertia::render('Materials/Create');
     }
 
+
+	
     public function store()
     {
         Auth::user()->account->materials()->create(

@@ -72,6 +72,7 @@ class SupplierController extends Controller
         ]);
     }
 
+
     public function update(Supplier $supplier)
     {
         $supplier->update(

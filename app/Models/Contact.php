@@ -8,9 +8,9 @@ class Contact extends Model
 {
     use SoftDeletes;
 
-    public function organization()
+    public function supplier()
     {
-        return $this->belongsTo(Organization::class);
+        return $this->belongsTo(Supplier::class);
     }
 
     public function getNameAttribute()
@@ -30,7 +30,7 @@ class Contact extends Model
                 $query->where('first_name', 'like', '%'.$search.'%')
                     ->orWhere('last_name', 'like', '%'.$search.'%')
                     ->orWhere('email', 'like', '%'.$search.'%')
-                    ->orWhereHas('organization', function ($query) use ($search) {
+                    ->orWhereHas('supplier', function ($query) use ($search) {
                         $query->where('name', 'like', '%'.$search.'%');
                     });
             });

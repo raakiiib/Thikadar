@@ -24,6 +24,11 @@
             </div>
 
         </div>
+
+        <v-avatar
+          color="primary"
+          size="56"
+        ></v-avatar>
     </div>
 </template>
 

@@ -14,8 +14,8 @@ class CreateStaffsTable extends Migration
     public function up()
     {
         Schema::create('staffs', function (Blueprint $table) {
-
-            $table->increments('id');
+            $table->id();
+            $table->integer('account_id')->index();
             $table->string('name', 100);
             $table->string('date_of_birth', 20)->nullable();
             $table->string('national_id', 50)->nullable();
@@ -29,7 +29,7 @@ class CreateStaffsTable extends Migration
             $table->string('salary', 10)->nullable();
             $table->string('photo_path', 100)->nullable();
             $table->timestamps();
-    
+            $table->softDeletes();
         });
     }
 

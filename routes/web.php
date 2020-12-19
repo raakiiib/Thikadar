@@ -75,33 +75,65 @@ Route::put('users/{user}/restore', [UsersController::class, 'restore'])
 
 // Organizations
 
-Route::get('organizations', [OrganizationsController::class, 'index'])
-    ->name('organizations')
+// Route::get('organizations', [OrganizationsController::class, 'index'])
+//     ->name('organizations')
+//     ->middleware('remember', 'auth');
+
+// Route::get('organizations/create', [OrganizationsController::class, 'create'])
+//     ->name('organizations.create')
+//     ->middleware('auth');
+
+// Route::post('organizations', [OrganizationsController::class, 'store'])
+//     ->name('organizations.store')
+//     ->middleware('auth');
+
+// Route::get('organizations/{organization}/edit', [OrganizationsController::class, 'edit'])
+//     ->name('organizations.edit')
+//     ->middleware('auth');
+
+// Route::put('organizations/{organization}', [OrganizationsController::class, 'update'])
+//     ->name('organizations.update')
+//     ->middleware('auth');
+
+// Route::delete('organizations/{organization}', [OrganizationsController::class, 'destroy'])
+//     ->name('organizations.destroy')
+//     ->middleware('auth');
+
+// Route::put('organizations/{organization}/restore', [OrganizationsController::class, 'restore'])
+//     ->name('organizations.restore')
+//     ->middleware('auth');
+
+
+
+## Suppliers
+Route::get('suppliers', [SupplierController::class, 'index'])
+    ->name('suppliers')
     ->middleware('remember', 'auth');
 
-Route::get('organizations/create', [OrganizationsController::class, 'create'])
-    ->name('organizations.create')
+Route::get('suppliers/create', [SupplierController::class, 'create'])
+    ->name('suppliers.create')
     ->middleware('auth');
 
-Route::post('organizations', [OrganizationsController::class, 'store'])
-    ->name('organizations.store')
+Route::post('suppliers', [SupplierController::class, 'store'])
+    ->name('suppliers.store')
     ->middleware('auth');
 
-Route::get('organizations/{organization}/edit', [OrganizationsController::class, 'edit'])
-    ->name('organizations.edit')
+Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])
+    ->name('suppliers.edit')
     ->middleware('auth');
 
-Route::put('organizations/{organization}', [OrganizationsController::class, 'update'])
-    ->name('organizations.update')
+Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])
+    ->name('suppliers.update')
     ->middleware('auth');
 
-Route::delete('organizations/{organization}', [OrganizationsController::class, 'destroy'])
-    ->name('organizations.destroy')
+Route::delete('suppliers/{supplier}', [uppliersController::class, 'destroy'])
+    ->name('suppliers.destroy')
     ->middleware('auth');
 
-Route::put('organizations/{organization}/restore', [OrganizationsController::class, 'restore'])
-    ->name('organizations.restore')
+Route::put('suppliers/{supplier}/restore', [suppliersController::class, 'restore'])
+    ->name('suppliers.restore')
     ->middleware('auth');
+
 
 // Contacts
 
@@ -225,34 +257,6 @@ Route::put('vehicles/{vehicle}/restore', [VehiclesController::class, 'restore'])
     ->middleware('auth');
 
 
-## Suppliers
-Route::get('suppliers', [SupplierController::class, 'index'])
-    ->name('suppliers')
-    ->middleware('auth');
-
-Route::get('suppliers/create', [SupplierController::class, 'create'])
-    ->name('suppliers.create')
-    ->middleware('auth');
-
-Route::post('suppliers', [SupplierController::class, 'store'])
-    ->name('suppliers.store')
-    ->middleware('auth');
-
-Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])
-    ->name('suppliers.edit')
-    ->middleware('auth');
-
-Route::get('suppliers/{supplier}', [SupplierController::class, 'update'])
-    ->name('suppliers.edit')
-    ->middleware('auth');
-
-Route::delete('suppliers/{supplier}', [uppliersController::class, 'destroy'])
-    ->name('suppliers.destroy')
-    ->middleware('auth');
-
-Route::put('suppliers/{supplier}/restore', [suppliersController::class, 'restore'])
-    ->name('vehicles.restore')
-    ->middleware('auth');
 
 
 

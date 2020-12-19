@@ -1,32 +1,44 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Staff extends Model
-{
-    // use HasFactory;
-    use SoftDeletes;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
+use League\Glide\Server;
 
-    // public function contacts()
-    // {
-    //     return $this->hasMany(Contact::class);
-    // }
+class Staffs extends Model
+{
+    use SoftDeletes;
 
     public function scopeFilter($query, array $filters)
     {
         
         $query->when($filters['search'] ?? null, function ($query, $search) {
+
             $query->where('name', 'like', '%'.$search.'%');
+
         })->when($filters['trashed'] ?? null, function ($query, $trashed) {
+            
             if ($trashed === 'with') {
+
                 $query->withTrashed();
+            
             } elseif ($trashed === 'only') {
+            
                 $query->onlyTrashed();
+            
             }
         });
 
 
     }
+
+    public function photoUrl(array $attributes)
+    {
+        if ($this->photo_path) {
+            return URL::to(App::make(Server::class)->fromPath($this->photo_path, $attributes));
+        }
+    }
 }
+
