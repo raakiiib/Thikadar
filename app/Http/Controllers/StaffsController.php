@@ -55,9 +55,6 @@ class StaffsController extends Controller
      */
     public function store()
     {
-        // Auth::user()->account->staffs()->create(
-        // );
-        
         Request::validate([
             'name' => ['required', 'max:100'],
             'date_of_birth' => ['date'],
@@ -97,7 +94,7 @@ class StaffsController extends Controller
      * @param  \App\Models\Staffs  $staffs
      * @return \Illuminate\Http\Response
      */
-    public function show(Staffs $staffs)
+    public function show(Staffs $staff)
     {
         //
     }
@@ -108,9 +105,27 @@ class StaffsController extends Controller
      * @param  \App\Models\Staffs  $staffs
      * @return \Illuminate\Http\Response
      */
-    public function edit(Staffs $staffs)
+    public function edit(Staffs $staff)
     {
-        //
+        return Inertia::render('Staffs/Edit', [
+            'staff' => [
+                'id' => $staff->id,
+                'name' => $staff->name,
+                'email' => $staff->email,
+                'phone' => $staff->phone,
+                'date_of_birth' => $staff->date_of_birth,
+                'national_id' => $staff->national_id,
+                'address' => $staff->address,
+                'village' => $staff->village,
+                'district' => $staff->district,
+                'country' => $staff->country,
+                'salary' => $staff->salary,
+                'postal_code' => $staff->postal_code,
+                'photo_path' => $staff->photo_path,
+                'deleted_at' => $staff->deleted_at,
+                // 'contacts' => $staff->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
+            ],
+        ]);
     }
 
     /**
@@ -120,9 +135,26 @@ class StaffsController extends Controller
      * @param  \App\Models\Staffs  $staffs
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Staffs $staffs)
+    public function update(Staffs $staff)
     {
-        //
+        $staff->update(
+            Request::validate([
+                'name' => ['required', 'max:100'],
+                'date_of_birth' => ['date'],
+                'national_id' => ['nullable', 'numeric', 'min:5'],
+                'email' => ['nullable', 'max:50', 'email'],
+                'phone' => ['nullable', 'max:50'],
+                'address' => ['nullable', 'max:150'],
+                'village' => ['nullable', 'max:50'],
+                'district' => ['nullable', 'max:50'],
+                'country' => ['nullable', 'max:2'],
+                'salary' => ['nullable', 'numeric', 'min:3'],
+                'postal_code' => ['nullable', 'max:25'],
+                'photo_path' => ['nullable', 'image'],
+            ])
+        );
+
+        return Redirect::back()->with('success', 'Staff updated.');
     }
 
     /**
@@ -131,8 +163,10 @@ class StaffsController extends Controller
      * @param  \App\Models\Staffs  $staffs
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Staffs $staffs)
+    public function destroy(Staffs $staff)
     {
-        //
+        $staff->delete();
+
+        return Redirect::back()->with('success', 'Staff deleted.');
     }
 }

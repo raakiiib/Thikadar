@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesController;
-use App\Http\Controllers\OrganizationsController;
+// use App\Http\Controllers\OrganizationsController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StaffsController;
 use App\Http\Controllers\RawMaterialsController;
