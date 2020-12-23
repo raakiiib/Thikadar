@@ -39,5 +39,10 @@ class Account extends Model
         return $this->hasMany(Vehicle::class);
     }
 
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
 
 }

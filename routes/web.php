@@ -176,6 +176,9 @@ Route::put('vehicles/{vehicle}/restore', [VehiclesController::class, 'restore'])
 Route::get('purchases', [PurchasesController::class, 'index'])
     ->name('purchases')
     ->middleware('auth');
+Route::get('purchases/create', [PurchasesController::class, 'create'])
+    ->name('purchases.create')
+    ->middleware('auth');
 
 ######## REPORTS ########
 Route::get('reports', [ReportsController::class, 'index'])

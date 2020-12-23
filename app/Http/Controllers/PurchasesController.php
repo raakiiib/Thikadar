@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Purchsases;
+use App\Models\Purchsase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -14,12 +14,17 @@ class PurchasesController extends Controller
     {
         return Inertia::render('Purchases/Index', [
             'filters' => Request::all('search', 'trashed'),
-            'materials' => Auth::user()->account->materials()
-                ->orderBy('product_name')
+            'purchases' => Auth::user()->account->purchases()
+                ->orderBy('number')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
-                ->only('id', 'product_name', 'unit', 'description', 'deleted_at'),
+                ->only('id', 'number', 'supplier_id', 'material_id', 'deleted_at'),
         ]);
+    }
 
+
+    public function create()
+    {
+        return Inertia::render('Purchases/Create');
     }
 }
