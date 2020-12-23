@@ -9,17 +9,17 @@
     <div class="mb-6 flex justify-between items-center">
 
     	<ul class="block">
-	        <li class="inline-block bg-indigo-400">
-	            <inertia-link class="p-2 border-2 border-blue-400 inline-block text-white" :href="route('suppliers')" >
+	        <li class="inline-block bg-indigo-600">
+	            <inertia-link class="p-2 border-2 border-indigo-400 inline-block text-white" :href="route('suppliers')" >
 	                <div class="caption">
 	    				<h1>SUPPLIERS</h1>
 	    			</div>
 	            </inertia-link>
 	        </li>
 	        <li class="inline-block ml-2">
-	            <inertia-link class="p-2 border-2 border-blue-400 inline-block" :href="route('suppliers')" >
+	            <inertia-link class="p-2 border-2 border-indigo-400 inline-block" :href="route('reports.products')" >
 	                <div class="caption">
-	    				<h1>SUPPLIERS</h1>
+	    				<h1>PRODUCTS</h1>
 	    			</div>
 	            </inertia-link>
 	        </li>
@@ -42,12 +42,9 @@
         <table class="w-full whitespace-no-wrap">
             <tr class="text-left font-bold">
 
-                <th class="px-6 pt-6 pb-4">Products</th>
-                <th class="px-6 pt-6 pb-4">Supplier</th>
-                <th class="px-6 pt-6 pb-4">Invoice</th>
-                <th class="px-6 pt-6 pb-4" >Amount</th>
-                <!-- <th class="px-6 pt-6 pb-4">Paid</th>
-                <th class="px-6 pt-6 pb-4">Due</th> -->
+                <th class="px-6 pt-6 pb-4">Name</th>
+                <th class="px-6 pt-6 pb-4">Phone</th>
+                <th class="px-6 pt-6 pb-4">City</th>
             </tr>
             <tr v-for="supplier in suppliers.data" :key="supplier.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
                 <td class="border-t">
@@ -64,13 +61,7 @@
                 </td>
                 <td class="border-t">
                     <inertia-link class="px-6 py-4 flex items-center" :href="route('suppliers.edit', supplier.id)" tabindex="-1">
-                        {{ supplier.village }}
-                    </inertia-link>
-                </td>
-
-                <td class="border-t">
-                    <inertia-link class="px-6 py-4 flex items-center" :href="route('suppliers.edit', supplier.id)" tabindex="-1">
-                        {{ supplier.district }}
+                        {{ supplier.city }}
                     </inertia-link>
                 </td>
 

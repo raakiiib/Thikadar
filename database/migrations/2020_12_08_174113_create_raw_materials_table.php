@@ -16,9 +16,10 @@ class CreateRawMaterialsTable extends Migration
         Schema::create('raw_materials', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id')->index();
-            $table->string('product_name', 100);
-            $table->string('unit', 50);
-            $table->string('description', 300)->nullable();
+            $table->string('name', 100)->nullable();
+            $table->string('type', 100)->nullable();
+            $table->string('unit', 20)->nullable();
+            $table->string('description', 500)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

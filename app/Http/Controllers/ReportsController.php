@@ -12,8 +12,6 @@ class ReportsController extends Controller
 {
     public function index()
     {
-
-
         return Inertia::render('Reports/Index', [
             'filters' => Request::all('search', 'trashed'),
             'suppliers' => Auth::user()->account->suppliers()
@@ -21,6 +19,32 @@ class ReportsController extends Controller
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
                 ->only('id', 'name', 'phone', 'city', 'deleted_at'),
+        ]);
+    }
+
+
+    public function suppliers()
+    {
+        return Inertia::render('Reports/Supplier', [
+            'filters' => Request::all('search', 'trashed'),
+            'suppliers' => Auth::user()->account->suppliers()
+                ->orderBy('name')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate()
+                ->only('id', 'name', 'phone', 'city', 'deleted_at'),
+        ]);
+    }
+
+
+    public function products()
+    {
+        return Inertia::render('Reports/Product', [
+            'filters' => Request::all('search', 'trashed'),
+            'products' => Auth::user()->account->materials()
+                ->orderBy('name')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate()
+                ->only('id', 'name', 'description', 'unit'),
         ]);
     }
 }
