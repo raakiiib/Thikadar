@@ -20,12 +20,12 @@ class CreatePurchasesTable extends Migration
             $table->unsignedInteger('material_id');  
             $table->unsignedInteger('supplier_id');  
             $table->string('number', 50)->nullable();
-            $table->double('quantity', 8, 2);        
-            $table->double('unitprice', 8, 2);       
-            $table->double('netamount', 8, 2);       
-            $table->double('paid', 8, 2);            
-            $table->double('due', 8, 2);
-            $table->boolean('ispaid');
+            $table->double('quantity', 8, 2);
+            $table->double('unitprice', 8, 2);
+            $table->double('netamount', 8, 2);
+            $table->double('paid', 8, 2)->nullable();            
+            $table->double('due', 8, 2)->nullable();
+            $table->boolean('ispaidtotal')->default(0)->change();
             $table->timestamps();
             $table->softDeletes();
         });
