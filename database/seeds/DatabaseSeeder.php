@@ -32,11 +32,6 @@ class DatabaseSeeder extends Seeder
             ->each(function ($contact) use ($suppliers) {
                 $contact->update(['supplier_id' => $suppliers->random()->id]);
             });
-
-
-        // $suppliers = factory(Supplier::class, 20)
-            // ->create(['account_id' => 1]);
-
     }
 }
 
