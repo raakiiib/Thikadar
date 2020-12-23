@@ -14,7 +14,7 @@ class PurchasesController extends Controller
     {
         return Inertia::render('Purchases/Index', [
             'filters' => Request::all('search', 'trashed'),
-            'purchases' => Auth::user()->account->purchases()
+            'products' => Auth::user()->account->purchases()
                 ->orderBy('number')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()

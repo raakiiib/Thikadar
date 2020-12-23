@@ -173,11 +173,11 @@ Route::put('vehicles/{vehicle}/restore', [VehiclesController::class, 'restore'])
     ->middleware('auth');
 
 ######## PURCHASE ########
-Route::get('purchases', [PurchasesController::class, 'index'])
-    ->name('purchases')
+Route::get('products', [PurchasesController::class, 'index'])
+    ->name('products')
     ->middleware('auth');
-Route::get('purchases/create', [PurchasesController::class, 'create'])
-    ->name('purchases.create')
+Route::get('products/create', [PurchasesController::class, 'create'])
+    ->name('products.create')
     ->middleware('auth');
 
 ######## REPORTS ########
