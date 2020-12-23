@@ -44,5 +44,10 @@ class Account extends Model
         return $this->hasMany(Purchase::class);
     }
 
+    public function reports()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
 
 }

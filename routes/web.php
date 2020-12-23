@@ -180,6 +180,14 @@ Route::get('products/create', [PurchasesController::class, 'create'])
     ->name('products.create')
     ->middleware('auth');
 
+######## INVOICES ########
+Route::get('invoices', [InvoicesController::class, 'index'])
+    ->name('invoices')
+    ->middleware('auth');
+Route::get('invoices/create', [InvoicesController::class, 'create'])
+    ->name('invoices.create')
+    ->middleware('auth');
+
 ######## REPORTS ########
 Route::get('reports', [ReportsController::class, 'index'])
     ->name('reports')

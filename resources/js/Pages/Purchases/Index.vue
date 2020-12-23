@@ -4,8 +4,8 @@
             <h1 class="font-bold text-3xl">PRODUCTS</h1>
 
             <inertia-link class="btn-indigo" :href="route('products.create')">
-                <span>Create</span>
-                <span class="hidden md:inline">product</span>
+                <span>BUY</span>
+                <span class="hidden md:inline">PRODUCT</span>
             </inertia-link>
         </div>
         <div class="mb-6 flex justify-between items-center">
@@ -18,13 +18,17 @@
                 </select>
             </search-filter>
         </div>
+        
         <div class="bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4">Name</th>
-                    <th class="px-6 pt-6 pb-4">Phone</th>
-                    <th class="px-6 pt-6 pb-4" >Village</th>
-                    <th class="px-6 pt-6 pb-4">District</th>
+
+                    <th class="px-6 pt-6 pb-4">Products</th>
+                    <th class="px-6 pt-6 pb-4">Supplier</th>
+                    <th class="px-6 pt-6 pb-4">Invoice</th>
+                    <th class="px-6 pt-6 pb-4" >Amount</th>
+                    <!-- <th class="px-6 pt-6 pb-4">Paid</th>
+                    <th class="px-6 pt-6 pb-4">Due</th> -->
                 </tr>
                 <tr v-for="product in products.data" :key="product.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
                     <td class="border-t">
@@ -76,9 +80,7 @@ import SearchFilter from '@/Shared/SearchFilter'
 import throttle from 'lodash/throttle'
 
 export default {
-    created() {
-        console.log(this.products)
-    },
+    
     metaInfo: { title: 'products' },
     layout: Layout,
     components: {
@@ -108,6 +110,9 @@ export default {
         },
     },
     methods: {
+        created() {
+            console.log(this.products)
+        },
         reset() {
             this.form = mapValues(this.form, () => null)
         },

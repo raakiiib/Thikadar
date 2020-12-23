@@ -6,6 +6,28 @@
         <div :class="isUrl('') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">DASHBOARD</div>
       </inertia-link>
     </div>
+
+    <div class="mb-4">
+      <inertia-link class="flex items-center group py-3" :href="route('invoices')">
+        <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('invoices') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+        <div :class="isUrl('invoices') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">INVOICES</div>
+      </inertia-link>
+    </div>
+
+    <div class="mb-4">
+      <inertia-link class="flex items-center group py-3" :href="route('reports')">
+        <icon name="printer" class="w-4 h-4 mr-2" :class="isUrl('reports') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+        <div :class="isUrl('reports') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">REPORTS</div>
+      </inertia-link>
+    </div>
+    
+    <div class="mb-4">
+      <inertia-link class="flex items-center group py-3" :href="route('products')">
+        <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('products') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+        <div :class="isUrl('products') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">PRODUCTS</div>
+      </inertia-link>
+    </div>
+
     <div class="mb-4">
       <inertia-link class="flex items-center group py-3" :href="route('suppliers')">
         <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('suppliers') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
@@ -40,12 +62,6 @@
         <div :class="isUrl('contacts') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">CONTACTS</div>
       </inertia-link>
     </div>
-    <div class="mb-4">
-      <inertia-link class="flex items-center group py-3" :href="route('reports')">
-        <icon name="printer" class="w-4 h-4 mr-2" :class="isUrl('reports') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
-        <div :class="isUrl('reports') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">REPORTS</div>
-      </inertia-link>
-    </div>
   </div>
 </template>
 
@@ -67,6 +83,6 @@ export default {
 
       return urls.filter(url => this.url.startsWith(url)).length
     },
-  },
+  }
 }
 </script>
