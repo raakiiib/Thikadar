@@ -27,8 +27,6 @@
                     <th class="px-6 pt-6 pb-4">District</th>
                 </tr>
                 <tr v-for="purchase in purchases.data" :key="purchase.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
-
-
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('purchases.edit', purchase.id)">
                             <img v-if="purchase.photo_path" class="block w-5 h-5 rounded-full mr-2 -my-2" :src="purchase.photo_path">
