@@ -44,8 +44,15 @@ class ReportsController extends Controller
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
-                ->only('id', 'name', 'description', 'unit'),
+                ->only('id', 'name', 'type', 'description', 'unit'),
         ]);
+    }
+
+
+    public function showProductReport(Report $report)
+    {
+    	
+    	dd($report);
     }
 }
 

@@ -49,7 +49,7 @@
             </tr>
             <tr v-for="product in products.data" :key="product.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
                 <td class="border-t">
-                    <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('products.edit', product.id)">
+                    <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('', product.id)">
                         <img v-if="product.photo_path" class="block w-5 h-5 rounded-full mr-2 -my-2" :src="product.photo_path">
                         {{ product.name }}
                         <icon v-if="product.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
@@ -57,25 +57,25 @@
                 </td>
                 
                 <td class="border-t">
-                    <inertia-link class="px-6 py-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
+                    <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
                         {{ product.type }}
                     </inertia-link>
                 </td>
 
                 <td class="border-t">
-                    <inertia-link class="px-6 py-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
+                    <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
                         {{ product.description }}
                     </inertia-link>
                 </td>
 
                 <td class="border-t">
-                    <inertia-link class="px-6 py-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
+                    <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
                         {{ product.unit }}
                     </inertia-link>
                 </td>
 
                 <td class="border-t w-px">
-                    <inertia-link class="px-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
+                    <inertia-link class="px-4 flex items-center" :href="route('', product.id)" tabindex="-1">
                         <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
                     </inertia-link>
                 </td>

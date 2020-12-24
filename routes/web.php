@@ -197,6 +197,10 @@ Route::get('reports/products', [ReportsController::class, 'products'])
     ->name('reports.products')
     ->middleware('auth');
 
+// Route::get('reports/{product}/show', [VehiclesController::class, 'showProductReport'])
+    // ->name('repor.edit')
+    // ->middleware('auth');
+
 ######## IMAGE ########
 Route::get('/img/{path}', [ImagesController::class, 'show'])->where('path', '.*');
 
