@@ -7,6 +7,16 @@ class Purchase extends Model
 {
     use SoftDeletes;
 
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+    
+    public function products()
+    {
+        return $this->belongsTo(ReawMaterial::class);
+    }
+
 
     public function scopeFilter($query, array $filters)
     {
