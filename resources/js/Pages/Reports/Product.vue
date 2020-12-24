@@ -43,6 +43,7 @@
             <tr class="text-left font-bold">
 
                 <th class="px-6 pt-6 pb-4">Name</th>
+                <th class="px-6 pt-6 pb-4">Grade/ Type</th>
                 <th class="px-6 pt-6 pb-4">Description</th>
                 <th class="px-6 pt-6 pb-4">Unit</th>
             </tr>
@@ -57,13 +58,19 @@
                 
                 <td class="border-t">
                     <inertia-link class="px-6 py-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
-                        {{ product.address }}
+                        {{ product.type }}
                     </inertia-link>
                 </td>
 
                 <td class="border-t">
                     <inertia-link class="px-6 py-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
                         {{ product.description }}
+                    </inertia-link>
+                </td>
+
+                <td class="border-t">
+                    <inertia-link class="px-6 py-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
+                        {{ product.unit }}
                     </inertia-link>
                 </td>
 

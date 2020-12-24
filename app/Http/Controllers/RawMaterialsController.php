@@ -18,10 +18,10 @@ class RawMaterialsController extends Controller
 		return Inertia::render('Materials/Index', [
             'filters' => Request::all('search', 'trashed'),
             'materials' => Auth::user()->account->materials()
-                ->orderBy('product_name')
+                ->orderBy('name')
 				->filter(Request::only('search', 'trashed'))
 				->paginate()
-				->only('id', 'product_name', 'unit', 'description', 'deleted_at'),
+				->only('id', 'name', 'type', 'unit', 'description', 'deleted_at'),
         ]);
 
 	}
@@ -38,9 +38,10 @@ class RawMaterialsController extends Controller
     {
         Auth::user()->account->materials()->create(
             Request::validate([
-            	'product_name' => ['required', 'max:50'],
-                'unit' => ['required', 'max:50'],
-                'description' => ['nullable', 'max:250'],
+            	'name' => ['required', 'max:100'],
+                'type' => ['required', 'max:100'],
+                'unit' => ['required', 'max:20'],
+                'description' => ['nullable', 'max:450'],
             ])
         );
 
@@ -53,7 +54,8 @@ class RawMaterialsController extends Controller
         return Inertia::render('Materials/Edit', [
             'material' => [
                 'id' => $material->id,
-                'product_name' => $material->product_name,
+                'name' => $material->name,
+                'type' => $material->type,
                 'unit' => $material->unit,
                 'description' => $material->description,
                 'deleted_at' => $material->deleted_at,
@@ -65,9 +67,10 @@ class RawMaterialsController extends Controller
     {
         $material->update(
             Request::validate([
-            	'product_name' => ['required', 'max:50'],
-                'unit' => ['required', 'max:50'],
-                'description' => ['nullable', 'max:250'],
+            	'name' => ['required', 'max:100'],
+                'name' => ['required', 'max:100'],
+                'unit' => ['required', 'max:20'],
+                'description' => ['nullable', 'max:450'],
             ])
         );
 

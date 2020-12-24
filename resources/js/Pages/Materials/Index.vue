@@ -28,7 +28,7 @@
                 <tr v-for="material in materials.data" :key="material.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('materials.edit', material.id)">
-                            {{ material.product_name }}
+                            {{ material.name }}
                             <icon v-if="material.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
                         </inertia-link>
                     </td>

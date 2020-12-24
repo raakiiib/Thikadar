@@ -3,7 +3,7 @@
 		<h1 class="mb-8 font-bold text-3xl">
 			<inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('materials')">materials</inertia-link>
 			<span class="text-indigo-400 font-medium">/</span>
-			{{ form.product_name }}
+			{{ form.name }}
 		</h1>
 		<trashed-message v-if="material.deleted_at" class="mb-6" @restore="restore">
 			This material has been deleted.
@@ -11,10 +11,13 @@
 		<div class="bg-white rounded shadow overflow-hidden max-w-3xl">
 			<form @submit.prevent="submit">
 				<div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-					<text-input v-model="form.product_name" :error="errors.product_name" class="pr-6 pb-8 w-full lg:w-1/2" label="Product name" />
+					<text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Product name" />
+					
+					<text-input v-model="form.type" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" />
+
 					<text-input v-model="form.unit" :error="errors.unit" class="pr-6 pb-8 w-full lg:w-1/2" label="Measure Unit" />
 
-					<text-input v-model="form.description" :error="errors.description" class="pr-6 pb-8 w-full lg:w-1/1" label="Description" />
+					<text-input v-model="form.description" :error="errors.description" class="pr-6 pb-8 w-full lg:w-1/2" label="Description" />
 				</div>
 				<div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
 					<button v-if="!material.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete material</button>
@@ -38,7 +41,7 @@ export default {
 	},
 	metaInfo() {
 		return {
-			title: `${this.form.product_name}`,
+			title: `${this.form.name}`,
 		}
 	},
 	layout: Layout,
@@ -57,7 +60,8 @@ export default {
 		return {
 			sending: false,
 			form: {
-				product_name: this.material.product_name,
+				name: this.material.name,
+				type: this.material.type,
 				unit: this.material.unit,
 				description: this.material.description,
 			},
