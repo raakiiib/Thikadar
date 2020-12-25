@@ -39,6 +39,7 @@ class ServicesController extends Controller
             Request::validate([
             	'name' => ['required', 'max:100'],
                 'type' => ['nullable', 'max:100'],
+                'size' => ['nullable', 'max:50'],
                 'unit' => ['nullable', 'max:20'],
                 'description' => ['nullable', 'max:450'],
             ])
@@ -47,7 +48,7 @@ class ServicesController extends Controller
         return Redirect::route('services')->with('success', 'service added.');
     }
 
-    public function edit(Services $service)
+    public function edit(Service $service)
     {
         return Inertia::render('services/Edit', [
             'service' => [
@@ -62,7 +63,7 @@ class ServicesController extends Controller
         ]);
     }
 
-    public function update(Services $service)
+    public function update(Service $service)
     {
         $service->update(
             Request::validate([
@@ -76,14 +77,14 @@ class ServicesController extends Controller
         return Redirect::back()->with('success', 'service updated.');
     }
 
-    public function destroy(Services $service)
+    public function destroy(Service $service)
     {
         $service->delete();
 
         return Redirect::back()->with('success', 'service deleted.');
     }
 
-    public function restore(Services $service)
+    public function restore(Service $service)
     {
         $service->restore();
 
