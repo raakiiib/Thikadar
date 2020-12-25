@@ -6,7 +6,10 @@
                 <div class="md:flex md:flex-shrink-0">
                     <div class="bg-indigo-900 md:flex-shrink-0 md:w-56 px-6 py-4 flex items-center justify-between md:justify-center">
                         <inertia-link class="mt-1" href="/">
-                            <logo class="fill-white" width="120" height="28" />
+                            <!-- <logo class="fill-white" width="120" height="28" /> -->
+                            <!-- <img src="images/elite-logo.png" alt=""> -->
+                            <!-- <elitelogo class="fill-white" width="320" height="28" /> -->
+                            <h1 class="text-white">Elite construction</h1>
                         </inertia-link>
                         <dropdown class="md:hidden" placement="bottom-end">
                             <svg class="fill-white w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
@@ -50,6 +53,7 @@ import Dropdown from '@/Shared/Dropdown'
 import FlashMessages from '@/Shared/FlashMessages'
 import Icon from '@/Shared/Icon'
 import Logo from '@/Shared/Logo'
+import Elitelogo from '@/Shared/Elitelogo'
 import MainMenu from '@/Shared/MainMenu'
 
 export default {
@@ -58,6 +62,7 @@ export default {
         FlashMessages,
         Icon,
         Logo,
+        Elitelogo,
         MainMenu,
     },
     data() {

@@ -12,9 +12,9 @@ class Purchase extends Model
         return $this->belongsTo(Supplier::class);
     }
     
-    public function products()
+    public function material()
     {
-        return $this->belongsTo(ReawMaterial::class);
+        return $this->belongsTo(RawMaterial::class);
     }
 
 

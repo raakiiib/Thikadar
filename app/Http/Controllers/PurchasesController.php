@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Purchsase;
+use App\Models\Supplier;
+// use App\Models\RawMaterial;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -10,15 +11,32 @@ use Inertia\Inertia;
 
 class PurchasesController extends Controller
 {
+
     public function index()
     {
         return Inertia::render('Purchases/Index', [
             'filters' => Request::all('search', 'trashed'),
             'products' => Auth::user()->account->purchases()
-                ->orderBy('number')
+                // ->with('supplier')
+                ->orderBy('invoice_number')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
-                ->only('id', 'number', 'supplier_id', 'material_id', 'deleted_at'),
+                ->transform(function ($product){
+                    return [
+                        'id' => $product->id,
+                        'invoice' => $product->invoice_number,
+                        'quantity' => $product->quantity,
+                        'unitprice' => $product->unitprice,
+                        'total' => $product->net_amount,
+                        'created_at' => $product->created_at,
+                        'deleted_at' => $product->deleted_at,
+                        'supplier' => $product->supplier
+                            ->only('name'),
+                        'material' => $product->material
+                            ->only('name'),
+                    ];                    
+                }),
+                // ->only('id', 'invoice_number', 'quantity', 'unitprice', 'net_amount', 'deleted_at'),
         ]);
     }
 
@@ -38,16 +56,28 @@ class PurchasesController extends Controller
                 ->get()
                 ->map
                 ->only('id', 'name'),
-            'invoice_number' => $this->generateInvoice(),
+            'invoice_number' => $this->_generateInvoice(),
         ]);
     }
 
-    public function generateInvoice()
+    public function store()
     {
-        // return 'INV001';
-        //IT SHOULD BE INSIDE YOUR MEHTOD
+        Auth::user()->account->purchases()->create(
+            Request::validate([
+                'material_id' => ['nullable'],
+                'supplier_id' => ['nullable'],
+                'invoice_number' => ['nullable', 'max:20'],
+                'quantity' => ['nullable', 'max:10'],
+                'unitprice' => ['nullable', 'max:10'],
+                'net_amount' => ['nullable', 'max:10']
+            ])
+        );
 
-        //get last record
+        return Redirect::route('products')->with('success', 'Product purchased.');
+    }
+
+    protected function _generateInvoice()
+    {
         $record = Auth::user()
             ->account
             ->purchases()
@@ -56,23 +86,16 @@ class PurchasesController extends Controller
         if( !empty($record) ) {
 
             $invNum = explode('-', $record->invoice_number);
-            //check first day in a year
             if ( date('l',strtotime(date('Y-01-01'))) ){
-                $invoiceNumber = date('Y').'-0001';
+                $invoiceNumber = date('ymd').'-0001';
             } else {
-                //increase 1 with last invoice number
-                $invoiceNumber = $invNum[0].'-'. ( $invNum[1] )+1;
+                $invoiceNumber = (($invNum[0]).'-'. ( $invNum[1] + 1 ));
             }
 
+        }else{
+            $invoiceNumber = date('ymd').'-00001';
         }
-        else return '0';
 
-
-        exit();
-        $expNum = explode('-', $record->invoiceno);
-
-
-        
-
+        return $invoiceNumber;
     }
 }

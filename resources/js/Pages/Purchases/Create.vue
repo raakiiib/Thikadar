@@ -23,7 +23,6 @@
 
                     <text-input type="number" step="0.01" v-model="form.quantity" :error="errors.quantity" @input="updateNetAmout" class="pr-6 pb-8 w-full lg:w-1/2" label="Quantity" />
 
-                    
                     <text-input disabled type="number" step="0.01" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total amount"/>
 
                     <text-input disabled v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
@@ -64,7 +63,7 @@
                 sending: false,
                 form: {
                     supplier_id: null,
-                    product_id: null,
+                    material_id: null,
                     unitprice: null,
                     quantity: null,
                     net_amount: null,
@@ -77,30 +76,17 @@
                 this.form.net_amount = String(this.form.unitprice * this.form.quantity)
             },
             submit() {
-                // const data = new FormData()
-                // data.append('name', this.form.name || '')
-                // data.append('email', this.form.email || '')
-                // data.append('phone', this.form.phone || '')
-                // data.append('national_id', this.form.national_id || '')
-                // data.append('date_of_birth', this.form.date_of_birth || '')
 
-                // data.append('salary', this.form.salary || '')
-                // data.append('address', this.form.address || '')
-                // data.append('village', this.form.village || '')
-                // data.append('district', this.form.district || '')
-                // data.append('country', this.form.country || '')
-                // data.append('postal_code', this.form.postal_code || '')
-                // data.append('photo_path', this.form.photo_path || '')
+                // console.log(this.form)
+                this.$inertia.post(this.route('products.store'), this.form, {
+                    onStart: () => this.sending = true,
+                    onFinish: () => this.sending = false,
+                })
 
-                // this.$inertia.post(this.route('staffs.store'), data, {
-                //     onStart: () => this.sending = true,
-                //     onFinish: () => this.sending = false,
-                // })
             },
         },
         created(){
-            console.log('asfljds');
-            // this.form.net_amount = '103'
+            // console.log('created ...');
         }
     }
 </script>

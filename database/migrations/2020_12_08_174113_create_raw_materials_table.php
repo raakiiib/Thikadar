@@ -17,6 +17,7 @@ class CreateRawMaterialsTable extends Migration
             $table->increments('id');
             $table->integer('account_id')->index();
             $table->string('name', 100)->nullable();
+            $table->string('size', 100)->nullable();
             $table->string('type', 100)->nullable();
             $table->string('unit', 20)->nullable();
             $table->string('description', 500)->nullable();

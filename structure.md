@@ -45,3 +45,17 @@ Products =>
 	Supplier
 	Invoice
 	Cost
+
+
+Materials =>
+
+	Name 				-> CCBLOCK
+	Size				-> 45X45X45
+	MesurementUnit 		-> CM
+	 
+
+
+Block casting
+	name		 
+	Size
+	MesurementUnit

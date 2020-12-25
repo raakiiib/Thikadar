@@ -10,6 +10,13 @@
     <div class="mb-4">
       <inertia-link class="flex items-center group py-3" :href="route('invoices')">
         <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('invoices') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+        <div :class="isUrl('invoices') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">EXPENSES</div>
+      </inertia-link>
+    </div>
+
+    <div class="mb-4">
+      <inertia-link class="flex items-center group py-3" :href="route('invoices')">
+        <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('invoices') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
         <div :class="isUrl('invoices') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">INVOICES</div>
       </inertia-link>
     </div>

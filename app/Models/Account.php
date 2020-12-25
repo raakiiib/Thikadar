@@ -44,6 +44,11 @@ class Account extends Model
         return $this->hasMany(Purchase::class);
     }
 
+    public function product()
+    {
+        return $this->hasMany(RawMaterial::class);
+    }
+
     public function reports()
     {
         return $this->hasMany(Purchase::class);

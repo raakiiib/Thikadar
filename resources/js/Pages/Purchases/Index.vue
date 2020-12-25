@@ -23,40 +23,51 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
 
-                    <th class="px-6 pt-6 pb-4">Products</th>
-                    <th class="px-6 pt-6 pb-4">Supplier</th>
                     <th class="px-6 pt-6 pb-4">Invoice</th>
+                    <th class="px-6 pt-6 pb-4">Product</th>
+                    <th class="px-6 pt-6 pb-4">Supplier</th>
+                    <th class="px-6 pt-6 pb-4">Quantity</th>
+                    <th class="px-6 pt-6 pb-4">Unit price</th>
                     <th class="px-6 pt-6 pb-4" >Amount</th>
-                    <!-- <th class="px-6 pt-6 pb-4">Paid</th>
-                    <th class="px-6 pt-6 pb-4">Due</th> -->
                 </tr>
                 <tr v-for="product in products.data" :key="product.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
                     <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('products.edit', product.id)">
+                        <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('', product.id)">
                             <img v-if="product.photo_path" class="block w-5 h-5 rounded-full mr-2 -my-2" :src="product.photo_path">
-                            {{ product.name }}
+                            {{ product.invoice }}
                             <icon v-if="product.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
-                        </inertia-link>
-                    </td>
-                    <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
-                            {{ product.phone }}
-                        </inertia-link>
-                    </td>
-                    <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
-                            {{ product.village }}
                         </inertia-link>
                     </td>
 
                     <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
-                            {{ product.district }}
+                        <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('', product.id)">
+                            {{ product.material.name }}
+                        </inertia-link>
+                    </td>
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
+                            {{ product.supplier.name }}
+                        </inertia-link>
+                    </td>
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
+                            {{ product.quantity }}
+                        </inertia-link>
+                    </td>
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
+                            {{ product.unitprice }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
+                            {{ product.total }}
                         </inertia-link>
                     </td>
 
                     <td class="border-t w-px">
-                        <inertia-link class="px-4 flex items-center" :href="route('products.edit', product.id)" tabindex="-1">
+                        <inertia-link class="px-4 flex items-center" :href="route('', product.id)" tabindex="-1">
                             <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
                         </inertia-link>
                     </td>
@@ -90,6 +101,7 @@ export default {
     },
     props: {
         products: Object,
+        // purchase: Object,
         filters: Object,
     },
     data() {

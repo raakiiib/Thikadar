@@ -11,13 +11,18 @@
 
           <text-input v-model="form.type" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" />
 
-          <text-input v-model="form.unit" :error="errors.unit" class="pr-6 pb-8 w-full lg:w-1/2" label="Measurement unit" />
-          
+          <select-input v-model="form.country" :error="errors.country" class="pr-6 pb-8 w-full lg:w-1/2" label="Unit">
+            <option value="centimeter">CENTIMETER</option>
+            <option value="meter">METER</option>
+            <option value="feet">FEET</option>
+          </select-input>
           <text-input v-model="form.description" :error="errors.description" class="pr-6 pb-8 w-full lg:w-1/2" label="Description" />
+
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
           <loading-button :loading="sending" class="btn-indigo" type="submit">ADD MATERIAL</loading-button>
         </div>
+        
       </form>
     </div>
   </div>
@@ -54,6 +59,7 @@ export default {
   },
   methods: {
     submit() {
+      console.log(this.form)
       this.$inertia.post(this.route('materials.store'), this.form, {
         onStart: () => this.sending = true,
         onFinish: () => this.sending = false,

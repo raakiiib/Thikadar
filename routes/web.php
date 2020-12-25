@@ -179,6 +179,9 @@ Route::get('products', [PurchasesController::class, 'index'])
 Route::get('products/create', [PurchasesController::class, 'create'])
     ->name('products.create')
     ->middleware('auth');
+Route::post('products', [PurchasesController::class, 'store'])
+    ->name('products.store')
+    ->middleware('auth');
 
 ######## INVOICES ########
 Route::get('invoices', [InvoicesController::class, 'index'])

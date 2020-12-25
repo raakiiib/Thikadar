@@ -39,8 +39,8 @@ class RawMaterialsController extends Controller
         Auth::user()->account->materials()->create(
             Request::validate([
             	'name' => ['required', 'max:100'],
-                'type' => ['required', 'max:100'],
-                'unit' => ['required', 'max:20'],
+                'type' => ['nullable', 'max:100'],
+                'unit' => ['nullable', 'max:20'],
                 'description' => ['nullable', 'max:450'],
             ])
         );
@@ -50,11 +50,11 @@ class RawMaterialsController extends Controller
 
     public function edit(RawMaterial $material)
     {
-        // dd($material);
         return Inertia::render('Materials/Edit', [
             'material' => [
                 'id' => $material->id,
                 'name' => $material->name,
+                'size' => $material->size,
                 'type' => $material->type,
                 'unit' => $material->unit,
                 'description' => $material->description,

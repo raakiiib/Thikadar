@@ -8,6 +8,15 @@ class RawMaterial extends Model
 {
     use SoftDeletes;
 
+    public function supplier()
+    {
+        return $this->hasMany(Supplier::class);
+    }
+
+    public function product()
+    {
+        return $this->hasMany(Purchase::class);
+    }
 
     public function scopeFilter($query, array $filters)
     {
