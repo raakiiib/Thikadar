@@ -8,6 +8,7 @@ use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StaffsController;
 use App\Http\Controllers\RawMaterialsController;
+use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\VehiclesController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
@@ -126,7 +127,7 @@ Route::put('staffs/{staff}/restore', [StaffsController::class, 'restore'])
     ->name('staffs.restore')
     ->middleware('auth');
 
-######## SUPPLIERS ########
+######## MATERIALS ########
 Route::get('materials', [RawMaterialsController::class, 'index'])
     ->name('materials')
     ->middleware('remember', 'auth');
@@ -204,6 +205,28 @@ Route::get('reports/products', [ReportsController::class, 'products'])
     // ->name('repor.edit')
     // ->middleware('auth');
 
+######## SUPPLIERS ########
+Route::get('services', [ServicesController::class, 'index'])
+    ->name('services')
+    ->middleware('remember', 'auth');
+Route::get('services/create', [ServicesController::class, 'create'])
+    ->name('services.create')
+    ->middleware('auth');
+Route::post('services', [ServicesController::class, 'store'])
+    ->name('services.store')
+    ->middleware('auth');
+Route::get('services/{service}/edit', [ServicesController::class, 'edit'])
+    ->name('services.edit')
+    ->middleware('auth');
+Route::put('services/{service}', [ServicesController::class, 'update'])
+    ->name('services.update')
+    ->middleware('auth');
+Route::delete('services/{service}', [ServicesController::class, 'destroy'])
+    ->name('services.destroy')
+    ->middleware('auth');
+Route::put('services/{service}/restore', [ServicesController::class, 'restore'])
+    ->name('services.restore')
+    ->middleware('auth');
 ######## IMAGE ########
 Route::get('/img/{path}', [ImagesController::class, 'show'])->where('path', '.*');
 
