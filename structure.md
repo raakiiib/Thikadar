@@ -55,7 +55,9 @@ Materials =>
 	 
 
 
-Block casting
-	name		 
-	Size
-	MesurementUnit
+
+Service
+
+	name		 	Block casting
+	Size			45X45X45
+	MesurementUnit	CM/ Feet

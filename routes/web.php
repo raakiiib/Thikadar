@@ -227,6 +227,29 @@ Route::delete('services/{service}', [ServicesController::class, 'destroy'])
 Route::put('services/{service}/restore', [ServicesController::class, 'restore'])
     ->name('services.restore')
     ->middleware('auth');
+
+######## SUPPLIERS ########
+Route::get('expenses', [ExpensesController::class, 'index'])
+    ->name('expenses')
+    ->middleware('remember', 'auth');
+Route::get('expenses/create', [ExpensesController::class, 'create'])
+    ->name('expenses.create')
+    ->middleware('auth');
+Route::post('expenses', [ExpensesController::class, 'store'])
+    ->name('expenses.store')
+    ->middleware('auth');
+Route::get('expenses/{service}/edit', [ExpensesController::class, 'edit'])
+    ->name('expenses.edit')
+    ->middleware('auth');
+Route::put('expenses/{service}', [ExpensesController::class, 'update'])
+    ->name('expenses.update')
+    ->middleware('auth');
+Route::delete('expenses/{service}', [ExpensesController::class, 'destroy'])
+    ->name('expenses.destroy')
+    ->middleware('auth');
+Route::put('expenses/{service}/restore', [ExpensesController::class, 'restore'])
+    ->name('expenses.restore')
+    ->middleware('auth');
 ######## IMAGE ########
 Route::get('/img/{path}', [ImagesController::class, 'show'])->where('path', '.*');
 

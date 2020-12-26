@@ -21,24 +21,22 @@ class ServicesController extends Controller
                 ->orderBy('name')
 				->filter(Request::only('search', 'trashed'))
 				->paginate()
-				->only('id', 'name', 'size', 'type', 'unit', 'description', 'created_at', 'deleted_at'),
+				->only('id', 'name', 'size', 'type', 'unit', 'convert_to', 'description', 'created_at', 'deleted_at'),
         ]);
 	}
-
 
     public function create()
     {
         return Inertia::render('Services/Create');
     }
 
-
-	
     public function store()
     {
         Auth::user()->account->services()->create(
             Request::validate([
             	'name' => ['required', 'max:100'],
                 'type' => ['nullable', 'max:100'],
+                'convert_to' => ['nullable', 'max:50'],
                 'size' => ['nullable', 'max:50'],
                 'unit' => ['nullable', 'max:20'],
                 'description' => ['nullable', 'max:450'],
@@ -50,12 +48,13 @@ class ServicesController extends Controller
 
     public function edit(Service $service)
     {
-        return Inertia::render('services/Edit', [
+        return Inertia::render('Services/Edit', [
             'service' => [
                 'id' => $service->id,
                 'name' => $service->name,
                 'size' => $service->size,
                 'type' => $service->type,
+                'convert_to' => $service->convert_to,
                 'unit' => $service->unit,
                 'description' => $service->description,
                 'deleted_at' => $service->deleted_at,
