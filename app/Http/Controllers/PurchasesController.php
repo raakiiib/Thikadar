@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
-// use App\Models\RawMaterial;
+use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -14,10 +14,11 @@ class PurchasesController extends Controller
 
     public function index()
     {
+
+        dd('here i am');
         return Inertia::render('Purchases/Index', [
             'filters' => Request::all('search', 'trashed'),
             'products' => Auth::user()->account->purchases()
-                // ->with('supplier')
                 ->orderBy('invoice_number')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
@@ -36,14 +37,13 @@ class PurchasesController extends Controller
                             ->only('name'),
                     ];                    
                 }),
-                // ->only('id', 'invoice_number', 'quantity', 'unitprice', 'net_amount', 'deleted_at'),
         ]);
     }
 
 
-    public function create()
+    public function createProduct()
     {
-        return Inertia::render('Purchases/Create', [
+        return Inertia::render('Purchases/Product', [
             'suppliers' => Auth::user()->account
                 ->suppliers()
                 ->orderBy('name')
@@ -56,6 +56,26 @@ class PurchasesController extends Controller
                 ->get()
                 ->map
                 ->only('id', 'name'),
+            'invoice_number' => $this->_generateInvoice(),
+        ]);
+    }
+
+
+    public function createServices()
+    {
+        return Inertia::render('Purchases/Service', [
+            'suppliers' => Auth::user()->account
+                ->suppliers()
+                ->orderBy('name')
+                ->get()
+                ->map
+                ->only('id', 'name'),
+            'services' => Auth::user()->account
+                ->services()
+                ->orderBy('id')
+                ->get()
+                ->map
+                ->only('id', 'name', 'size', 'unit', 'convert_to'),
             'invoice_number' => $this->_generateInvoice(),
         ]);
     }
@@ -73,7 +93,16 @@ class PurchasesController extends Controller
             ])
         );
 
-        return Redirect::route('products')->with('success', 'Product purchased.');
+        return Redirect::route('expenses.products')->with('success', 'Product purchased.');
+    }
+
+    public function getServiceDetail(Service $service)
+    {
+        $data = [
+            'service' => $service,
+        ];
+
+        return $data;
     }
 
     protected function _generateInvoice()

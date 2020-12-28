@@ -6,6 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\StaffsController;
 use App\Http\Controllers\RawMaterialsController;
 use App\Http\Controllers\ServicesController;
@@ -174,14 +176,23 @@ Route::put('vehicles/{vehicle}/restore', [VehiclesController::class, 'restore'])
     ->middleware('auth');
 
 ######## PURCHASE ########
-Route::get('products', [PurchasesController::class, 'index'])
-    ->name('products')
+Route::get('purchases', [PurchasesController::class, 'index'])
+    ->name('purchases')
     ->middleware('auth');
-Route::get('products/create', [PurchasesController::class, 'create'])
-    ->name('products.create')
+Route::get('purchases/product', [PurchasesController::class, 'createProduct'])
+    ->name('purchase.product')
     ->middleware('auth');
-Route::post('products', [PurchasesController::class, 'store'])
-    ->name('products.store')
+Route::get('purchases/service', [PurchasesController::class, 'createServices'])
+    ->name('purchase.service')
+    ->middleware('auth');
+
+Route::get('purchases/{service}/show', [PurchasesController::class, 'getServiceDetail'])
+    ->name('purchase.getService')
+    ->middleware('auth');
+
+
+Route::post('purchases', [PurchasesController::class, 'store'])
+    ->name('purchases.store')
     ->middleware('auth');
 
 ######## INVOICES ########
@@ -232,9 +243,15 @@ Route::put('services/{service}/restore', [ServicesController::class, 'restore'])
 Route::get('expenses', [ExpensesController::class, 'index'])
     ->name('expenses')
     ->middleware('remember', 'auth');
-Route::get('expenses/create', [ExpensesController::class, 'create'])
-    ->name('expenses.create')
+
+Route::get('expenses/products', [ExpensesController::class, 'products'])
+    ->name('expenses.products')
     ->middleware('auth');
+Route::get('expenses/services', [ExpensesController::class, 'services'])
+    ->name('expenses.services')
+    ->middleware('auth');
+
+
 Route::post('expenses', [ExpensesController::class, 'store'])
     ->name('expenses.store')
     ->middleware('auth');
