@@ -6,12 +6,12 @@
             <li class="inline-block">
                 <inertia-link class="p-2 border-2 border-indigo-400 inline-block" :href="route('expenses.products')" >
                     <div class="caption">
-                        <h1>PRODUCTS</h1>
+                        <h1>Products</h1>
                     </div>
                 </inertia-link>
             </li>
             <li class="inline-block ml-2 bg-indigo-600">
-                <inertia-link class="p-2 border-2 border-indigo-400 inline-block text-white" :href="route('purchase.service')" >
+                <inertia-link class="p-2 border-2 border-indigo-400 inline-block text-white" :href="route('expenses.services')" >
                     <div class="caption">
                         <h1>SERVICES</h1>
                     </div>
@@ -50,39 +50,39 @@
 
                     <th class="px-6 pt-6 pb-4">Date</th>
                     <th class="px-6 pt-6 pb-4">Invoice</th>
-                    <th class="px-6 pt-6 pb-4">Product</th>
+                    <th class="px-6 pt-6 pb-4">service</th>
                     <th class="px-6 pt-6 pb-4">Supplier</th>
                     <th class="px-6 pt-6 pb-4">Quantity</th>
                     <th class="px-6 pt-6 pb-4">Unit price</th>
                     <th class="px-6 pt-6 pb-4">Amount</th>
                 </tr>
                 <tr
-                    v-for="product in products.data"
-                    :key="product.id"
+                    v-for="service in services.data"
+                    :key="service.id"
                     class="hover:bg-gray-400 focus-within:bg-gray-100"
                 >
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', product.id)"
+                            :href="route('', service.id)"
                         >
-                            {{ product.created_at }}
+                            {{ service.created_at }}
                         </inertia-link>
                     </td>
 
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', product.id)"
+                            :href="route('', service.id)"
                         >
                             <img
-                                v-if="product.photo_path"
+                                v-if="service.photo_path"
                                 class="block w-5 h-5 rounded-full mr-2 -my-2"
-                                :src="product.photo_path"
+                                :src="service.photo_path"
                             />
-                            {{ product.invoice }}
+                            {{ service.invoice }}
                             <icon
-                                v-if="product.deleted_at"
+                                v-if="service.deleted_at"
                                 name="trash"
                                 class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2"
                             />
@@ -92,53 +92,53 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', product.id)"
+                            :href="route('', service.id)"
                         >
-                            {{ product.material.name }}
+                            {{ service.material.name }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('', service.id)"
                             tabindex="-1"
                         >
-                            {{ product.supplier.name }}
+                            {{ service.supplier.name }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('', service.id)"
                             tabindex="-1"
                         >
-                            {{ product.quantity }}
+                            {{ service.quantity }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('', service.id)"
                             tabindex="-1"
                         >
-                            {{ product.unitprice }}
+                            {{ service.unitprice }}
                         </inertia-link>
                     </td>
 
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('', service.id)"
                             tabindex="-1"
                         >
-                            {{ product.total }}
+                            {{ service.total }}
                         </inertia-link>
                     </td>
 
                     <td class="border-t w-px">
                         <inertia-link
                             class="px-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('', service.id)"
                             tabindex="-1"
                         >
                             <icon
@@ -148,14 +148,14 @@
                         </inertia-link>
                     </td>
                 </tr>
-                <tr v-if="products.data.length === 0">
+                <tr v-if="services.data.length === 0">
                     <td class="border-t px-6 py-4" colspan="4">
-                        No products found.
+                        No services found.
                     </td>
                 </tr>
             </table>
         </div>
-        <pagination :links="products.links" />
+        <pagination :links="services.links" />
     </div>
 </template>
 
@@ -169,7 +169,7 @@ import SearchFilter from "@/Shared/SearchFilter";
 import throttle from "lodash/throttle";
 
 export default {
-    metaInfo: { title: "products" },
+    metaInfo: { title: "services" },
     layout: Layout,
     components: {
         Icon,
@@ -177,7 +177,7 @@ export default {
         SearchFilter
     },
     props: {
-        products: Object,
+        services: Object,
         filters: Object
     },
     data() {
@@ -194,7 +194,7 @@ export default {
                 let query = pickBy(this.form);
                 this.$inertia.replace(
                     this.route(
-                        "products",
+                        "services",
                         Object.keys(query).length
                             ? query
                             : { remember: "forget" }
@@ -206,7 +206,7 @@ export default {
     },
     methods: {
         created() {
-            console.log(this.products);
+            console.log(this.services);
         },
         reset() {
             this.form = mapValues(this.form, () => null);

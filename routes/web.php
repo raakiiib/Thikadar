@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\PurchasesController;
+// use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\InvoicesController;
@@ -185,7 +186,6 @@ Route::get('purchases/product', [PurchasesController::class, 'createProduct'])
 Route::get('purchases/service', [PurchasesController::class, 'createServices'])
     ->name('purchase.service')
     ->middleware('auth');
-
 Route::get('purchases/{service}/show', [PurchasesController::class, 'getServiceDetail'])
     ->name('purchase.getService')
     ->middleware('auth');
@@ -193,6 +193,10 @@ Route::get('purchases/{service}/show', [PurchasesController::class, 'getServiceD
 
 Route::post('purchases', [PurchasesController::class, 'store'])
     ->name('purchases.store')
+    ->middleware('auth');
+
+Route::post('purchase_services', [PurchasesController::class, 'storeService'])
+    ->name('purchases.storeService')
     ->middleware('auth');
 
 ######## INVOICES ########
@@ -250,7 +254,6 @@ Route::get('expenses/products', [ExpensesController::class, 'products'])
 Route::get('expenses/services', [ExpensesController::class, 'services'])
     ->name('expenses.services')
     ->middleware('auth');
-
 
 Route::post('expenses', [ExpensesController::class, 'store'])
     ->name('expenses.store')

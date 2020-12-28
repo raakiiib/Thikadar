@@ -28,9 +28,9 @@
 
                     <text-input disabled type="number" step="0.01" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total amount"/>
                     
-                    <text-input type="date"  value="28-12-2020" step="0.01" v-model="form.date" :error="errors.date" class="pr-6 pb-8 w-full lg:w-1/2" label="Date"/>
+                    <text-input type="date" value="28-12-2020" step="0.01" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date"/>
 
-                    <text-input disabled v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
+                    <text-input v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
                 </div>
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
                     <loading-button :loading="sending" class="btn-indigo" type="submit">PROCEED</loading-button>
@@ -70,14 +70,13 @@
                 form: {
                     service_id: null,
                     supplier_id: null,
-                    unit: null,
-                    convert_to: null,
-                    size: null,
-                    unitprice: null,
-                    quantity: null,
-                    net_amount: null,
-                    date: null,
                     invoice_number: this.invoice_number,
+                    quantity: null,
+                    unitprice: null,
+                    size: null,
+                    net_amount: null,
+                    size: null,
+                    created_at: new Date().toISOString().slice(0,10),
                 },
                 service: Array,
             }
@@ -123,7 +122,7 @@
             },
             submit() {
                 console.log(this.form);
-                this.$inertia.post(this.route('products.store'), this.form, {
+                this.$inertia.post(this.route('purchases.storeService'), this.form, {
                     onStart: () => this.sending = true,
                     onFinish: () => this.sending = false,
                 })

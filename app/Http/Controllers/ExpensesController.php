@@ -70,10 +70,10 @@ class ExpensesController extends Controller
 
     public function services()
     {   
-
+        
         return Inertia::render('Expenses/ServicesIndex', [
             'filters' => Request::all('search', 'trashed'),
-            'products' => Auth::user()->account->purchases()
+            'services' => Auth::user()->account->purchase_services()
                 ->orderBy('invoice_number')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
@@ -84,11 +84,11 @@ class ExpensesController extends Controller
                         'quantity' => $product->quantity,
                         'unitprice' => $product->unitprice,
                         'total' => $product->net_amount,
-                        'created_at' => $product->created_at,
+                        // 'created_at' => $product->created_at,
                         'deleted_at' => $product->deleted_at,
                         'supplier' => $product->supplier
                             ->only('name'),
-                        'material' => $product->material
+                        'material' => $product->service
                             ->only('name'),
                         'created_at' => date_format( $product->created_at, 'd-m-Y'),
                     ];                    

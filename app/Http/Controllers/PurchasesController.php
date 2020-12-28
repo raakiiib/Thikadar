@@ -96,6 +96,26 @@ class PurchasesController extends Controller
         return Redirect::route('expenses.products')->with('success', 'Product purchased.');
     }
 
+
+    public function storeService()
+    {
+        Auth::user()->account->purchase_services()->create(
+            Request::validate([
+                'service_id' => ['nullable'],
+                'supplier_id' => ['nullable'],
+                'invoice_number' => ['nullable', 'max:20'],
+                'quantity' => ['nullable', 'max:10'],
+                'size' => ['nullable', 'max:10'],
+                'unitprice' => ['nullable', 'max:10'],
+                'net_amount' => ['nullable', 'max:10'],
+                'created_at' => ['required'],
+            ])
+        );
+
+        return Redirect::route('expenses.services')->with('success', 'Service purchased.');
+    }
+
+
     public function getServiceDetail(Service $service)
     {
         $data = [

@@ -14,7 +14,7 @@
       </inertia-link>
     </div>
 
-    <div class="mb-4">
+    <!-- <div class="mb-4">
       <inertia-link class="flex items-center group py-3" :href="route('invoices')">
         <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('invoices') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
         <div :class="isUrl('invoices') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">INVOICES</div>
@@ -33,7 +33,7 @@
         <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('purchases') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
         <div :class="isUrl('purchases') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">PRODUCTS</div>
       </inertia-link>
-    </div>
+    </div> -->
 
     <div class="mb-4">
       <inertia-link class="flex items-center group py-3" :href="route('suppliers')">
