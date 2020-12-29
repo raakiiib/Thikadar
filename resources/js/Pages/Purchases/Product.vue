@@ -10,7 +10,7 @@
                 <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
                     <select-input v-model="form.material_id" :error="errors.material_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Product">
                         <option :value="null" />
-                        <option v-for="product in products" :key="product.id" :value="product.id">{{ product.name }}</option>                        
+                        <option v-for="product in products" :key="product.id" :value="product.id">{{ product.name }} - {{ product.type }}</option>                        
                     </select-input>
 
                     <select-input v-model="form.supplier_id" :error="errors.supplier_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Supplier">
@@ -22,9 +22,12 @@
 
                     <text-input type="number" step="0.01" v-model="form.quantity" :error="errors.quantity" @input="updateNetAmout" class="pr-6 pb-8 w-full lg:w-1/2" label="Quantity" />
 
-                    <text-input disabled type="number" step="0.01" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total amount"/>
+                    <text-input type="number" step="0.01" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total amount"/>
 
-                    <text-input disabled v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
+                    <text-input type="date" value="28-12-2020" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date" />
+
+                    <text-input v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
+
                 </div>
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
                     <loading-button :loading="sending" class="btn-indigo" type="submit">PROCEED</loading-button>
@@ -66,6 +69,7 @@
                     quantity: null,
                     net_amount: null,
                     invoice_number: this.invoice_number,
+                    created_at: new Date().toISOString().slice(0,10),
                 },
             }
         },

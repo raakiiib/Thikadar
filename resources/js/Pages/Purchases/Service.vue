@@ -26,9 +26,9 @@
                     <text-input disabled type="number" step="any" v-model="form.size" @input="updateNetAmout" :error="errors.size" class="pr-6 pb-8 w-full lg:w-1/2" label="Size in CFT" />
 
 
-                    <text-input disabled type="number" step="0.01" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total amount"/>
+                    <text-input type="number" step="0.01" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total amount"/>
                     
-                    <text-input type="date" value="28-12-2020" step="0.01" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date"/>
+                    <text-input type="date" value="28-12-2020" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date"/>
 
                     <text-input v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
                 </div>

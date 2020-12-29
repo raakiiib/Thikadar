@@ -48,13 +48,13 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
 
-                    <th class="px-6 pt-6 pb-4">Date</th>
-                    <th class="px-6 pt-6 pb-4">Invoice</th>
+                    <th class="px-6 pt-6 pb-4">&#128197; Date</th>
+                    <th class="px-6 pt-6 pb-4">&#128199; Invoice</th>
                     <th class="px-6 pt-6 pb-4">Product</th>
                     <th class="px-6 pt-6 pb-4">Supplier</th>
-                    <th class="px-6 pt-6 pb-4">Quantity</th>
-                    <th class="px-6 pt-6 pb-4">Unit price</th>
-                    <th class="px-6 pt-6 pb-4">Amount</th>
+                    <th class="px-6 pt-6 pb-4">&#35; Quantity</th>
+                    <th class="px-6 pt-6 pb-4">&#x09F3; Unit price</th>
+                    <th class="px-6 pt-6 pb-4">&#x09F3; Amount</th>
                 </tr>
                 <tr
                     v-for="product in products.data"
@@ -194,7 +194,7 @@ export default {
                 let query = pickBy(this.form);
                 this.$inertia.replace(
                     this.route(
-                        "products",
+                        "expenses.products",
                         Object.keys(query).length
                             ? query
                             : { remember: "forget" }
@@ -205,12 +205,9 @@ export default {
         }
     },
     methods: {
-        created() {
-            console.log(this.products);
-        },
         reset() {
-            this.form = mapValues(this.form, () => null);
-        }
+            this.form = mapValues(this.form, () => null)
+        },
     }
 };
 </script>

@@ -55,7 +55,7 @@ class PurchasesController extends Controller
                 ->orderBy('name')
                 ->get()
                 ->map
-                ->only('id', 'name'),
+                ->only('id', 'name', 'type'),
             'invoice_number' => $this->_generateInvoice(),
         ]);
     }
@@ -84,12 +84,13 @@ class PurchasesController extends Controller
     {
         Auth::user()->account->purchases()->create(
             Request::validate([
-                'material_id' => ['nullable'],
-                'supplier_id' => ['nullable'],
-                'invoice_number' => ['nullable', 'max:20'],
-                'quantity' => ['nullable', 'max:10'],
-                'unitprice' => ['nullable', 'max:10'],
-                'net_amount' => ['nullable', 'max:10']
+                'material_id' => ['required'],
+                'supplier_id' => ['required'],
+                'invoice_number' => ['required', 'max:20'],
+                'quantity' => ['required', 'max:10'],
+                'unitprice' => ['required', 'max:10'],
+                'net_amount' => ['required', 'max:10'],
+                'created_at' => ['required'],
             ])
         );
 
@@ -101,13 +102,13 @@ class PurchasesController extends Controller
     {
         Auth::user()->account->purchase_services()->create(
             Request::validate([
-                'service_id' => ['nullable'],
-                'supplier_id' => ['nullable'],
-                'invoice_number' => ['nullable', 'max:20'],
-                'quantity' => ['nullable', 'max:10'],
-                'size' => ['nullable', 'max:10'],
-                'unitprice' => ['nullable', 'max:10'],
-                'net_amount' => ['nullable', 'max:10'],
+                'service_id' => ['required'],
+                'supplier_id' => ['required'],
+                'invoice_number' => ['required', 'max:20'],
+                'quantity' => ['required', 'max:10'],
+                'size' => ['required', 'max:10'],
+                'unitprice' => ['required', 'max:10'],
+                'net_amount' => ['required', 'max:10'],
                 'created_at' => ['required'],
             ])
         );

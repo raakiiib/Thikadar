@@ -41,6 +41,7 @@ class ExpensesController extends Controller
     public function products()
     {   
 
+        
         return Inertia::render('Expenses/ProductsIndex', [
             'filters' => Request::all('search', 'trashed'),
             'products' => Auth::user()->account->purchases()
@@ -62,7 +63,10 @@ class ExpensesController extends Controller
                             ->only('name'),
                         'created_at' => date_format( $product->created_at, 'd-m-Y'),
                     ];                    
-                }),
+                })
+
+                // ->filter(Request::only('search', 'trashed'))
+
         ]);
        
     }

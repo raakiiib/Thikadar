@@ -22,6 +22,7 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">Name</th>
+                    <th class="px-6 pt-6 pb-4">Type</th>
                     <th class="px-6 pt-6 pb-4">Unit</th>
                     <th class="px-6 pt-6 pb-4" colspan="2">Description</th>
                 </tr>
@@ -32,6 +33,13 @@
                             <icon v-if="material.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
                         </inertia-link>
                     </td>
+
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('materials.edit', material.id)" tabindex="-1">
+                            {{ material.type }}
+                        </inertia-link>
+                    </td>
+
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('materials.edit', material.id)" tabindex="-1">
                             {{ material.unit }}

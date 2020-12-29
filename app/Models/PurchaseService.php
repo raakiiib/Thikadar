@@ -22,7 +22,7 @@ class PurchaseService extends Model
     {
 
         $query->when($filters['search'] ?? null, function ($query, $search){
-            $query->where('name', 'like', '%'.$search.'%');
+            $query->where('created_at', 'like', '%'.$search.'%');
         })->when($filters['trashed'] ?? null, function ($query, $trashed) {
             if ($trashed === 'with') {
                 $query->withTrashed();

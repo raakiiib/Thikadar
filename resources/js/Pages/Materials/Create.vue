@@ -11,11 +11,8 @@
 
           <text-input v-model="form.type" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" />
 
-          <select-input v-model="form.country" :error="errors.country" class="pr-6 pb-8 w-full lg:w-1/2" label="Unit">
-            <option value="centimeter">CENTIMETER</option>
-            <option value="meter">METER</option>
-            <option value="feet">FEET</option>
-          </select-input>
+          <text-input v-model="form.unit" :error="errors.unit" class="pr-6 pb-8 w-full lg:w-1/2" label="Unit" />
+
           <text-input v-model="form.description" :error="errors.description" class="pr-6 pb-8 w-full lg:w-1/2" label="Description" />
 
         </div>

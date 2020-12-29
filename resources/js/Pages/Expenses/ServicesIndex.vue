@@ -194,7 +194,7 @@ export default {
                 let query = pickBy(this.form);
                 this.$inertia.replace(
                     this.route(
-                        "services",
+                        "expenses.services",
                         Object.keys(query).length
                             ? query
                             : { remember: "forget" }
@@ -205,9 +205,6 @@ export default {
         }
     },
     methods: {
-        created() {
-            console.log(this.services);
-        },
         reset() {
             this.form = mapValues(this.form, () => null);
         }
