@@ -204,7 +204,6 @@ Route::get('purchases/{service}/show', [PurchasesController::class, 'getServiceD
     ->name('purchase.getService')
     ->middleware('auth');
 
-
 Route::post('purchases', [PurchasesController::class, 'store'])
     ->name('purchases.store')
     ->middleware('auth');
