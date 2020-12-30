@@ -180,12 +180,26 @@ Route::put('vehicles/{vehicle}/restore', [VehiclesController::class, 'restore'])
 Route::get('purchases', [PurchasesController::class, 'index'])
     ->name('purchases')
     ->middleware('auth');
+// Create Products Expense
 Route::get('purchases/product', [PurchasesController::class, 'createProduct'])
     ->name('purchase.product')
     ->middleware('auth');
+
+Route::get('purchsaes/{product}/edit', [PurchasesController::class, 'editProduct'])
+    ->name('purchase.product.edit')
+    ->middleware('auth');
+
+// Create Services Expense
 Route::get('purchases/service', [PurchasesController::class, 'createServices'])
     ->name('purchase.service')
     ->middleware('auth');
+
+// Create Daily Expenses
+Route::get('purchases/dailyexpense', [PurchasesController::class, 'createDailyExpenses'])
+    ->name('purchase.dailyexpense')
+    ->middleware('auth');
+
+// Get single service
 Route::get('purchases/{service}/show', [PurchasesController::class, 'getServiceDetail'])
     ->name('purchase.getService')
     ->middleware('auth');
@@ -197,6 +211,10 @@ Route::post('purchases', [PurchasesController::class, 'store'])
 
 Route::post('purchase_services', [PurchasesController::class, 'storeService'])
     ->name('purchases.storeService')
+    ->middleware('auth');
+
+Route::post('purchase_dailyexpense', [PurchasesController::class, 'storeExpense'])
+    ->name('purchases.storeExpense')
     ->middleware('auth');
 
 ######## INVOICES ########
@@ -254,16 +272,21 @@ Route::get('expenses/products', [ExpensesController::class, 'products'])
 Route::get('expenses/services', [ExpensesController::class, 'services'])
     ->name('expenses.services')
     ->middleware('auth');
+Route::get('expenses/daily', [ExpensesController::class, 'dailyexpenses'])
+    ->name('expenses.dailyexpense')
+    ->middleware('auth');
 
 Route::post('expenses', [ExpensesController::class, 'store'])
     ->name('expenses.store')
     ->middleware('auth');
-Route::get('expenses/{service}/edit', [ExpensesController::class, 'edit'])
-    ->name('expenses.edit')
+Route::get('expenses/{expense}/edit', [ExpensesController::class, 'editProduct'])
+    ->name('expenses,product.edit')
     ->middleware('auth');
+
 Route::put('expenses/{service}', [ExpensesController::class, 'update'])
     ->name('expenses.update')
     ->middleware('auth');
+
 Route::delete('expenses/{service}', [ExpensesController::class, 'destroy'])
     ->name('expenses.destroy')
     ->middleware('auth');

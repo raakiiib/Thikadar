@@ -17,6 +17,13 @@
                     </div>
                 </inertia-link>
             </li>
+            <li class="inline-block ml-2">
+                <inertia-link class="p-2 border-2 border-indigo-400 inline-block" :href="route('expenses.dailyexpense')" >
+                    <div class="caption">
+                        <h1>DAILY EXPENSES</h1>
+                    </div>
+                </inertia-link>
+            </li>
         </ul>
 
 
@@ -62,18 +69,20 @@
                     class="hover:bg-gray-400 focus-within:bg-gray-100"
                 >
                     <td class="border-t">
-                        <inertia-link
+<!--                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', product.id)"
+                            :href="route('purchase.product.edit', product.id)"
                         >
+                        </inertia-link> -->
+                        <span class="px-6 py-4 flex items-center focus:text-indigo-500">
                             {{ product.created_at }}
-                        </inertia-link>
+                        </span>
                     </td>
 
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', product.id)"
+                            :href="route('purchase.product.edit', product.id)"
                         >
                             <img
                                 v-if="product.photo_path"
@@ -92,7 +101,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', product.id)"
+                            :href="route('purchase.product.edit', product.id)"
                         >
                             {{ product.material.name }}
                         </inertia-link>
@@ -100,7 +109,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('purchase.product.edit', product.id)"
                             tabindex="-1"
                         >
                             {{ product.supplier.name }}
@@ -109,7 +118,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('purchase.product.edit', product.id)"
                             tabindex="-1"
                         >
                             {{ product.quantity }}
@@ -118,7 +127,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('purchase.product.edit', product.id)"
                             tabindex="-1"
                         >
                             {{ product.unitprice }}
@@ -128,7 +137,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('purchase.product.edit', product.id)"
                             tabindex="-1"
                         >
                             {{ product.total }}
@@ -142,7 +151,7 @@
                             tabindex="-1"
                         >
                             <icon
-                                name="cheveron-right"
+                                name="trash"
                                 class="block w-6 h-6 fill-gray-400"
                             />
                         </inertia-link>

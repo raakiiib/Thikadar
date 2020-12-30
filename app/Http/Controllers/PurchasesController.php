@@ -60,6 +60,34 @@ class PurchasesController extends Controller
         ]);
     }
 
+    public function createDailyExpenses()
+    {
+        return Inertia::render('Purchases/DailyExpense', [
+            'invoice_number' => $this->_generateInvoice(),
+        ]);
+    }
+
+    public function editProduct(Purchases $purchase)
+    {
+        return Inertia::render('Purchases/EditProduct', [
+            'purchases' => [
+                'id' => $purchase->id,
+                'supplier_id' => '',
+                'material_id' => '',
+                'invoice_number' => $purchase->invoice_number,
+                'quantity' => $supplier->email,
+                'phone' => $supplier->phone,
+                'address' => $supplier->address,
+                'city' => $supplier->city,
+                'region' => $supplier->region,
+                'country' => $supplier->country,
+                'postal_code' => $supplier->postal_code,
+                'deleted_at' => $supplier->deleted_at,
+                'contacts' => $supplier->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
+            ],
+        ]);
+    }
+
 
     public function createServices()
     {
@@ -114,6 +142,22 @@ class PurchasesController extends Controller
         );
 
         return Redirect::route('expenses.services')->with('success', 'Service purchased.');
+    }
+
+    public function storeExpense()
+    {
+        Auth::user()->account->dailyexpense()->create(
+            Request::validate([
+                'name' => ['required'],
+                'type' => ['required'],
+                'amount' => ['required', 'max:10'],
+                'note' => ['required', 'max:300'],
+                'invoice_number' => ['required', 'max:30'],
+                'created_at' => ['required'],
+            ])
+        );
+
+        return Redirect::route('expenses.dailyexpense')->with('success', 'Expense added.');
     }
 
 

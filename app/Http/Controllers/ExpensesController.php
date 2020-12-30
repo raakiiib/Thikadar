@@ -64,9 +64,6 @@ class ExpensesController extends Controller
                         'created_at' => date_format( $product->created_at, 'd-m-Y'),
                     ];                    
                 })
-
-                // ->filter(Request::only('search', 'trashed'))
-
         ]);
        
     }
@@ -101,6 +98,29 @@ class ExpensesController extends Controller
        
     }
 
+    public function dailyexpenses()
+    {
+        return Inertia::render('Expenses/DailyExpIndex', [
+            'filters' => Request::all('search', 'trashed'),
+            'expenses' => Auth::user()->account->dailyexpense()
+                ->orderBy('name')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate()
+                ->transform( function ($expense){
+                    return [
+                        'id' => $expense->id,
+                        'name' => $expense->name,
+                        'type' => $expense->type,
+                        'amount' => $expense->amount,
+                        'note' => $expense->note,
+                        'invoice' => $expense->invoice_number,
+                        'created_at' => date_format( $expense->created_at, 'd-m-Y'),
+                        // 'deleted_at' => date_format( $expense->deleted_at, 'd-m-Y'),
+
+                    ];
+                })
+        ]);
+    }
 
     public function create()
     {
@@ -130,9 +150,8 @@ class ExpensesController extends Controller
     }
 
 
-    public function edit(Supplier $supplier)
+    public function editProduct(Supplier $supplier)
     {
-        // dd($supplier);
         return Inertia::render('Suppliers/Edit', [
             'supplier' => [
                 'id' => $supplier->id,

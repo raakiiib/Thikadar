@@ -54,6 +54,11 @@ class Account extends Model
         return $this->hasMany(PurchaseService::class);
     }
 
+    public function dailyexpense()
+    {
+        return $this->hasMany(DailyExpense::class);
+    }
+
     public function product()
     {
         return $this->hasMany(RawMaterial::class);
