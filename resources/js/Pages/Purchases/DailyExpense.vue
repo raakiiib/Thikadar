@@ -12,7 +12,7 @@
 
           <!-- <text-input v-model="form.type" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" /> -->
 
-          <select-input v-model="form.type" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Product">
+          <select-input v-model="form.type" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type">
               <option :value="null" />
               <option v-for="product in products" :key="product.id" :value="product.id">{{ product.name }} - {{ product.type }}</option>                        
           </select-input>
