@@ -10,7 +10,12 @@
 
           <text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Name" />
 
-          <text-input v-model="form.type" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" />
+          <!-- <text-input v-model="form.type" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" /> -->
+
+          <select-input v-model="form.type" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Product">
+              <option :value="null" />
+              <option v-for="product in products" :key="product.id" :value="product.id">{{ product.name }} - {{ product.type }}</option>                        
+          </select-input>
 
           <text-input type="number" step="any" v-model="form.amount" :error="errors.amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Amount" />
 
@@ -46,6 +51,7 @@ export default {
   },
   props: {
     invoice_number: String,
+    products: Array,
     errors: Object,
   },
   remember: 'form',

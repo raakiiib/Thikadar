@@ -64,6 +64,12 @@ class PurchasesController extends Controller
     {
         return Inertia::render('Purchases/DailyExpense', [
             'invoice_number' => $this->_generateInvoice(),
+            'products' => Auth::user()->account
+                ->materials()
+                ->orderBy('name')
+                ->get()
+                ->map
+                ->only('id', 'name', 'type')
         ]);
     }
 

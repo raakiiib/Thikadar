@@ -30,7 +30,6 @@ class SupplierController extends Controller
         return Inertia::render('Suppliers/Create');
     
     }
-
     
 
     public function store()

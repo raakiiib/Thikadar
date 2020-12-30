@@ -110,6 +110,7 @@
                             tabindex="-1"
                         >
                             {{ expense.type }}
+                            <!-- {{ expense.materials.name }} -->
                         </inertia-link>
                     </td>
                     <td class="border-t">
@@ -161,6 +162,7 @@ export default {
     },
     props: {
         expenses: Object,
+        materials: Object,
         filters: Object
     },
     data() {

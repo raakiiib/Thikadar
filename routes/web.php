@@ -5,7 +5,7 @@ use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\PurchasesController;
-// use App\Http\Controllers\PurchasesController;
+use App\Http\Controllers\DailyExpensesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\InvoicesController;

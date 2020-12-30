@@ -70,7 +70,7 @@ class ExpensesController extends Controller
 
 
     public function services()
-    {   
+    {
         
         return Inertia::render('Expenses/ServicesIndex', [
             'filters' => Request::all('search', 'trashed'),
@@ -110,11 +110,13 @@ class ExpensesController extends Controller
                     return [
                         'id' => $expense->id,
                         'name' => $expense->name,
-                        'type' => $expense->type,
                         'amount' => $expense->amount,
                         'note' => $expense->note,
+                        'type' => $expense->type,
                         'invoice' => $expense->invoice_number,
                         'created_at' => date_format( $expense->created_at, 'd-m-Y'),
+                        // 'materials' => $expense->material
+                        //     ->only('name', 'type')
                         // 'deleted_at' => date_format( $expense->deleted_at, 'd-m-Y'),
 
                     ];
