@@ -18,14 +18,13 @@ class RawMaterial extends Model
         return $this->hasMany(Purchase::class);
     }
 
-    public function dailyExpense()
+    public function expense()
     {
         return $this->hasMany(DailyExpense::class);
     }
 
     public function scopeFilter($query, array $filters)
     {
-
         $query->when($filters['search'] ?? null, function ($query, $search){
             $query->where('name', 'like', '%'.$search.'%');
         })->when($filters['trashed'] ?? null, function ($query, $trashed) {
@@ -35,6 +34,5 @@ class RawMaterial extends Model
                 $query->onlyTrashed();
             }
         });
-
     }
 }

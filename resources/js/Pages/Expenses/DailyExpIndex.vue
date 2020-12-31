@@ -60,6 +60,8 @@
                     <th class="px-6 pt-6 pb-4">Name</th>
                     <th class="px-6 pt-6 pb-4">Type</th>
                     <th class="px-6 pt-6 pb-4">&#35; Amount</th>
+                    <!-- <th class="px-6 pt-6 pb-4">&#35; Paid</th> -->
+                    <th class="px-6 pt-6 pb-4">&#35; Due</th>
                     <th class="px-6 pt-6 pb-4">Note</th>
                 </tr>
                 <tr
@@ -128,6 +130,15 @@
                             :href="route('', expense.id)"
                             tabindex="-1"
                         >
+                            {{ expense.due }}
+                        </inertia-link>
+                    </td>
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center"
+                            :href="route('', expense.id)"
+                            tabindex="-1"
+                        >
                             {{ expense.note }}
                         </inertia-link>
                     </td>
@@ -153,7 +164,7 @@ import SearchFilter from "@/Shared/SearchFilter";
 import throttle from "lodash/throttle";
 
 export default {
-    metaInfo: { title: "expenses" },
+    metaInfo: { title: "Expenses" },
     layout: Layout,
     components: {
         Icon,
@@ -162,7 +173,7 @@ export default {
     },
     props: {
         expenses: Object,
-        materials: Object,
+        // materials: Object,
         filters: Object
     },
     data() {

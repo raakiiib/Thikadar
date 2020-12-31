@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Supplier;
+// use App\Models\Supplier;
+// use App\Models\RawMaterial;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -39,16 +40,14 @@ class ExpensesController extends Controller
     }
 
     public function products()
-    {   
-
-        
+    {          
         return Inertia::render('Expenses/ProductsIndex', [
             'filters' => Request::all('search', 'trashed'),
             'products' => Auth::user()->account->purchases()
                 ->orderBy('invoice_number')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
-                ->transform(function ($product){
+                ->transform(function ( $product ){
                     return [
                         'id' => $product->id,
                         'invoice' => $product->invoice_number,
@@ -65,13 +64,10 @@ class ExpensesController extends Controller
                     ];                    
                 })
         ]);
-       
     }
-
 
     public function services()
     {
-        
         return Inertia::render('Expenses/ServicesIndex', [
             'filters' => Request::all('search', 'trashed'),
             'services' => Auth::user()->account->purchase_services()
@@ -85,7 +81,6 @@ class ExpensesController extends Controller
                         'quantity' => $product->quantity,
                         'unitprice' => $product->unitprice,
                         'total' => $product->net_amount,
-                        // 'created_at' => $product->created_at,
                         'deleted_at' => $product->deleted_at,
                         'supplier' => $product->supplier
                             ->only('name'),
@@ -95,31 +90,30 @@ class ExpensesController extends Controller
                     ];                    
                 }),
         ]);
-       
     }
 
     public function dailyexpenses()
     {
         return Inertia::render('Expenses/DailyExpIndex', [
             'filters' => Request::all('search', 'trashed'),
-            'expenses' => Auth::user()->account->dailyexpense()
-                ->orderBy('name')
+            'expenses' => Auth::user()->account->expenses()
+                ->orderBy('invoice_number')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
-                ->transform( function ($expense){
-                    return [
-                        'id' => $expense->id,
-                        'name' => $expense->name,
-                        'amount' => $expense->amount,
-                        'note' => $expense->note,
-                        'type' => $expense->type,
-                        'invoice' => $expense->invoice_number,
-                        'created_at' => date_format( $expense->created_at, 'd-m-Y'),
-                        // 'materials' => $expense->material
-                        //     ->only('name', 'type')
-                        // 'deleted_at' => date_format( $expense->deleted_at, 'd-m-Y'),
+                ->transform( function ( $expenses ){
 
+                    return [
+                        'created_at' => date_format($expenses->created_at, 'd-m-Y'),
+                        'id' => $expenses->id,
+                        'invoice' => $expenses->invoice_number,
+                        'name' => $expenses->name,
+                        'type' => $expenses->material_id,
+                        'amount' => $expenses->net_amount,
+                        'paid' => $expenses->paid_amount,
+                        'due' => $expenses->due_amount,
+                        'note' => $expenses->note,
                     ];
+
                 })
         ]);
     }

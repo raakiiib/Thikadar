@@ -54,7 +54,7 @@ class Account extends Model
         return $this->hasMany(PurchaseService::class);
     }
 
-    public function dailyexpense()
+    public function expenses()
     {
         return $this->hasMany(DailyExpense::class);
     }

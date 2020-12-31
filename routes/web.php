@@ -271,6 +271,7 @@ Route::get('expenses/products', [ExpensesController::class, 'products'])
 Route::get('expenses/services', [ExpensesController::class, 'services'])
     ->name('expenses.services')
     ->middleware('auth');
+    
 Route::get('expenses/daily', [ExpensesController::class, 'dailyexpenses'])
     ->name('expenses.dailyexpense')
     ->middleware('auth');

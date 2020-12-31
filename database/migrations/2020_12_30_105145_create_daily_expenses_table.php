@@ -13,20 +13,24 @@ class CreateDailyExpensesTable extends Migration
      */
     public function up()
     {
+
+        Schema::dropIfExists('daily_expenses');
         Schema::create('daily_expenses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id')->index();  
             $table->string('invoice_number', 20)->nullable()->uniqid();
+            $table->unsignedInteger('material_id');
             $table->string('name', 150)->nullable();
-            $table->string('type', 150)->nullable();
-            $table->double('amount', 10, 2)->nullable();
             $table->string('note', 300)->nullable();
             $table->double('net_amount', 10, 2)->nullable();
-            $table->double('paid_amount', 10, 2)->nullable();
+            $table->double('paid_amount', 10, 2)->nullable()->default(0);
             $table->double('due_amount', 10, 2)->nullable();
             $table->boolean('is_all_paid')->default(0);
             $table->timestamps();
             $table->softDeletes();
+        });
+        Schema::table('daily_expenses', function($table) {
+            $table->foreign('material_id')->references('id')->on('raw_materials');
         });
     }
 

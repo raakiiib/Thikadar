@@ -152,12 +152,15 @@ class PurchasesController extends Controller
 
     public function storeExpense()
     {
-        Auth::user()->account->dailyexpense()->create(
+        Auth::user()->account->expenses()->create(
             Request::validate([
-                'name' => ['required'],
-                'type' => ['required'],
-                'amount' => ['required', 'max:10'],
-                'note' => ['required', 'max:300'],
+                'name' => ['max: 20'],
+                'material_id' => ['required'],
+                'net_amount' => ['required', 'max:10'],
+                'paid_amount' => ['max:10'],
+                'due_amount' => ['required', 'max:10'],
+                'is_all_paid' => ['boolean'],
+                'note' => ['max:300'],
                 'invoice_number' => ['required', 'max:30'],
                 'created_at' => ['required'],
             ])
@@ -178,24 +181,7 @@ class PurchasesController extends Controller
 
     protected function _generateInvoice()
     {
-        $record = Auth::user()
-            ->account
-            ->purchases()
-            ->first();
-
-        if( !empty($record) ) {
-
-            $invNum = explode('-', $record->invoice_number);
-            if ( date('l',strtotime(date('Y-01-01'))) ){
-                $invoiceNumber = date('ymd').'-0001';
-            } else {
-                $invoiceNumber = (($invNum[0]).'-'. ( $invNum[1] + 1 ));
-            }
-
-        }else{
-            $invoiceNumber = date('ymd').'-00001';
-        }
-
+        $invoiceNumber = date('ymdhi');
         return $invoiceNumber;
     }
 }
