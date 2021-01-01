@@ -114,6 +114,7 @@ class PurchasesController extends Controller
         ]);
     }
 
+    // Store product data
     public function store()
     {
         Auth::user()->account->purchases()->create(
@@ -124,6 +125,9 @@ class PurchasesController extends Controller
                 'quantity' => ['required', 'max:10'],
                 'unitprice' => ['required', 'max:10'],
                 'net_amount' => ['required', 'max:10'],
+                'paid_amount' => ['required', 'max:10'],
+                'due_amount' => ['required', 'max:10'],
+                'is_all_paid' => ['boolean'],
                 'created_at' => ['required'],
             ])
         );

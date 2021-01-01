@@ -22,9 +22,9 @@
 
                     <text-input type="number" step="0.01" v-model="form.quantity" :error="errors.quantity" @input="updateNetAmout" class="pr-6 pb-8 w-full lg:w-1/2" label="Quantity" />
 
-                    <text-input type="number" step="0.01" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total amount"/>
+                    <text-input type="number" step="0.01" v-model="form.net_amount" @input="calculateDue" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total amount"/>
 
-                    <text-input type="number" step="0.01" v-model="form.paid_amount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Paid amount"/>
+                    <text-input type="number" step="0.01" v-model="form.paid_amount" @input="calculateDue" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Paid amount"/>
                     
                     <text-input type="number" step="0.01" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due amount"/>
 
@@ -72,6 +72,9 @@
                     unitprice: null,
                     quantity: null,
                     net_amount: null,
+                    paid_amount: null,
+                    due_amount: null,
+                    is_all_paid: false,
                     invoice_number: this.invoice_number,
                     created_at: new Date().toISOString().slice(0,10),
                 },
@@ -84,11 +87,20 @@
             calculateDue: function () {
                 var total = this.form.net_amount
                 var paid = this.form.paid_amount
-                var due = this.form.due_amount
+                var due = total - paid
+                this.form.due_amount = String(due)
+                this.updateDueStat(due)
+                console.log(paid)
+            },
+            updateDueStat: function(due){
+                var stat = false;
+                if( due == 0 ){
+                    stat = true
+                }
+                this.form.is_all_paid = Boolean(stat);
             },
             submit() {
-
-                // console.log(this.form)
+                console.log(this.form)
                 this.$inertia.post(this.route('purchases.store'), this.form, {
                     onStart: () => this.sending = true,
                     onFinish: () => this.sending = false,
