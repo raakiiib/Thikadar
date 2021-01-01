@@ -24,6 +24,10 @@
 
                     <text-input type="number" step="0.01" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total amount"/>
 
+                    <text-input type="number" step="0.01" v-model="form.paid_amount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Paid amount"/>
+                    
+                    <text-input type="number" step="0.01" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due amount"/>
+
                     <text-input type="date" value="28-12-2020" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date" />
 
                     <text-input v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
@@ -76,6 +80,11 @@
         methods: {
             updateNetAmout: function() {
                 this.form.net_amount = String(this.form.unitprice * this.form.quantity)
+            },
+            calculateDue: function () {
+                var total = this.form.net_amount
+                var paid = this.form.paid_amount
+                var due = this.form.due_amount
             },
             submit() {
 
