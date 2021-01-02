@@ -58,10 +58,10 @@
                     <th class="px-6 pt-6 pb-4">&#128197; Date</th>
                     <th class="px-6 pt-6 pb-4">&#128199; Invoice</th>
                     <th class="px-6 pt-6 pb-4">Name</th>
-                    <th class="px-6 pt-6 pb-4">Type</th>
-                    <th class="px-6 pt-6 pb-4">&#35; Amount</th>
-                    <!-- <th class="px-6 pt-6 pb-4">&#35; Paid</th> -->
-                    <th class="px-6 pt-6 pb-4">&#35; Due</th>
+                    <!-- <th class="px-6 pt-6 pb-4">Type</th> -->
+                    <th class="px-6 pt-6 pb-4">&#x09F3; Amount</th>
+                    <!-- <th class="px-6 pt-6 pb-4">&#x09F3; Paid</th> -->
+                    <th class="px-6 pt-6 pb-4">&#x09F3; Due</th>
                     <th class="px-6 pt-6 pb-4">Note</th>
                 </tr>
                 <tr
@@ -105,16 +105,15 @@
                             {{ expense.name }}
                         </inertia-link>
                     </td>
-                    <td class="border-t">
+                    <!-- <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
                             :href="route('', expense.id)"
                             tabindex="-1"
                         >
                             {{ expense.type }}
-                            <!-- {{ expense.materials.name }} -->
                         </inertia-link>
-                    </td>
+                    </td> -->
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
