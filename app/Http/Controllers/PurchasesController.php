@@ -162,10 +162,9 @@ class PurchasesController extends Controller
     {
         Auth::user()->account->expenses()->create(
             Request::validate([
-                'name' => ['max: 100'],
-                // 'material_id' => ['required'],
+                'name' => ['required', 'max: 100'],
                 'net_amount' => ['required', 'max:10'],
-                'paid_amount' => ['max:10'],
+                'paid_amount' => ['required', 'max:10'],
                 'due_amount' => ['required', 'max:10'],
                 'is_all_paid' => ['boolean'],
                 'note' => ['max:300'],
