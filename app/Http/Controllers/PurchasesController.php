@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
+
 class PurchasesController extends Controller
 {
 
@@ -161,8 +162,8 @@ class PurchasesController extends Controller
     {
         Auth::user()->account->expenses()->create(
             Request::validate([
-                'name' => ['max: 20'],
-                'material_id' => ['required'],
+                'name' => ['max: 100'],
+                // 'material_id' => ['required'],
                 'net_amount' => ['required', 'max:10'],
                 'paid_amount' => ['max:10'],
                 'due_amount' => ['required', 'max:10'],
@@ -181,6 +182,15 @@ class PurchasesController extends Controller
     {
         $data = [
             'service' => $service,
+        ];
+
+        return $data;
+    }
+
+    public function getMaterial(RawMaterial $product)
+    {
+        $data = [
+            'service' => $product,
         ];
 
         return $data;

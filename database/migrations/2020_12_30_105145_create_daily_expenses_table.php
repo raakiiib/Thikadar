@@ -19,7 +19,6 @@ class CreateDailyExpensesTable extends Migration
             $table->increments('id');
             $table->integer('account_id')->index();  
             $table->string('invoice_number', 20)->nullable()->uniqid();
-            $table->unsignedInteger('material_id');
             $table->string('name', 150)->nullable();
             $table->string('note', 300)->nullable();
             $table->double('net_amount', 10, 2)->nullable();
@@ -28,9 +27,6 @@ class CreateDailyExpensesTable extends Migration
             $table->boolean('is_all_paid')->default(0);
             $table->timestamps();
             $table->softDeletes();
-        });
-        Schema::table('daily_expenses', function($table) {
-            $table->foreign('material_id')->references('id')->on('raw_materials');
         });
     }
 

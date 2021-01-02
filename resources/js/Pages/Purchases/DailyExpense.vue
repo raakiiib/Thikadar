@@ -8,9 +8,11 @@
       <form @submit.prevent="submit">
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
 
-          <select-input v-model="form.material_id" :error="errors.material_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" tabindex="1">
+          <select-input v-model="form.material_id" :error="errors.material_id" @input="getProductName($event)" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" tabindex="1">
               <option :value="null" />
-              <option v-for="product in products" :key="product.id" :value="product.id">{{ product.name }} - {{ product.type }}</option>                        
+              <option v-for="product in products" :key="product.id" :value="product.name+' '+product.type">
+                  {{ product.name }} - {{ product.type }}
+              </option>
           </select-input>
 
           <text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Name" />
@@ -44,6 +46,7 @@ import Layout from '@/Shared/Layout'
 import LoadingButton from '@/Shared/LoadingButton'
 import SelectInput from '@/Shared/SelectInput'
 import TextInput from '@/Shared/TextInput'
+import axios from 'axios'
 
 export default {
   metaInfo: { title: 'CREATE MATERIAL' },
@@ -57,6 +60,14 @@ export default {
     invoice_number: String,
     products: Array,
     errors: Object,
+  },
+  computed: {
+     // category_ids() {
+     //    return this.categoryId;
+     // },
+    //  getProductName(){
+    //     console.log( this.form.material_id.parent )
+    // },
   },
   remember: 'form',
   data() {
@@ -90,6 +101,12 @@ export default {
             stat = true
         }
         this.form.is_all_paid = Boolean(stat);
+    },
+    getProductName(){
+        console.log( this.form.material_id )
+        let name = this.form.material_id
+
+        this.form.name = name
     },
     submit() {
       console.log(this.form)
