@@ -18,7 +18,7 @@ class ExpensesController extends Controller
         return Inertia::render('Expenses/ProductsIndex', [
             'filters' => Request::all('search', 'trashed'),
             'products' => Auth::user()->account->purchases()
-                ->orderBy('invoice_number')
+                ->orderBy('created_at')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
                 ->transform(function ($product){
@@ -44,7 +44,7 @@ class ExpensesController extends Controller
         return Inertia::render('Expenses/ProductsIndex', [
             'filters' => Request::all('search', 'trashed'),
             'products' => Auth::user()->account->purchases()
-                ->orderBy('invoice_number')
+                ->orderBy('created_at', 'DESC')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
                 ->transform(function ( $product ){
@@ -71,7 +71,7 @@ class ExpensesController extends Controller
         return Inertia::render('Expenses/ServicesIndex', [
             'filters' => Request::all('search', 'trashed'),
             'services' => Auth::user()->account->purchase_services()
-                ->orderBy('invoice_number')
+                ->orderBy('created_at', 'DESC')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
                 ->transform(function ($product){
@@ -97,7 +97,7 @@ class ExpensesController extends Controller
         return Inertia::render('Expenses/DailyExpIndex', [
             'filters' => Request::all('search', 'trashed'),
             'expenses' => Auth::user()->account->expenses()
-                ->orderBy('invoice_number')
+                ->orderBy('created_at', 'DESC')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
                 ->transform( function ( $expenses ){
