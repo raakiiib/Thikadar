@@ -74,6 +74,27 @@ class PurchasesController extends Controller
         ]);
     }
 
+
+    public function editDailyExpenses(DailyExpense $expense)
+    {
+        // dd($supplier);
+        return Inertia::render('Purchases/EditDailyExp', [
+            'expense' => [
+                'id' => $expense->id,
+                'invoice_number' => $expense->invoice_number,
+                'name' => $expense->name,
+                'note' => $expense->note,
+                'net_amount' => $expense->net_amount,
+                'paid_amount' => $expense->paid_amount,
+                'due_amount' => $expense->due_amount,
+                'is_all_paid' => $expense->is_all_paid,
+                'created_at' => $expense->created_at,
+                'deleted_at' => $expense->deleted_at,
+                // 'contacts' => $expense->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
+            ],
+        ]);
+    }
+
     public function editProduct(Purchases $purchase)
     {
         return Inertia::render('Purchases/EditProduct', [

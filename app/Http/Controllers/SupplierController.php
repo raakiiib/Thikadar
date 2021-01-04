@@ -18,7 +18,7 @@ class SupplierController extends Controller
             'suppliers' => Auth::user()->account->suppliers()
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))
-                ->paginate()
+                ->paginate(25)
                 ->only('id', 'name', 'phone', 'city', 'deleted_at'),
         ]);
     }

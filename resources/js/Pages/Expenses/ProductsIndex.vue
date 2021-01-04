@@ -51,17 +51,19 @@
             </search-filter>
         </div>
 
+
+
         <div class="bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
 
-                    <th class="px-6 pt-6 pb-4">&#128197; Date</th>
-                    <th class="px-6 pt-6 pb-4">&#128199; Invoice</th>
-                    <th class="px-6 pt-6 pb-4">Product</th>
-                    <th class="px-6 pt-6 pb-4">Supplier</th>
-                    <th class="px-6 pt-6 pb-4">&#35; Quantity</th>
-                    <th class="px-6 pt-6 pb-4">&#x09F3; Unit price</th>
-                    <th class="px-6 pt-6 pb-4">&#x09F3; Amount</th>
+                    <th class="px-6 pt-6 pb-4">তারিখ</th>
+                    <th class="px-6 pt-6 pb-4">সিরিয়াল</th>
+                    <th class="px-6 pt-6 pb-4">পণ্য/ সেবা</th>
+                    <th class="px-6 pt-6 pb-4">সাপ্লায়ার</th>
+                    <th class="px-6 pt-6 pb-4">&#35; পরিমান</th>
+                    <th class="px-6 pt-6 pb-4">&#x09F3; প্রতিটির দাম</th>
+                    <th class="px-6 pt-6 pb-4">&#x09F3; মোট টাকার পরিমান</th>
                 </tr>
                 <tr
                     v-for="product in products.data"

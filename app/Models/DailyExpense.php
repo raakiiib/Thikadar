@@ -7,13 +7,7 @@ class DailyExpense extends Model
 {
     use SoftDeletes;
 
-    // public function product()
-    // {
-    //     return $this->belongsTo(RawMaterial::class);
-    // }
-
-
-    public function dExpense()
+    public function products()
     {
         return $this->belongsTo(RawMaterial::class);
     }

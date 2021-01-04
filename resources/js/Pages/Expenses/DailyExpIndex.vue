@@ -72,7 +72,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', expense.id)"
+                            :href="route('dexpense.edit', expense.id)"
                         >
                             {{ expense.created_at }}
                         </inertia-link>
@@ -81,7 +81,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', expense.id)"
+                            :href="route('dexpense.edit', expense.id)"
                         >
                             <!-- <img
                                 v-if="expense.photo_path"
@@ -100,7 +100,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', expense.id)"
+                            :href="route('dexpense.edit', expense.id)"
                         >
                             {{ expense.name }}
                         </inertia-link>
@@ -117,7 +117,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', expense.id)"
+                            :href="route('dexpense.edit', expense.id)"
                             tabindex="-1"
                         >
                             {{ expense.amount }}
@@ -126,7 +126,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', expense.id)"
+                            :href="route('dexpense.edit', expense.id)"
                             tabindex="-1"
                         >
                             {{ expense.due }}
@@ -135,7 +135,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', expense.id)"
+                            :href="route('dexpense.edit', expense.id)"
                             tabindex="-1"
                         >
                             {{ expense.note }}
