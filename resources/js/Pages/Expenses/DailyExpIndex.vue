@@ -27,6 +27,13 @@
         </ul>
 
 
+        <!--<div class="flex space-x-4 bg-indigo-600 m-auto">
+            <a href="#" class="text-indigo-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">PRODUCTS</a>
+            <a href="#" class="text-indigo-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">SERVICE</a>
+            <a href="#" class="text-white hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">দৈনিক খরচ</a>
+        </div> -->
+
+
         <div class="mb-8 flex justify-between items-center">
             <h1 class="font-bold text-3xl">Daily Expenses</h1>
 
@@ -79,10 +86,8 @@
                     </td>
 
                     <td class="border-t">
-                        <inertia-link
-                            class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('dexpense.edit', expense.id)"
-                        >
+                        <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500"
+                            :href="route('dexpense.edit', expense.id)">
                             <!-- <img
                                 v-if="expense.photo_path"
                                 class="block w-5 h-5 rounded-full mr-2 -my-2"

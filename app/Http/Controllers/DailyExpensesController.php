@@ -72,6 +72,20 @@ class DailyExpensesController extends Controller
         return Redirect::route('expenses.dailyexpense')->with('success', 'Expense added.');
     }
 
+
+    public function update(DailyExpense $expense)
+    {
+        $expense->update(
+            Request::validate([
+                'paid_amount' => ['nullable', 'max:50'],
+                'due_amount' => ['nullable', 'max:150'],
+                'is_all_paid' => ['nullable', 'max:50'],
+            ])
+        );
+
+        return Redirect::back()->with('success', 'Expense updated.');
+    }
+
     // editDailyExpenses
     public function edit(DailyExpense $expense)
     {
