@@ -8,6 +8,7 @@ use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\DailyExpensesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\StaffsController;
 use App\Http\Controllers\RawMaterialsController;
@@ -302,10 +303,35 @@ Route::get('expenses/services', [ExpensesController::class, 'services'])
 Route::post('expenses', [ExpensesController::class, 'store'])
     ->name('expenses.store')
     ->middleware('auth');
-// Route::get('expenses/{expense}/edit', [ExpensesController::class, 'editProduct'])
-//     ->name('expenses,product.edit')
-//     ->middleware('auth');
 
+// Expense Types
+Route::get('exptypes', [ExpenseTypeController::class, 'index'])
+    ->name('exptypes')
+    ->middleware('auth');
+
+Route::get('exptypes/create', [ExpenseTypeController::class, 'create'])
+    ->name('exptypes.create')
+    ->middleware('auth');
+
+Route::post('exptypes', [ExpenseTypeController::class, 'store'])
+    ->name('exptypes.store')
+    ->middleware('auth');
+    
+Route::get('exptypes/{expense}/edit', [ExpenseTypeController::class, 'edit'])
+    ->name('exptypes.edit')
+    ->middleware('auth');
+
+Route::put('exptypes/{type}', [ExpenseTypeController::class, 'update'])
+    ->name('exptypes.update')
+    ->middleware('auth');
+
+Route::delete('exptypes/{type}', [ExpenseTypeController::class, 'destroy'])
+    ->name('exptypes.destroy')
+    ->middleware('auth');
+
+Route::put('exptypes/{type}/restore', [ExpenseTypeController::class, 'restore'])
+    ->name('exptypes.restore')
+    ->middleware('auth');
 // Route::put('expenses/{service}', [ExpensesController::class, 'update'])
 //     ->name('expenses.update')
 //     ->middleware('auth');

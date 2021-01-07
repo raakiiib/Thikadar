@@ -43,6 +43,13 @@
     </div>
 
     <div class="mb-4">
+      <inertia-link class="flex items-center group py-3" :href="route('exptypes')">
+        <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('exptypes') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+        <div :class="isUrl('exptypes') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">EXPENSE TYPES</div>
+      </inertia-link>
+    </div>
+
+    <div class="mb-4">
       <inertia-link class="flex items-center group py-3" :href="route('staffs')">
         <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('staffs') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
         <div :class="isUrl('staffs') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">STAFFS</div>

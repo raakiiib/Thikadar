@@ -39,6 +39,11 @@ class Account extends Model
         return $this->hasMany(Service::class);
     }
 
+    public function expenseTypes()
+    {
+        return $this->hasMany(ExpenseType::class);
+    }
+
     public function vehicles()
     {
         return $this->hasMany(Vehicle::class);
