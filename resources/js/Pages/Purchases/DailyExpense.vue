@@ -29,9 +29,9 @@
 
           <text-input type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due" tabindex="5" />
           
+          
 
-
-          <file-input v-model="form.photo_path" :error="errors.photo_path" class="pr-6 pb-8 w-full lg:w-1/2" type="file" accept="image/*" label="Money receipt" tabindex="6" />
+          <!-- <file-input v-model="form.photo_path" :error="errors.photo_path" class="pr-6 pb-8 w-full lg:w-1/2" type="file" accept="image/*" label="Money receipt" tabindex="6" /> -->
 
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
@@ -49,7 +49,6 @@ import LoadingButton from '@/Shared/LoadingButton'
 import SelectInput from '@/Shared/SelectInput'
 import TextInput from '@/Shared/TextInput'
 import FileInput from '@/Shared/FileInput'
-import axios from 'axios'
 
 
 export default {
@@ -65,14 +64,6 @@ export default {
     invoice_number: String,
     expenses: Object,
     errors: Object,
-  },
-  computed: {
-     // category_ids() {
-     //    return this.categoryId;
-     // },
-    //  getProductName(){
-    //     console.log( this.form.material_id.parent )
-    // },
   },
   remember: 'form',
   data() {
@@ -109,16 +100,29 @@ export default {
         }
         this.form.is_all_paid = Boolean(stat);
     },
-    // getProductName(){
-    //     console.log( this.form.material_id )
-    //     let name = this.form.material_id
-
-    //     this.form.name = name
-    // },
     submit() {
-      console.log(this.form)
 
-      this.$inertia.post(this.route('dailyexpense.store'), this.form, {
+      const formData = new FormData()
+      formData.append('invoice_number', this.form.invoice_number || '')
+      formData.append('created_at', this.form.created_at || '')
+      formData.append('expense_type', this.form.expense_type || '')
+      formData.append('product_id', this.form.product_id || '')
+      formData.append('net_amount', this.form.net_amount || '')
+      formData.append('due_amount', this.form.due_amount || '')
+      formData.append('paid_amount', this.form.paid_amount || '')
+      formData.append('note', this.form.note || '')
+
+      if( this.form.is_all_paid ){
+        formData.append('is_all_paid', 1)
+      }else{
+        formData.append('is_all_paid', 0)
+      }
+
+      formData.append('photo_path', this.form.photo_path || '')
+
+      console.log(this.formData)
+
+      this.$inertia.post(this.route('dailyexpense.store'), formData, {
         onStart: () => this.sending = true,
         onFinish: () => this.sending = false,
       })

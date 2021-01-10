@@ -65,9 +65,7 @@
                     <th class="px-6 pt-6 pb-4">&#128197; Date</th>
                     <th class="px-6 pt-6 pb-4">&#128199; Invoice</th>
                     <th class="px-6 pt-6 pb-4">Name</th>
-                    <!-- <th class="px-6 pt-6 pb-4">Type</th> -->
                     <th class="px-6 pt-6 pb-4">&#x09F3; Amount</th>
-                    <!-- <th class="px-6 pt-6 pb-4">&#x09F3; Paid</th> -->
                     <th class="px-6 pt-6 pb-4">&#x09F3; Due</th>
                     <th class="px-6 pt-6 pb-4">Note</th>
                 </tr>
@@ -79,7 +77,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('dexpense.edit', expense.id)"
+                            :href="route('expense.edit', expense.id)"
                         >
                             {{ expense.created_at }}
                         </inertia-link>
@@ -87,12 +85,12 @@
 
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('dexpense.edit', expense.id)">
-                            <!-- <img
+                            :href="route('expense.edit', expense.id)">
+                            <img
                                 v-if="expense.photo_path"
                                 class="block w-5 h-5 rounded-full mr-2 -my-2"
                                 :src="expense.photo_path"
-                            /> -->
+                            />
                             {{ expense.invoice }}
                             <icon
                                 v-if="expense.deleted_at"
@@ -105,7 +103,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('dexpense.edit', expense.id)"
+                            :href="route('expense.edit', expense.id)"
                         >
                             {{ expense.type }}
                         </inertia-link>
@@ -122,7 +120,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('dexpense.edit', expense.id)"
+                            :href="route('expense.edit', expense.id)"
                             tabindex="-1"
                         >
                             {{ expense.amount }}
@@ -131,7 +129,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('dexpense.edit', expense.id)"
+                            :href="route('expense.edit', expense.id)"
                             tabindex="-1"
                         >
                             {{ expense.due }}
@@ -140,12 +138,24 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('dexpense.edit', expense.id)"
+                            :href="route('expense.edit', expense.id)"
                             tabindex="-1"
                         >
                             {{ expense.note }}
                         </inertia-link>
                     </td>
+                    <!-- <td class="border-t w-px">
+                        <inertia-link
+                            class="px-4 flex items-center"
+                            :href="route('', expense.id)"
+                            tabindex="-1"
+                        >
+                            <icon
+                                name="trash"
+                                class="block w-6 h-6 fill-red-400"
+                            />
+                        </inertia-link>
+                    </td> -->
                 </tr>
                 <tr v-if="expenses.data.length === 0">
                     <td class="border-t px-6 py-4" colspan="4">

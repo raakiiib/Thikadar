@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 // use App\Models\Supplier;
-// use App\Models\RawMaterial;
+use App\Models\Expense;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -14,30 +14,50 @@ class ExpensesController extends Controller
 {
     public function index()
     {
-
-        return Inertia::render('Expenses/ProductsIndex', [
+        return Inertia::render('Expenses/DailyExpIndex', [
             'filters' => Request::all('search', 'trashed'),
-            'products' => Auth::user()->account->purchases()
-                ->orderBy('created_at')
+            'expenses' => Auth::user()->account->expenses()
+                ->orderBy('created_at', 'DESC')
                 ->filter(Request::only('search', 'trashed'))
-                ->paginate()
-                ->transform(function ($product){
+                ->paginate(25)
+                ->transform( function ( $item ){
+
                     return [
-                        'id' => $product->id,
-                        'invoice' => $product->invoice_number,
-                        'quantity' => $product->quantity,
-                        'unitprice' => $product->unitprice,
-                        'total' => $product->net_amount,
-                        'created_at' => $product->created_at,
-                        'deleted_at' => $product->deleted_at,
-                        'supplier' => $product->supplier
-                            ->only('name'),
-                        'material' => $product->material
-                            ->only('name'),
-                    ];                    
-                }),
+                        'id' => $item->id,
+                        'created_at' => date_format($item->created_at, 'd-m-Y'),
+                        'invoice' => $item->invoice_number,
+                        'name' => $item->name,
+                        'type' => $item->expenseType->name,
+                        'amount' => $item->net_amount,
+                        'paid' => $item->paid_amount,
+                        'due' => $item->due_amount,
+                        'note' => $item->note,
+                    ];
+
+                })
         ]);
     }
+
+
+    public function edit(Expense $expense)
+    {
+        
+        return Inertia::render('Expenses/Edit', [
+            'expense' => [
+                'id' => $expense->id,
+                'invoice_number' => $expense->invoice_number,
+                'date' => date_format($expense->created_at, 'd-m-Y'),
+                'expense_type' => $expense->expense_type,
+                'name' => $expense->expenseType->name,
+                'is_all_paid' => $expense->is_all_paid,
+                'net_amount' => $expense->net_amount,
+                'paid_amount' => $expense->paid_amount,
+                'due_amount' => $expense->due_amount,
+                'note' => $expense->note,               
+            ],
+        ]);
+    }
+
 
     public function products()
     {          
@@ -127,74 +147,17 @@ class ExpensesController extends Controller
 
     
 
-    public function store()
+    public function destroy(Expense $expense)   
     {
-        Auth::user()->account->suppliers()->create(
-            Request::validate([
-                'name' => ['required', 'max:100'],
-                'email' => ['nullable', 'max:50', 'email'],
-                'phone' => ['nullable', 'max:50'],
-                'address' => ['nullable', 'max:150'],
-                'city' => ['nullable', 'max:50'],
-                'region' => ['nullable', 'max:50'],
-                'country' => ['nullable', 'max:2'],
-                'postal_code' => ['nullable', 'max:25'],
-            ])
-        );
+        $expense->delete();
 
-        return Redirect::route('suppliers')->with('success', 'Supplier created.');
+        return Redirect::back()->with('success', 'Entry removed.');
     }
 
-
-    public function editProduct(Supplier $supplier)
+    public function restore(Expense $expense)
     {
-        return Inertia::render('Suppliers/Edit', [
-            'supplier' => [
-                'id' => $supplier->id,
-                'name' => $supplier->name,
-                'email' => $supplier->email,
-                'phone' => $supplier->phone,
-                'address' => $supplier->address,
-                'city' => $supplier->city,
-                'region' => $supplier->region,
-                'country' => $supplier->country,
-                'postal_code' => $supplier->postal_code,
-                'deleted_at' => $supplier->deleted_at,
-                'contacts' => $supplier->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
-            ],
-        ]);
-    }
+        $expense->restore();
 
-
-    public function update(Supplier $supplier)
-    {
-        $supplier->update(
-            Request::validate([
-                'name' => ['required', 'max:100'],
-                'email' => ['nullable', 'max:50', 'email'],
-                'phone' => ['nullable', 'max:50'],
-                'address' => ['nullable', 'max:150'],
-                'city' => ['nullable', 'max:50'],
-                'region' => ['nullable', 'max:50'],
-                'country' => ['nullable', 'max:2'],
-                'postal_code' => ['nullable', 'max:25'],
-            ])
-        );
-
-        return Redirect::back()->with('success', 'Supplier updated.');
-    }
-
-    public function destroy(Supplier $supplier)
-    {
-        $supplier->delete();
-
-        return Redirect::back()->with('success', 'Supplier deleted.');
-    }
-
-    public function restore(Supplier $supplier)
-    {
-        $supplier->restore();
-
-        return Redirect::back()->with('success', 'Supplier restored.');
+        return Redirect::back()->with('success', 'Entry restored.');
     }
 }

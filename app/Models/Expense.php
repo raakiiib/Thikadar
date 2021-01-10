@@ -7,20 +7,24 @@ class Expense extends Model
 {
     use SoftDeletes;
 
-    public function products()
+    public function product()
     {
-        return $this->belongsTo(RawMaterial::class);
+        return $this->belongsTo(RawMaterial::class, 'product_id');
     }
 
-    public function services()
+    public function service()
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(Service::class, 'product_id');
     }
 
     public function expenseType()
     {
         return $this->belongsTo(ExpenseType::class, 'product_id');
-        // return $this->belongsTo('App\VocType', 'type_id');
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Service::class, 'vendor_id');
     }
 
     public function scopeFilter($query, array $filters)

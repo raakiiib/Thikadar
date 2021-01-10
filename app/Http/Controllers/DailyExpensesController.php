@@ -21,7 +21,7 @@ class DailyExpensesController extends Controller
             'expenses' => Auth::user()->account->expenses()
                 ->orderBy('created_at', 'DESC')
                 ->filter(Request::only('search', 'trashed'))
-                ->paginate()
+                ->paginate(30)
                 ->transform( function ( $item ){
 
                     return [
@@ -81,8 +81,8 @@ class DailyExpensesController extends Controller
                 'net_amount' => Request::get('net_amount'),
                 'paid_amount' => Request::get('paid_amount'),
                 'due_amount' => Request::get('due_amount'),
-                'is_all_paid' => Request::get('is_all_paid'),
-                'photo_path' => Request::file('photo_path') ? Request::file('photo_path')->store('staffs') : null,
+                'is_all_paid' => Request::get('is_all_paid') ,
+                'photo_path' => Request::file('photo_path') ? Request::file('photo_path')->store('expneses') : null,
             ]);
             // $newAcct = Account::create( ['accountname' => Input::get('accountname')] );
         } 
@@ -123,17 +123,34 @@ class DailyExpensesController extends Controller
             DB::rollback();
             throw $e;
         }
-
-// If we reach here, then
-// data is valid and working.
-// Commit the queries!
         DB::commit();
 
         return Redirect::route('expenses.dailyexpense')->with('success', 'Expense added.');
     }
 
+    // editDailyExpenses
+    public function edit(Expense $item)
+    {
+        dd($item);
 
-    public function update(DailyExpense $expense)
+        return Inertia::render('Expenses/Edit', [
+            'expense' => [
+
+                'id' => $item->id,
+                'created_at' => date_format($item->created_at, 'd-m-Y'),
+                'invoice' => $item->invoice_number,
+                'name' => $item->name,
+                // 'type' => $item->itemType->name,
+                'amount' => $item->net_amount,
+                'paid' => $item->paid_amount,
+                'due' => $item->due_amount,
+                'note' => $item->note,
+            ],
+        ]);
+    }
+
+
+    public function update(DailyExpense $expenses)
     {
         $expense->update(
             Request::validate([
@@ -144,26 +161,6 @@ class DailyExpensesController extends Controller
         );
 
         return Redirect::back()->with('success', 'Expense updated.');
-    }
-
-    // editDailyExpenses
-    public function edit(DailyExpense $expense)
-    {
-        // dd($supplier);
-        return Inertia::render('Expenses/Edit', [
-            'expense' => [
-                'id' => $expense->id,
-                'invoice_number' => $expense->invoice_number,
-                'name' => $expense->name,
-                'note' => $expense->note,
-                'net_amount' => $expense->net_amount,
-                'paid_amount' => $expense->paid_amount,
-                'due_amount' => $expense->due_amount,
-                'is_all_paid' => $expense->is_all_paid,
-                'created_at' => date_format($expense->created_at, 'd-m-Y'),
-                'deleted_at' => $expense->deleted_at,
-            ],
-        ]);
     }
 
     public function destroy(DailyExpense $expense)
