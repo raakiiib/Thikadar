@@ -107,7 +107,7 @@
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
                             :href="route('dexpense.edit', expense.id)"
                         >
-                            {{ expense.name }}
+                            {{ expense.type }}
                         </inertia-link>
                     </td>
                     <!-- <td class="border-t">

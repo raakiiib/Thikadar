@@ -204,14 +204,18 @@ Route::get('expenses/daily', [DailyExpensesController::class, 'index'])
 Route::get('expenses/dailyexpense', [DailyExpensesController::class, 'create'])
     ->name('purchase.dailyexpense')
     ->middleware('auth');
+// Store
+Route::post('daily_expense/store', [DailyExpensesController::class, 'store'])
+    ->name('dailyexpense.store')
+    ->middleware('auth');
 // Edit 
 Route::get('expenses/{expense}/edit', [DailyExpensesController::class, 'edit'])
     ->name('dexpense.edit')
     ->middleware('auth');
 // Store
-Route::post('expenses', [DailyExpensesController::class, 'store'])
-    ->name('vehicles.store')
-    ->middleware('auth');
+// Route::post('expenses', [DailyExpensesController::class, 'store'])
+//     ->name('vehicles.store')
+//     ->middleware('auth');
 // Update
 Route::put('expenses/{expense}', [DailyExpensesController::class, 'update'])
     ->name('expenses.update')
@@ -239,9 +243,9 @@ Route::post('purchase_services', [PurchasesController::class, 'storeService'])
     ->name('purchases.storeService')
     ->middleware('auth');
 
-Route::post('purchase_dailyexpense', [PurchasesController::class, 'storeExpense'])
-    ->name('purchases.storeExpense')
-    ->middleware('auth');
+// Route::post('purchase_dailyexpense', [PurchasesController::class, 'storeExpense'])
+//     ->name('purchases.storeExpense')
+//     ->middleware('auth');
 
 ######## INVOICES ########
 Route::get('invoices', [InvoicesController::class, 'index'])

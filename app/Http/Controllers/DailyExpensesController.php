@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\DailyExpense;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -21,18 +22,18 @@ class DailyExpensesController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate()
-                ->transform( function ( $expenses ){
+                ->transform( function ( $item ){
 
                     return [
-                        'created_at' => date_format($expenses->created_at, 'd-m-Y'),
-                        'id' => $expenses->id,
-                        'invoice' => $expenses->invoice_number,
-                        'name' => $expenses->name,
-                        'type' => $expenses->material_id,
-                        'amount' => $expenses->net_amount,
-                        'paid' => $expenses->paid_amount,
-                        'due' => $expenses->due_amount,
-                        'note' => $expenses->note,
+                        'id' => $item->id,
+                        'created_at' => date_format($item->created_at, 'd-m-Y'),
+                        'invoice' => $item->invoice_number,
+                        'name' => $item->name,
+                        'type' => $item->expenseType->name,
+                        'amount' => $item->net_amount,
+                        'paid' => $item->paid_amount,
+                        'due' => $item->due_amount,
+                        'note' => $item->note,
                     ];
 
                 })
@@ -44,30 +45,89 @@ class DailyExpensesController extends Controller
     {
         return Inertia::render('Purchases/DailyExpense', [
             'invoice_number' => $this->_generateInvoice(),
-            'products' => Auth::user()->account
-                ->materials()
+            'expenses' => Auth::user()->account->expenseTypes()
                 ->orderBy('name')
-                ->get()
-                ->map
-                ->only('id', 'name', 'type')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate(50)
+                ->only('id', 'name', 'note', 'deleted_at'),
         ]);
     }
 
 
     public function store()
     {
-        Auth::user()->account->expenses()->create(
-            Request::validate([
-                'name' => ['required', 'max: 100'],
-                'net_amount' => ['required', 'max:10'],
-                'paid_amount' => ['required', 'max:10'],
-                'due_amount' => ['required', 'max:10'],
-                'is_all_paid' => ['boolean'],
-                'note' => ['max:300'],
-                'invoice_number' => ['required', 'max:30'],
-                'created_at' => ['required'],
-            ])
-        );
+        Request::validate([
+            'product_id' => ['required'],
+            'note' => ['max:300'],
+            'invoice_number' => ['required', 'max:30'],
+            'created_at' => ['required'],
+            'net_amount' => ['required', 'max:10'],
+            'paid_amount' => ['required', 'max:10'],
+            'due_amount' => ['required', 'max:10'],
+        ]);
+
+
+        // Start transaction!
+        DB::beginTransaction();
+
+        try {
+            // Validate, then create if valid
+            $expense = Auth::user()->account->expenses()->create([
+                'expense_type' => 3, // type = 3
+                'product_id' => Request::get('product_id'),
+                'note' => Request::get('note'),
+                'invoice_number' => Request::get('invoice_number'),
+                'created_at' => Request::get('created_at'),
+                'net_amount' => Request::get('net_amount'),
+                'paid_amount' => Request::get('paid_amount'),
+                'due_amount' => Request::get('due_amount'),
+                'is_all_paid' => Request::get('is_all_paid'),
+                'photo_path' => Request::file('photo_path') ? Request::file('photo_path')->store('staffs') : null,
+            ]);
+            // $newAcct = Account::create( ['accountname' => Input::get('accountname')] );
+        } 
+        catch(ValidationException $e){
+            // Rollback and then redirect
+            // back to form with errors
+            DB::rollback();
+            return Redirect::route('expenses.dailyexpense')
+                ->withErrors( $e->getErrors() )
+                ->withInput();
+                // return Redirect::to('/form')
+
+        } catch(\Exception $e)
+        {
+            DB::rollback();
+            throw $e;
+        }
+
+        try {
+
+            $newPayment = Auth::user()->account->payments()->create([
+                'expense_id' => $expense->id,
+                'net_amount' => Request::get('net_amount'),
+                'paid_amount' => Request::get('paid_amount'),
+                // 'due_amount' => Request::get('due_amount'),
+                'is_all_paid' => Request::get('is_all_paid'),
+                'note' => Request::get('note'),
+                'created_at' => Request::get('created_at'),
+            ]);
+        } catch(ValidationException $e){
+            // Rollback and then redirect
+            // back to form with errors
+            DB::rollback();
+            return Redirect::route('expenses.dailyexpense')
+                ->withErrors( $e->getErrors() )
+                ->withInput();
+        } catch(\Exception $e){
+            DB::rollback();
+            throw $e;
+        }
+
+// If we reach here, then
+// data is valid and working.
+// Commit the queries!
+        DB::commit();
 
         return Redirect::route('expenses.dailyexpense')->with('success', 'Expense added.');
     }

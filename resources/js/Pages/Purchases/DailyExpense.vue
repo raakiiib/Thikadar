@@ -8,28 +8,30 @@
       <form @submit.prevent="submit">
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
 
-          <select-input v-model="form.material_id" :error="errors.material_id" @input="getProductName($event)" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" tabindex="1">
-              <option :value="null" />
-              <option v-for="product in products" :key="product.id" :value="product.name+' '+product.type">
-                  {{ product.name }} - {{ product.type }}
-              </option>
-          </select-input>
-
-          <text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Name" />
-
-          <text-input type="number" step="any" v-model="form.net_amount" @input="updateAmount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Amount" tabindex="2" />
-
-          <text-input type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Paid" tabindex="3"/>
-
-          <text-input type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due" tabindex="4" />
-          
-          <!-- <text-input type="hidden" v-model="form.is_all_paid" :error="errors.is_all_paid" /> -->
-
-          <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/2" label="Note" tabindex="5" />
-
           <text-input v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
 
           <text-input type="date" value="28-12-2020" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date" />
+
+          <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Expense name" tabindex="1">
+              <option :value="null" />
+              <option v-for="expense in expenses.data" :key="expense.id" :value="expense.id">
+                  {{ expense.name }}
+              </option>
+          </select-input>
+
+          <!-- <text-input type="hidden" v-model="form.expense_type" /> -->
+
+          <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/2" label="Note" tabindex="2" />
+
+          <text-input type="number" step="any" v-model="form.net_amount" @input="updateAmount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Amount" tabindex="3" />
+
+          <text-input type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Paid" tabindex="4"/>
+
+          <text-input type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due" tabindex="5" />
+          
+
+
+          <file-input v-model="form.photo_path" :error="errors.photo_path" class="pr-6 pb-8 w-full lg:w-1/2" type="file" accept="image/*" label="Money receipt" tabindex="6" />
 
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
@@ -46,7 +48,9 @@ import Layout from '@/Shared/Layout'
 import LoadingButton from '@/Shared/LoadingButton'
 import SelectInput from '@/Shared/SelectInput'
 import TextInput from '@/Shared/TextInput'
+import FileInput from '@/Shared/FileInput'
 import axios from 'axios'
+
 
 export default {
   metaInfo: { title: 'CREATE MATERIAL' },
@@ -55,10 +59,11 @@ export default {
     LoadingButton,
     SelectInput,
     TextInput,
+    FileInput
   },
   props: {
     invoice_number: String,
-    products: Array,
+    expenses: Object,
     errors: Object,
   },
   computed: {
@@ -74,14 +79,16 @@ export default {
     return {
       sending: false,
       form: {
-        name: null,
-        material_id: null,
+        expense_type: Number(3), // Daily expense
+        // vendor_id: null,
+        product_id: null,
+        invoice_number: this.invoice_number,
         net_amount: null,
         paid_amount: null,
         due_amount: null,
         is_all_paid: false,
         note: null,
-        invoice_number: this.invoice_number,
+        photo_path: null,
         created_at: new Date().toISOString().slice(0,10),
       },
     }
@@ -102,16 +109,16 @@ export default {
         }
         this.form.is_all_paid = Boolean(stat);
     },
-    getProductName(){
-        console.log( this.form.material_id )
-        let name = this.form.material_id
+    // getProductName(){
+    //     console.log( this.form.material_id )
+    //     let name = this.form.material_id
 
-        this.form.name = name
-    },
+    //     this.form.name = name
+    // },
     submit() {
       console.log(this.form)
 
-      this.$inertia.post(this.route('purchases.storeExpense'), this.form, {
+      this.$inertia.post(this.route('dailyexpense.store'), this.form, {
         onStart: () => this.sending = true,
         onFinish: () => this.sending = false,
       })
