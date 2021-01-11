@@ -197,32 +197,33 @@ Route::get('purchases/service', [PurchasesController::class, 'createServices'])
 
 ###     DAILY EXPENSES    ###
 #   index
-Route::get('expenses/daily', [ExpensesController::class, 'index'])
+Route::get('expenses/daily', [DailyExpensesController::class, 'index'])
     ->name('expenses.dailyexpense')
     ->middleware('auth');
 // Create 
-Route::get('expenses/dailyexpense', [DailyExpensesController::class, 'create'])
-    ->name('purchase.dailyexpense')
+Route::get('expenses/create', [DailyExpensesController::class, 'create'])
+    ->name('dailyexpense.create')
     ->middleware('auth');
 // Store
 Route::post('expenses/store', [DailyExpensesController::class, 'store'])
     ->name('dailyexpense.store')
     ->middleware('auth');
 // Edit 
-Route::get('expenses/{expense}/edit', [ExpensesController::class, 'edit'])
-    ->name('expense.edit')
-    ->middleware('auth');
-// Destroy
-Route::delete('expenses/{expense}', [ExpensesController::class, 'destroy'])
-    ->name('expenses.destroy')
+Route::get('expenses/{expense}/edit', [DailyExpensesController::class, 'edit'])
+    ->name('dailyexpense.edit')
     ->middleware('auth');
 // Update
 Route::put('expenses/{expense}', [DailyExpensesController::class, 'update'])
     ->name('expenses.update')
     ->middleware('auth');
+
+// Destroy
+Route::delete('expenses/{expense}', [DailyExpensesController::class, 'destroy'])
+    ->name('expenses.destroy')
+    ->middleware('auth');
 // Restore
 Route::put('expenses/{expense}/restore', [DailyExpensesController::class, 'restore'])
-    ->name('vehicles.restore')
+    ->name('expenses.restore')
     ->middleware('auth');
 
 

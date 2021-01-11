@@ -21,11 +21,22 @@
 
                     <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/2" label="Note" tabindex="5" />
 
-                    <text-input disabled type="number" step="any" v-model="form.net_amount" @input="updateAmount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Amount" tabindex="2" />
+                    <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Total" tabindex="2" />
 
-                    <text-input :disabled="expense.is_all_paid == 1" type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Paid" tabindex="3"/>
+                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Due" tabindex="4" />
 
-                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due" tabindex="4" />
+                    <text-input 
+                        :disabled="expense.is_all_paid == 1" 
+                        type="number" 
+                        :min=1
+                        :max='expense.due_amount'
+                        step="any" 
+                        v-model="form.paid_amount" 
+                        @input="updateAmount"
+                        :error="errors.paid_amount" 
+                        class="pr-6 pb-8 w-full lg:w-1/3" 
+                        label="Pay" 
+                        tabindex="3"/>
 
                 </div>
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center content-center">
@@ -70,11 +81,13 @@ export default {
         return {
             sending: false,
             form: {
+                expense_id: this.expense.id,
+                expense_name: this.expense.name,
                 invoice_number: this.expense.invoice_number,
                 created_at: this.expense.date,
-                expense_name: this.expense.name,
                 net_amount: String(this.expense.net_amount),
-                paid_amount: String(this.expense.paid_amount),
+                // paid_amount: String(this.expense.due_amount),
+                paid_amount: null,
                 due_amount: String(this.expense.due_amount),
                 is_all_paid: this.expense.is_all_paid,
                 note: this.expense.note,
@@ -91,12 +104,12 @@ export default {
     methods: {
 
         updateAmount: function() {
-            var total = this.form.net_amount
+            var due = this.form.due_amount
             var paid = this.form.paid_amount
-            var due = (total - paid)
-            due = due.toFixed(2);
-            this.form.due_amount = String(due);
-            this.updateDueStat(due);
+            var now = (due - paid)
+            now = now.toFixed(2);
+            this.form.paid_amount = String(due);
+            this.updateDueStat(now);
         },
         updateDueStat: function(due){
             var stat = false;

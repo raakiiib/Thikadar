@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// use App\Models\Supplier;
 use App\Models\Expense;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -56,6 +55,20 @@ class ExpensesController extends Controller
                 'note' => $expense->note,               
             ],
         ]);
+    }
+
+
+    public function update(Expense $expense)
+    {
+        $expense->update(
+            Request::validate([
+                'paid_amount' => ['nullable', 'max:50'],
+                'due_amount' => ['nullable', 'max:150'],
+                'is_all_paid' => ['nullable', 'max:50'],
+            ])
+        );
+
+        return Redirect::back()->with('success', 'Expense updated.');
     }
 
 
@@ -147,17 +160,5 @@ class ExpensesController extends Controller
 
     
 
-    public function destroy(Expense $expense)   
-    {
-        $expense->delete();
-
-        return Redirect::back()->with('success', 'Entry removed.');
-    }
-
-    public function restore(Expense $expense)
-    {
-        $expense->restore();
-
-        return Redirect::back()->with('success', 'Entry restored.');
-    }
+    
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
-use App\Models\DailyExpense;
+use App\Models\Expense;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -21,7 +21,7 @@ class DailyExpensesController extends Controller
             'expenses' => Auth::user()->account->expenses()
                 ->orderBy('created_at', 'DESC')
                 ->filter(Request::only('search', 'trashed'))
-                ->paginate(30)
+                ->paginate(25)
                 ->transform( function ( $item ){
 
                     return [
@@ -84,17 +84,12 @@ class DailyExpensesController extends Controller
                 'is_all_paid' => Request::get('is_all_paid') ,
                 'photo_path' => Request::file('photo_path') ? Request::file('photo_path')->store('expneses') : null,
             ]);
-            // $newAcct = Account::create( ['accountname' => Input::get('accountname')] );
         } 
         catch(ValidationException $e){
-            // Rollback and then redirect
-            // back to form with errors
             DB::rollback();
             return Redirect::route('expenses.dailyexpense')
                 ->withErrors( $e->getErrors() )
                 ->withInput();
-                // return Redirect::to('/form')
-
         } catch(\Exception $e)
         {
             DB::rollback();
@@ -107,7 +102,6 @@ class DailyExpensesController extends Controller
                 'expense_id' => $expense->id,
                 'net_amount' => Request::get('net_amount'),
                 'paid_amount' => Request::get('paid_amount'),
-                // 'due_amount' => Request::get('due_amount'),
                 'is_all_paid' => Request::get('is_all_paid'),
                 'note' => Request::get('note'),
                 'created_at' => Request::get('created_at'),
@@ -128,53 +122,80 @@ class DailyExpensesController extends Controller
         return Redirect::route('expenses.dailyexpense')->with('success', 'Expense added.');
     }
 
-    // editDailyExpenses
-    public function edit(Expense $item)
+    public function edit(Expense $expense)
     {
-        dd($item);
-
+        
         return Inertia::render('Expenses/Edit', [
             'expense' => [
-
-                'id' => $item->id,
-                'created_at' => date_format($item->created_at, 'd-m-Y'),
-                'invoice' => $item->invoice_number,
-                'name' => $item->name,
-                // 'type' => $item->itemType->name,
-                'amount' => $item->net_amount,
-                'paid' => $item->paid_amount,
-                'due' => $item->due_amount,
-                'note' => $item->note,
+                'id' => $expense->id,
+                'invoice_number' => $expense->invoice_number,
+                'date' => date_format($expense->created_at, 'd-m-Y'),
+                'expense_type' => $expense->expense_type,
+                'name' => $expense->expenseType->name,
+                'is_all_paid' => $expense->is_all_paid,
+                'net_amount' => $expense->net_amount,
+                'paid_amount' => $expense->paid_amount,
+                'due_amount' => $expense->due_amount,
+                'note' => $expense->note,               
             ],
         ]);
     }
 
 
-    public function update(DailyExpense $expenses)
+    public function update(Expense $expense)
     {
-        $expense->update(
-            Request::validate([
-                'paid_amount' => ['nullable', 'max:50'],
-                'due_amount' => ['nullable', 'max:150'],
-                'is_all_paid' => ['nullable', 'max:50'],
-            ])
-        );
+        // dd($expense);
+        Request::validate([
+            'net_amount' => ['required', 'max:10'],
+            'paid_amount' => ['required', 'max:10'],
+            'due_amount' => ['required', 'max:10'],
+        ]);
 
-        return Redirect::back()->with('success', 'Expense updated.');
+        DB::beginTransaction();
+
+        // Add new payment
+        try {
+            $expense->update([
+                'paid_amount' => Request::get('paid_amount'),
+                'due_amount' => Request::get('due_amount'),
+                'is_all_paid' => Request::get('is_all_paid') ,
+            ]);
+
+            $payment = Auth::user()->account->payments()->create([
+                'expense_id' => Request::get('expense_id'), // type = 3
+                'net_amount' => Request::get('net_amount'),
+                'paid_amount' => Request::get('paid_amount'),
+                'is_all_paid' => Request::get('is_all_paid') ,
+            ]);
+        } 
+        catch(ValidationException $e){
+            DB::rollback();
+            return Redirect::route('expenses.dailyexpense')
+                ->withErrors( $e->getErrors() )
+                ->withInput();
+        }
+        catch(\Exception $e){
+            DB::rollback();
+            throw $e;
+        }
+
+        DB::commit();
+
+        return Redirect::back()->with('success', 'Payment recorded.');
     }
 
-    public function destroy(DailyExpense $expense)
+    public function destroy(Expense $expense)   
     {
         $expense->delete();
 
-        return Redirect::back()->with('success', 'Expense deleted.');
+        return Redirect::back()->with('success', 'Entry removed.');
     }
 
-    public function restore(DailyExpense $expense)
+    public function restore(Expense $expense)
     {
         $expense->restore();
 
-        return Redirect::back()->with('success', 'Expense restored.');
+        return Redirect::back()->with('success', 'Entry restored.');
     }
 
     protected function _generateInvoice()
