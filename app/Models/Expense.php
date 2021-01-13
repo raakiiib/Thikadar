@@ -27,6 +27,11 @@ class Expense extends Model
         return $this->belongsTo(Service::class, 'vendor_id');
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'expense_id');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {

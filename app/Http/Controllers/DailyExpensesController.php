@@ -29,11 +29,13 @@ class DailyExpensesController extends Controller
                         'created_at' => date_format($item->created_at, 'd-m-Y'),
                         'invoice' => $item->invoice_number,
                         'name' => $item->name,
+                        'exp_type_id' => $item->product_id,
                         'type' => $item->expenseType->name,
                         'amount' => $item->net_amount,
                         'paid' => $item->paid_amount,
                         'due' => $item->due_amount,
                         'note' => $item->note,
+                        'deleted_at' => $item->deleted_at,
                     ];
 
                 })
@@ -136,7 +138,16 @@ class DailyExpensesController extends Controller
                 'net_amount' => $expense->net_amount,
                 'paid_amount' => $expense->paid_amount,
                 'due_amount' => $expense->due_amount,
-                'note' => $expense->note,               
+                'note' => $expense->note,
+                'deleted_at' => $expense->deleted_at,
+                'payments' => $expense->payments()->get()->map->only([
+                    'id', 
+                    'paid_amount', 
+                    'note', 
+                    'created_at',
+                    // date_format(created_at, 'd-m-Y'),
+                    // 'created_at' => date_format(created_at, 'd-m-Y'),
+                ]),
             ],
         ]);
     }
@@ -150,13 +161,14 @@ class DailyExpensesController extends Controller
             'paid_amount' => ['required', 'max:10'],
             'due_amount' => ['required', 'max:10'],
         ]);
+        // numeric|min:2|max:5
 
         DB::beginTransaction();
 
         // Add new payment
         try {
             $expense->update([
-                'paid_amount' => Request::get('paid_amount'),
+                'paid_amount' => Request::get('total_paid'),
                 'due_amount' => Request::get('due_amount'),
                 'is_all_paid' => Request::get('is_all_paid') ,
             ]);
@@ -165,6 +177,8 @@ class DailyExpensesController extends Controller
                 'expense_id' => Request::get('expense_id'), // type = 3
                 'net_amount' => Request::get('net_amount'),
                 'paid_amount' => Request::get('paid_amount'),
+                'note' => Request::get('note'),
+                'created_at' => Request::get('created_at'),
                 'is_all_paid' => Request::get('is_all_paid') ,
             ]);
         } 
@@ -180,15 +194,32 @@ class DailyExpensesController extends Controller
         }
 
         DB::commit();
+        return Redirect::route('expenses.dailyexpense')->with('success', 'Payment recorded.');
 
-        return Redirect::back()->with('success', 'Payment recorded.');
+        // return Redirect::back()->with('success', 'Payment recorded.');
+    }
+
+    public function getExpenseByType($id)
+    {
+        // 'data' => Auth::user()->account->expenseTypes()
+        //     ->orderBy('created_at')
+        //     ->where('id', $id)
+        return Inertia::render('Purchases/DailyExpense', [
+            'invoice_number' => $this->_generateInvoice(),
+            'expenses' => Auth::user()->account->expenseTypes()
+                ->orderBy('name')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate(50)
+                ->only('id', 'name', 'note', 'deleted_at'),
+        ]);
     }
 
     public function destroy(Expense $expense)   
     {
         $expense->delete();
 
-        return Redirect::back()->with('success', 'Entry removed.');
+        return Redirect::route('expenses.dailyexpense')->with('success', 'Entry removed.');
+        // return Redirect::back()->with('success', 'Entry removed.');
     }
 
     public function restore(Expense $expense)

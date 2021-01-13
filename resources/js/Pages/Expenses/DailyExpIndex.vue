@@ -79,24 +79,21 @@
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
                             :href="route('dailyexpense.edit', expense.id)"
                         >
+                            <img
+                                v-if="expense.photo_path"
+                                class="block w-5 h-5 rounded-full mr-2 -my-2"
+                                :src="expense.photo_path"
+                            />
                             {{ expense.created_at }}
+
+                            <icon v-if="expense.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-red-400 ml-2" />
                         </inertia-link>
                     </td>
 
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500"
                             :href="route('dailyexpense.edit', expense.id)">
-                            <img
-                                v-if="expense.photo_path"
-                                class="block w-5 h-5 rounded-full mr-2 -my-2"
-                                :src="expense.photo_path"
-                            />
                             {{ expense.invoice }}
-                            <icon
-                                v-if="expense.deleted_at"
-                                name="trash"
-                                class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2"
-                            />
                         </inertia-link>
                     </td>
 
@@ -108,15 +105,6 @@
                             {{ expense.type }}
                         </inertia-link>
                     </td>
-                    <!-- <td class="border-t">
-                        <inertia-link
-                            class="px-6 py-4 flex items-center"
-                            :href="route('', expense.id)"
-                            tabindex="-1"
-                        >
-                            {{ expense.type }}
-                        </inertia-link>
-                    </td> -->
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
@@ -144,18 +132,12 @@
                             {{ expense.note }}
                         </inertia-link>
                     </td>
-                    <!-- <td class="border-t w-px">
-                        <inertia-link
-                            class="px-4 flex items-center"
-                            :href="route('', expense.id)"
-                            tabindex="-1"
-                        >
-                            <icon
-                                name="trash"
-                                class="block w-6 h-6 fill-red-400"
-                            />
+                    <td class="border-t w-px">
+                        <inertia-link class="px-4 flex items-center" :href="route('', expense.id)" tabindex="-1" >
+                            <!-- <icon name="trash" class="block w-6 h-6 fill-red-400" /> -->
+                            <icon name="cheveron-right" class="block w-6 h-6 fill-indigo-400" />
                         </inertia-link>
-                    </td> -->
+                    </td>
                 </tr>
                 <tr v-if="expenses.data.length === 0">
                     <td class="border-t px-6 py-4" colspan="4">

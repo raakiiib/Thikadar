@@ -7,7 +7,10 @@ class Payment extends Model
 {
     use SoftDeletes;
 
-
+    public function expense()
+    {
+        return $this->hasMany(Expense::class);
+    }
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {

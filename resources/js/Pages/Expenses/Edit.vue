@@ -6,7 +6,7 @@
             {{expense.note}}
         </h1>
         <trashed-message v-if="expense.deleted_at" class="mb-6" @restore="restore">
-            This supplier has been deleted.
+            This entry has been deleted.
         </trashed-message>
         <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
             <form @submit.prevent="submit">
@@ -14,40 +14,76 @@
 
                     <text-input disabled v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
 
-                    <text-input disabled v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date" />
-                    
+                    <text-input type="date" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date" tabindex="1" />
 
                     <text-input disabled v-model="form.expense_name" :error="errors.expense_name" class="pr-6 pb-8 w-full lg:w-1/2" label="Expense name" />
 
-                    <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/2" label="Note" tabindex="5" />
+                    <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total" />
 
-                    <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Total" tabindex="2" />
+                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due" />
 
-                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Due" tabindex="4" />
-
-                    <text-input 
-                        :disabled="expense.is_all_paid == 1" 
+                    <text-input  
+                        v-if="!expense.is_all_paid"
                         type="number" 
                         :min=1
                         :max='expense.due_amount'
                         step="any" 
                         v-model="form.paid_amount" 
-                        @input="updateAmount"
+                        @input="updateDueAmount"
                         :error="errors.paid_amount" 
-                        class="pr-6 pb-8 w-full lg:w-1/3" 
+                        class="pr-6 pb-8 w-full lg:w-1/2" 
                         label="Pay" 
-                        tabindex="3"/>
+                        tabindex="2" />
+
+                    <text-input v-if="!expense.is_all_paid" v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/1" label="Note" tabindex="3" />
 
                 </div>
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center content-center">
                     <button v-if="!expense.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">
                         <icon name="trash" class="block w-6 h-6 fill-red-600"/> 
-                        <!-- <span >REMOVE</span> -->
                     </button>
 
-                    <loading-button :loading="sending" v-if="!expense.is_all_paid" class="btn-indigo ml-auto" type="submit">Update expense</loading-button>
+                    <loading-button :loading="sending" v-if="!expense.is_all_paid" class="btn-indigo ml-auto" type="submit">Update</loading-button>
                 </div>
             </form>
+        </div>
+
+        <!-- Showing payments -->
+        <h2 class="mt-12 font-bold text-2xl">Payments</h2>
+        <div class="mt-6 bg-white rounded shadow overflow-x-auto">
+            <table class="w-full whitespace-no-wrap">
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4">Date</th>
+                    <th class="px-6 pt-6 pb-4">Invoice</th>
+                    <th class="px-6 pt-6 pb-4" colspan="2">Pay amount</th>
+                </tr>
+                <tr v-for="payment in expense.payments" :key="payment.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route()">
+                            {{ payment.created_at | formatDate }}
+                            <icon v-if="payment.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
+                        </inertia-link>
+                    </td>
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
+                            {{ payment.note }}
+                        </inertia-link>
+                    </td>
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
+                            {{ payment.paid_amount }}
+                        </inertia-link>
+                    </td>
+                    <td class="border-t w-px">
+                        <inertia-link class="px-4 flex items-center" :href="route()" tabindex="-1">
+                            <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
+                        </inertia-link>
+                    </td>
+                </tr>
+                <tr v-if="expense.payments.length === 0">
+                    <td class="border-t px-6 py-4" colspan="4">No contacts found.</td>
+                </tr>
+            </table>
         </div>
     </div>
 </template>
@@ -84,13 +120,13 @@ export default {
                 expense_id: this.expense.id,
                 expense_name: this.expense.name,
                 invoice_number: this.expense.invoice_number,
-                created_at: this.expense.date,
+                created_at: new Date().toISOString().slice(0,10),
                 net_amount: String(this.expense.net_amount),
-                // paid_amount: String(this.expense.due_amount),
+                total_paid: null,
                 paid_amount: null,
                 due_amount: String(this.expense.due_amount),
                 is_all_paid: this.expense.is_all_paid,
-                note: this.expense.note,
+                note: null,
             },
         }
     },
@@ -103,14 +139,16 @@ export default {
     },
     methods: {
 
-        updateAmount: function() {
-            var due = this.form.due_amount
+        updateDueAmount: function() {
+            var due = this.expense.due_amount
             var paid = this.form.paid_amount
             var now = (due - paid)
             now = now.toFixed(2);
-            this.form.paid_amount = String(due);
-            this.updateDueStat(now);
+            this.form.due_amount = String(now);
+            this.form.total_paid = Number(this.form.paid_amount) + this.expense.paid_amount;
+            console.log(this.form.total_paid)
         },
+
         updateDueStat: function(due){
             var stat = false;
             if( due == 0 ){
