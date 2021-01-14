@@ -35,7 +35,13 @@
                         label="Pay" 
                         tabindex="2" />
 
-                    <text-input v-if="!expense.is_all_paid" v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/1" label="Note" tabindex="3" />
+                    <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="Payment type">
+                        <option :value="null" />
+                        <option value="Cost">Cost</option>
+                        <option value="Rent">Rent</option>
+                    </select-input>
+
+                    <text-input v-if="!expense.is_all_paid" v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="Note" tabindex="3" />
 
                 </div>
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center content-center">
@@ -54,8 +60,9 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">Date</th>
-                    <th class="px-6 pt-6 pb-4">Invoice</th>
-                    <th class="px-6 pt-6 pb-4" colspan="2">Pay amount</th>
+                    <th class="px-6 pt-6 pb-4">Payment type</th>
+                    <th class="px-6 pt-6 pb-4">Amount paid</th>
+                    <th class="px-6 pt-6 pb-4" colspan="2">Note</th>
                 </tr>
                 <tr v-for="payment in expense.payments" :key="payment.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
@@ -66,7 +73,7 @@
                     </td>
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
-                            {{ payment.note }}
+                            {{ payment.payment_type }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
@@ -74,6 +81,11 @@
                             {{ payment.paid_amount }}
                         </inertia-link>
                     </td>
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
+                            {{ payment.note }}
+                        </inertia-link>
+                    </td>                    
                     <td class="border-t w-px">
                         <inertia-link class="px-4 flex items-center" :href="route()" tabindex="-1">
                             <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
@@ -120,6 +132,7 @@ export default {
                 expense_id: this.expense.id,
                 expense_name: this.expense.name,
                 invoice_number: this.expense.invoice_number,
+                pay_type: null,
                 created_at: new Date().toISOString().slice(0,10),
                 net_amount: String(this.expense.net_amount),
                 total_paid: null,
@@ -128,13 +141,6 @@ export default {
                 is_all_paid: this.expense.is_all_paid,
                 note: null,
             },
-        }
-    },
-    computed: {
-        getPayBtn: function(){
-            if( this.expense.due_amount == 0 ){
-                this.form.paid_amount.prop(disabled)
-            }
         }
     },
     methods: {
@@ -147,8 +153,9 @@ export default {
             this.form.due_amount = String(now);
             this.form.total_paid = Number(this.form.paid_amount) + this.expense.paid_amount;
             console.log(this.form.total_paid)
-        },
 
+            this.updateDueStat(now)
+        },
         updateDueStat: function(due){
             var stat = false;
             if( due == 0 ){

@@ -46,6 +46,12 @@ class DailyExpensesController extends Controller
     {
         return Inertia::render('Purchases/DailyExpense', [
             'invoice_number' => $this->_generateInvoice(),
+            'suppliers' => Auth::user()->account
+                ->suppliers()
+                ->orderBy('name')
+                ->get()
+                ->map
+                ->only('id', 'name'),
             'expenses' => Auth::user()->account->expenseTypes()
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))
@@ -75,6 +81,7 @@ class DailyExpensesController extends Controller
             // Validate, then create if valid
             $expense = Auth::user()->account->expenses()->create([
                 'expense_type' => 3, // type = 3
+                'vendor_id' => Request::get('vendor_id'),
                 'product_id' => Request::get('product_id'),
                 'note' => Request::get('note'),
                 'invoice_number' => Request::get('invoice_number'),
@@ -102,6 +109,7 @@ class DailyExpensesController extends Controller
             $newPayment = Auth::user()->account->payments()->create([
                 'expense_id' => $expense->id,
                 'net_amount' => Request::get('net_amount'),
+                'payment_type' => Request::get('pay_type'),
                 'paid_amount' => Request::get('paid_amount'),
                 'is_all_paid' => Request::get('is_all_paid'),
                 'note' => Request::get('note'),
@@ -141,7 +149,8 @@ class DailyExpensesController extends Controller
                 'deleted_at' => $expense->deleted_at,
                 'payments' => $expense->payments()->get()->map->only([
                     'id', 
-                    'paid_amount', 
+                    'paid_amount',
+                    'payment_type',
                     'note', 
                     'created_at',
                 ]),
@@ -173,6 +182,7 @@ class DailyExpensesController extends Controller
             $payment = Auth::user()->account->payments()->create([
                 'expense_id' => Request::get('expense_id'), // type = 3
                 'net_amount' => Request::get('net_amount'),
+                'payment_type' => Request::get('pay_type'),
                 'paid_amount' => Request::get('paid_amount'),
                 'note' => Request::get('note'),
                 'created_at' => Request::get('created_at'),
@@ -196,20 +206,6 @@ class DailyExpensesController extends Controller
         // return Redirect::back()->with('success', 'Payment recorded.');
     }
 
-    public function getExpenseByType($id)
-    {
-        // 'data' => Auth::user()->account->expenseTypes()
-        //     ->orderBy('created_at')
-        //     ->where('id', $id)
-        return Inertia::render('Purchases/DailyExpense', [
-            'invoice_number' => $this->_generateInvoice(),
-            'expenses' => Auth::user()->account->expenseTypes()
-                ->orderBy('name')
-                ->filter(Request::only('search', 'trashed'))
-                ->paginate(50)
-                ->only('id', 'name', 'note', 'deleted_at'),
-        ]);
-    }
 
     public function destroy(Expense $expense)   
     {

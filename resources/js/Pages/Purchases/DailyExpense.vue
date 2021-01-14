@@ -19,17 +19,24 @@
               </option>
           </select-input>
 
-          <!-- <text-input type="hidden" v-model="form.expense_type" /> -->
+          <select-input v-model="form.vendor_id" :error="errors.vendor_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Receiver">
+            <option :value="null" />
+            <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">{{ supplier.name }}</option>
+          </select-input>
 
-          <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/2" label="Note" tabindex="2" />
+          <text-input type="number" step="any" v-model="form.net_amount" @input="updateAmount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Amount" tabindex="3" />
 
-          <text-input type="number" step="any" v-model="form.net_amount" @input="updateAmount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Amount" tabindex="3" />
+          <text-input type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Paid" tabindex="4"/>
 
-          <text-input type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Paid" tabindex="4"/>
-
-          <text-input type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due" tabindex="5" />
+          <text-input disabled type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Due" tabindex="5" />
           
+          <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="Payment type">
+            <option :value="null" />
+            <option value="Cost">Cost</option>
+            <option value="Rent">Rent</option>
+          </select-input>
           
+          <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="Note" tabindex="2" />
 
           <!-- <file-input v-model="form.photo_path" :error="errors.photo_path" class="pr-6 pb-8 w-full lg:w-1/2" type="file" accept="image/*" label="Money receipt" tabindex="6" /> -->
 
@@ -63,6 +70,7 @@ export default {
   props: {
     invoice_number: String,
     expenses: Object,
+    suppliers: Array,
     errors: Object,
   },
   remember: 'form',
@@ -73,11 +81,13 @@ export default {
         expense_type: Number(3), // Daily expense
         // vendor_id: null,
         product_id: null,
+        vendor_id: null,
         invoice_number: this.invoice_number,
         net_amount: null,
         paid_amount: null,
         due_amount: null,
         is_all_paid: false,
+        pay_type: null,
         note: null,
         photo_path: null,
         created_at: new Date().toISOString().slice(0,10),
@@ -107,8 +117,10 @@ export default {
       formData.append('created_at', this.form.created_at || '')
       formData.append('expense_type', this.form.expense_type || '')
       formData.append('product_id', this.form.product_id || '')
+      formData.append('vendor_id', this.form.vendor_id || '')
       formData.append('net_amount', this.form.net_amount || '')
       formData.append('due_amount', this.form.due_amount || '')
+      formData.append('pay_type', this.form.pay_type || '')
       formData.append('paid_amount', this.form.paid_amount || '')
       formData.append('note', this.form.note || '')
 
