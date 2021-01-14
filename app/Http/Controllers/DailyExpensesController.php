@@ -19,11 +19,11 @@ class DailyExpensesController extends Controller
         return Inertia::render('Expenses/DailyExpIndex', [
             'filters' => Request::all('search', 'trashed'),
             'expenses' => Auth::user()->account->expenses()
+                ->where('expense_type', 3)
                 ->orderBy('created_at', 'DESC')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(25)
                 ->transform( function ( $item ){
-
                     return [
                         'id' => $item->id,
                         'created_at' => date_format($item->created_at, 'd-m-Y'),
@@ -37,7 +37,6 @@ class DailyExpensesController extends Controller
                         'note' => $item->note,
                         'deleted_at' => $item->deleted_at,
                     ];
-
                 })
         ]);
     }
@@ -145,8 +144,6 @@ class DailyExpensesController extends Controller
                     'paid_amount', 
                     'note', 
                     'created_at',
-                    // date_format(created_at, 'd-m-Y'),
-                    // 'created_at' => date_format(created_at, 'd-m-Y'),
                 ]),
             ],
         ]);

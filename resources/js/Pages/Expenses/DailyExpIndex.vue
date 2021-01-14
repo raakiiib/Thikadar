@@ -26,14 +26,6 @@
             </li>
         </ul>
 
-
-        <!--<div class="flex space-x-4 bg-indigo-600 m-auto">
-            <a href="#" class="text-indigo-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">PRODUCTS</a>
-            <a href="#" class="text-indigo-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">SERVICE</a>
-            <a href="#" class="text-white hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">দৈনিক খরচ</a>
-        </div> -->
-
-
         <div class="mb-8 flex justify-between items-center">
             <h1 class="font-bold text-3xl">Daily Expenses</h1>
 
@@ -62,9 +54,9 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
 
+                    <th class="px-6 pt-6 pb-4">Name</th>
                     <th class="px-6 pt-6 pb-4">&#128197; Date</th>
                     <th class="px-6 pt-6 pb-4">&#128199; Invoice</th>
-                    <th class="px-6 pt-6 pb-4">Name</th>
                     <th class="px-6 pt-6 pb-4">&#x09F3; Amount</th>
                     <th class="px-6 pt-6 pb-4">&#x09F3; Due</th>
                     <th class="px-6 pt-6 pb-4">Note</th>
@@ -74,19 +66,24 @@
                     :key="expense.id"
                     class="hover:bg-gray-400 focus-within:bg-gray-100"
                 >
+
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center text-indigo-600 focus:text-indigo-500"
+                            :href="route('exptypes.edit', expense.exp_type_id)"
+                        >
+                            <img v-if="expense.photo_path" class="block w-5 h-5 rounded-full mr-2 -my-2" :src="expense.photo_path" />
+                            {{ expense.type }}
+                            <icon v-if="expense.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-red-400 ml-2" />
+                        </inertia-link>
+                    </td>
+
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
                             :href="route('dailyexpense.edit', expense.id)"
                         >
-                            <img
-                                v-if="expense.photo_path"
-                                class="block w-5 h-5 rounded-full mr-2 -my-2"
-                                :src="expense.photo_path"
-                            />
                             {{ expense.created_at }}
-
-                            <icon v-if="expense.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-red-400 ml-2" />
                         </inertia-link>
                     </td>
 
@@ -97,14 +94,7 @@
                         </inertia-link>
                     </td>
 
-                    <td class="border-t">
-                        <inertia-link
-                            class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('dailyexpense.edit', expense.id)"
-                        >
-                            {{ expense.type }}
-                        </inertia-link>
-                    </td>
+                    
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
@@ -133,7 +123,7 @@
                         </inertia-link>
                     </td>
                     <td class="border-t w-px">
-                        <inertia-link class="px-4 flex items-center" :href="route('', expense.id)" tabindex="-1" >
+                        <inertia-link class="px-4 flex items-center" :href="route('dailyexpense.edit', expense.id)" tabindex="-1" >
                             <!-- <icon name="trash" class="block w-6 h-6 fill-red-400" /> -->
                             <icon name="cheveron-right" class="block w-6 h-6 fill-indigo-400" />
                         </inertia-link>

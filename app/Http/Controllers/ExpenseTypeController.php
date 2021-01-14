@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExpenseType;
+use App\Models\Expense;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -31,7 +32,6 @@ class ExpenseTypeController extends Controller
     
     }
     
-
     public function store()
     {
         Auth::user()->account->ExpenseTypes()->create(
@@ -46,18 +46,24 @@ class ExpenseTypeController extends Controller
 
     public function edit(ExpenseType $expense)
     {
-
-    	// dd('hello world');
         return Inertia::render('ExpenseTypes/Edit', [
             'type' => [
                 'id' => $expense->id,
                 'name' => $expense->name,
                 'note' => $expense->note,
                 'deleted_at' => $expense->deleted_at,
+                'expenses' => $expense->expenses()->get()->map->only([
+                    'id',
+                    'invoice_number',
+                    'net_amount', 
+                    'paid_amount', 
+                    'due_amount', 
+                    'note', 
+                    'created_at',
+                ]),
             ],
         ]);
     }
-
 
     public function update(ExpenseType $type)
     {
@@ -83,4 +89,5 @@ class ExpenseTypeController extends Controller
         $type->restore();
         return Redirect::back()->with('success', 'Type restored.');
     }
+
 }

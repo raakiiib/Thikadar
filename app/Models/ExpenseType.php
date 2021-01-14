@@ -8,6 +8,12 @@ class ExpenseType extends Model
 {
     use SoftDeletes;
 
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class, 'product_id');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {

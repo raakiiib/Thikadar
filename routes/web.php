@@ -200,6 +200,7 @@ Route::get('purchases/service', [PurchasesController::class, 'createServices'])
 Route::get('expenses/daily', [DailyExpensesController::class, 'index'])
     ->name('expenses.dailyexpense')
     ->middleware('auth');
+
 // Create 
 Route::get('expenses/create', [DailyExpensesController::class, 'create'])
     ->name('dailyexpense.create')
@@ -333,6 +334,7 @@ Route::delete('exptypes/{type}', [ExpenseTypeController::class, 'destroy'])
 Route::put('exptypes/{type}/restore', [ExpenseTypeController::class, 'restore'])
     ->name('exptypes.restore')
     ->middleware('auth');
+
 // Route::put('expenses/{service}', [ExpensesController::class, 'update'])
 //     ->name('expenses.update')
 //     ->middleware('auth');
