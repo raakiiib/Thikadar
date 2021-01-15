@@ -73,7 +73,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center text-indigo-600 focus:text-indigo-500"
-                            :href="route('exptypes.edit', expense.exp_type_id)"
+                            :href="route('single.expense.show', expense.exp_type_id)"
                         >
                             <img v-if="expense.photo_path" class="block w-5 h-5 rounded-full mr-2 -my-2" :src="expense.photo_path" />
                             {{ expense.type }}

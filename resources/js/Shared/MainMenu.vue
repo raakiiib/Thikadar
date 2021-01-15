@@ -8,7 +8,7 @@
     </div>
 
     <div class="mb-4">
-      <inertia-link class="flex items-center group py-3" :href="route('expenses.products')">
+      <inertia-link class="flex items-center group py-3" :href="route('expenses.dailyexpense')">
         <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('expenses.products') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
         <div :class="isUrl('expenses') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">খরচ</div>
       </inertia-link>

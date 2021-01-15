@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Models\Expense;
+use App\Models\ExpenseType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -216,6 +217,27 @@ class DailyExpensesController extends Controller
         $expense->restore();
 
         return Redirect::back()->with('success', 'Entry restored.');
+    }
+
+    public function show(ExpenseType $expense)
+    {
+        return Inertia::render('DailyExpenses/Single', [
+            'type' => [
+                'id' => $expense->id,
+                'name' => $expense->name,
+                'note' => $expense->note,
+                'deleted_at' => $expense->deleted_at,
+                'expenses' => $expense->expenses()->where('expense_type', 3)->get()->map->only([
+                    'id',
+                    'invoice_number',
+                    'net_amount',
+                    'paid_amount', 
+                    'due_amount',
+                    'note', 
+                    'created_at',
+                ]),
+            ],
+        ]);
     }
 
     protected function _generateInvoice()

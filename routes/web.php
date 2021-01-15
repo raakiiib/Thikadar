@@ -192,64 +192,68 @@ Route::get('purchases/service', [PurchasesController::class, 'createServices'])
  * DAILY EXPENSES MODULE
  */
 // index
-Route::get('expenses', [DailyExpensesController::class, 'index'])
+Route::get('expenses/regular', [DailyExpensesController::class, 'index'])
     ->name('expenses.dailyexpense')
     ->middleware('auth');
 // Create 
-Route::get('expenses/create', [DailyExpensesController::class, 'create'])
+Route::get('expenses/regular/create', [DailyExpensesController::class, 'create'])
     ->name('dailyexpense.create')
     ->middleware('auth');
 // Store
-Route::post('expenses', [DailyExpensesController::class, 'store'])
+Route::post('expenses/regular', [DailyExpensesController::class, 'store'])
     ->name('dailyexpense.store')
     ->middleware('auth');
 // Edit 
-Route::get('expenses/{expense}/edit', [DailyExpensesController::class, 'edit'])
+Route::get('expenses/regular/{expense}/edit', [DailyExpensesController::class, 'edit'])
     ->name('dailyexpense.edit')
     ->middleware('auth');
 // Update
-Route::put('expenses/{expense}', [DailyExpensesController::class, 'update'])
+Route::put('expenses/regular/{expense}', [DailyExpensesController::class, 'update'])
     ->name('expenses.update')
     ->middleware('auth');
 // Destroy
-Route::delete('expenses/{expense}', [DailyExpensesController::class, 'destroy'])
+Route::delete('expenses/regular/{expense}', [DailyExpensesController::class, 'destroy'])
     ->name('expenses.destroy')
     ->middleware('auth');
 // Restore
-Route::put('expenses/{expense}/restore', [DailyExpensesController::class, 'restore'])
+Route::put('expenses/regular/{expense}/restore', [DailyExpensesController::class, 'restore'])
     ->name('expenses.restore')
     ->middleware('auth');
 
+// Show individual Expense by ExpenseType
+Route::get('expenses/regular/{expense}/show', [DailyExpensesController::class, 'show'])
+    ->name('single.expense.show')
+    ->middleware('auth');
 
 /**
  * PRODUCT PURCHASE MODULE
  */
 // Product Index
-Route::get('products', [ProductsController::class, 'index'])
+Route::get('expenses/products', [ProductsController::class, 'index'])
     ->name('expenses.products')
     ->middleware('auth');
 // Product Create
-Route::get('products/create', [ProductsController::class, 'create'])
+Route::get('expenses/products/create', [ProductsController::class, 'create'])
     ->name('purchase.product')
     ->middleware('auth');
 // Product Store
-Route::post('purchases', [ProductsController::class, 'store'])
+Route::post('expenses/products', [ProductsController::class, 'store'])
     ->name('product.store')
     ->middleware('auth');
 // Product Edit 
-Route::get('products/{product}/edit', [ProductsController::class, 'edit'])
+Route::get('expenses/products/{product}/edit', [ProductsController::class, 'edit'])
     ->name('product.edit')
     ->middleware('auth');
 // Product Update
-Route::put('products/{product}', [ProductsController::class, 'update'])
+Route::put('expenses/products/{product}', [ProductsController::class, 'update'])
     ->name('product.update')
     ->middleware('auth');
 // Product Destroy
-Route::delete('product/{expense}', [ProductsController::class, 'destroy'])
+Route::delete('expenses/product/{expense}', [ProductsController::class, 'destroy'])
     ->name('product.destroy')
     ->middleware('auth');
 // Product Restore
-Route::put('product/{expense}/restore', [ProductsController::class, 'restore'])
+Route::put('expenses/product/{expense}/restore', [ProductsController::class, 'restore'])
     ->name('product.restore')
     ->middleware('auth');
 

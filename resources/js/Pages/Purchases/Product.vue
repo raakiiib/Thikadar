@@ -1,8 +1,8 @@
 <template>
     <div>
         <h1 class="mb-8 font-bold text-3xl">
-            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.products')">&#8678; পণ্য</inertia-link>
-            <span class="text-indigo-400 font-medium">/</span> খরিদ
+            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.products')">&#8678; পণ্য </inertia-link>
+            <span class="text-indigo-400 font-medium">/</span> ক্রয় 
             <br/>
         </h1>
         <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
@@ -34,10 +34,9 @@
                     <text-input disabled type="number" step="0.01" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="বাকি টাকার পরিমান"/>
 
                     <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
-                        <option value="Product price">Product price</option>
-                        <option value="Transport cost">Transport cost</option>
-                        <option value="Tips">Tips</option>
-                        <option value="Others">Others</option>
+                        <option value="মূল্য/ দাম">মূল্য/ দাম</option>
+                        <option value="গাড়ি ভাড়া">গাড়ি ভাড়া</option>
+                        <option value="অন্যান্য">অন্যান্য</option>
                     </select-input>
                     
                     <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="বর্ণনা"/>
