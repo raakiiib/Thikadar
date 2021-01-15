@@ -4,27 +4,27 @@
         <div class="p-1 mr-1 mb-4 flex flex-wrap">
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 bg-indigo-600 text-white border-2 border-blue-700"  :href="route('expenses.dailyexpense')">
-                    <h1>DAILY EXPENSES</h1>
+                    <h1>দৈনন্দিন খরচ</h1>
                 </inertia-link>
             </button>
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.products')">
-                    <h1>PRODUCTS</h1>
+                    <h1>পণ্য</h1>
                 </inertia-link>
             </button>
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.services')">
-                    <h1>SERVICES</h1>
+                    <h1>সেবা</h1>
                 </inertia-link>
             </button>
         </div>
 
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">Daily Expenses</h1>
+            <h1 class="font-bold text-3xl">দৈনন্দিন খরচ</h1>
 
             <inertia-link class="btn-indigo" :href="route('dailyexpense.create')">
-                <span>ADD</span>
-                <span class="hidden md:inline">EXPENSE</span>
+                <span>নতুন</span>
+                <span class="hidden md:inline">খরচ যোগ</span>
             </inertia-link>
         </div>
 
@@ -47,29 +47,19 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
 
-                    <th class="px-6 pt-6 pb-4">Name</th>
-                    <th class="px-6 pt-6 pb-4">&#128197; Date</th>
-                    <th class="px-6 pt-6 pb-4">&#128199; Invoice</th>
-                    <th class="px-6 pt-6 pb-4">&#x09F3; Amount</th>
-                    <th class="px-6 pt-6 pb-4">&#x09F3; Due</th>
-                    <th class="px-6 pt-6 pb-4">Note</th>
+                    <th class="px-6 pt-6 pb-4">তারিখ</th>
+                    <th class="px-6 pt-6 pb-4">পণ্য/ সেবা</th>
+                    <!-- <th class="px-6 pt-6 pb-4">&#128199; Invoice</th> -->
+                    <!-- <th class="px-6 pt-6 pb-4">সাপ্লায়ার</th> -->
+                    <th class="px-6 pt-6 pb-4">বর্ণনা</th>
+                    <th class="px-6 pt-6 pb-4">&#x09F3; মোট টাকার পরিমান</th>
+                    <th class="px-6 pt-6 pb-4">&#x09F3; বাকি টাকার পরিমান</th>
                 </tr>
                 <tr
                     v-for="expense in expenses.data"
                     :key="expense.id"
                     class="hover:bg-gray-400 focus-within:bg-gray-100"
                 >
-
-                    <td class="border-t">
-                        <inertia-link
-                            class="px-6 py-4 flex items-center text-indigo-600 focus:text-indigo-500"
-                            :href="route('exptypes.edit', expense.exp_type_id)"
-                        >
-                            <img v-if="expense.photo_path" class="block w-5 h-5 rounded-full mr-2 -my-2" :src="expense.photo_path" />
-                            {{ expense.type }}
-                            <icon v-if="expense.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-red-400 ml-2" />
-                        </inertia-link>
-                    </td>
 
                     <td class="border-t">
                         <inertia-link
@@ -81,11 +71,33 @@
                     </td>
 
                     <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center text-indigo-600 focus:text-indigo-500"
+                            :href="route('exptypes.edit', expense.exp_type_id)"
+                        >
+                            <img v-if="expense.photo_path" class="block w-5 h-5 rounded-full mr-2 -my-2" :src="expense.photo_path" />
+                            {{ expense.type }}
+                            <icon v-if="expense.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-red-400 ml-2" />
+                        </inertia-link>
+                    </td>
+                    
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center"
+                            :href="route('dailyexpense.edit', expense.id)"
+                            tabindex="-1"
+                        >
+                            {{ expense.note }}
+                        </inertia-link>
+                    </td>
+
+
+                    <!-- <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500"
                             :href="route('dailyexpense.edit', expense.id)">
                             {{ expense.invoice }}
                         </inertia-link>
-                    </td>
+                    </td> -->
 
                     
                     <td class="border-t">
@@ -104,15 +116,6 @@
                             tabindex="-1"
                         >
                             {{ expense.due }}
-                        </inertia-link>
-                    </td>
-                    <td class="border-t">
-                        <inertia-link
-                            class="px-6 py-4 flex items-center"
-                            :href="route('dailyexpense.edit', expense.id)"
-                            tabindex="-1"
-                        >
-                            {{ expense.note }}
                         </inertia-link>
                     </td>
                     <td class="border-t w-px">

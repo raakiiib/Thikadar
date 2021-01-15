@@ -4,17 +4,17 @@
         <div class="p-1 mr-1 mb-4 flex flex-wrap">
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.dailyexpense')">
-                    <h1>DAILY EXPENSES</h1>
+                    <h1>দৈনন্দিন খরচ</h1>
                 </inertia-link>
             </button>
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.products')">
-                    <h1>PRODUCTS</h1>
+                    <h1>পণ্য</h1>
                 </inertia-link>
             </button>
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 bg-indigo-600 text-white border-2 border-blue-700"  :href="route('expenses.services')">
-                    <h1>SERVICES</h1>
+                    <h1>সেবা</h1>
                 </inertia-link>
             </button>
         </div>

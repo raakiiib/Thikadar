@@ -139,6 +139,7 @@ class DailyExpensesController extends Controller
                 'date' => date_format($expense->created_at, 'd-m-Y'),
                 'expense_type' => $expense->expense_type,
                 'name' => $expense->expenseType->name,
+                // 'supplier' => $expense->getSupplier->name,
                 'is_all_paid' => $expense->is_all_paid,
                 'net_amount' => $expense->net_amount,
                 'paid_amount' => $expense->paid_amount,

@@ -5,27 +5,27 @@
             
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.dailyexpense')">
-                    <h1>DAILY EXPENSES</h1>
+                    <h1>দৈনন্দিন খরচ</h1>
                 </inertia-link>
             </button>
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 bg-indigo-600 text-white border-2 border-blue-700"  :href="route('expenses.products')">
-                    <h1>PRODUCTS</h1>
+                    <h1>পণ্য</h1>
                 </inertia-link>
             </button>
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.services')">
-                    <h1>SERVICES</h1>
+                    <h1>সেবা</h1>
                 </inertia-link>
             </button>
         </div>
 
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">PRODUCTS</h1>
+            <h1 class="font-bold text-3xl">পণ্য</h1>
 
             <inertia-link class="btn-indigo" :href="route('purchase.product')">
-                <span>BUY</span>
-                <span class="hidden md:inline">PRODUCT</span>
+                <span>নতুন</span>
+                <span class="hidden md:inline">পণ্য যোগ</span>
             </inertia-link>
         </div>
 
@@ -51,7 +51,7 @@
                 <tr class="text-left font-bold">
 
                     <th class="px-6 pt-6 pb-4">তারিখ</th>
-                    <th class="px-6 pt-6 pb-4">সিরিয়াল</th>
+                    <!-- <th class="px-6 pt-6 pb-4">সিরিয়াল</th> -->
                     <th class="px-6 pt-6 pb-4">পণ্য/ সেবা</th>
                     <th class="px-6 pt-6 pb-4">সাপ্লায়ার</th>
                     <th class="px-6 pt-6 pb-4">&#35; পরিমান</th>
@@ -73,7 +73,7 @@
                         </inertia-link>
                     </td>
 
-                    <td class="border-t">
+                    <!-- <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
                             :href="route('product.edit', product.id)"
@@ -90,7 +90,7 @@
                                 class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2"
                             />
                         </inertia-link>
-                    </td>
+                    </td> -->
 
                     <td class="border-t">
                         <inertia-link

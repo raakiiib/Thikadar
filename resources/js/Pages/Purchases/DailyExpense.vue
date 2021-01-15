@@ -1,49 +1,49 @@
 <template>
   <div>
     <h1 class="mb-8 font-bold text-3xl">
-      <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.dailyexpense')">Daily Expense</inertia-link>
-      <span class="text-indigo-400 font-medium">/</span> Add
+      <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.dailyexpense')">&#8678; দৈনন্দিন খরচ</inertia-link>
+      <span class="text-indigo-400 font-medium">/</span> যোগ
   </h1>
   <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
       <form @submit.prevent="submit">
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
 
-          <text-input v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
+          <text-input v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="সিরিয়াল" />
 
-          <text-input type="date" value="28-12-2020" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date" />
+          <text-input type="date" value="28-12-2020" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="তারিখ" />
 
-          <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Expense name" tabindex="1">
+          <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/2" label="খরচ" tabindex="1">
               <option :value="null" />
               <option v-for="expense in expenses.data" :key="expense.id" :value="expense.id">
                   {{ expense.name }}
               </option>
           </select-input>
 
-          <select-input v-model="form.vendor_id" :error="errors.vendor_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Receiver">
+          <!-- <select-input v-model="form.vendor_id" :error="errors.vendor_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Receiver">
             <option :value="null" />
             <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">{{ supplier.name }}</option>
-        </select-input>
+        </select-input> -->
 
-        <text-input type="number" step="any" v-model="form.net_amount" @input="updateAmount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Amount" tabindex="3" />
+        <text-input type="number" step="any" v-model="form.net_amount" @input="updateAmount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="মোট টাকার পরিমান" tabindex="3" />
 
-        <text-input type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Paid" tabindex="4"/>
+        <text-input type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিষোধ" tabindex="4"/>
 
-        <text-input disabled type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Due" tabindex="5" />
+        <text-input disabled type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="বাকি টাকার পরিমান" tabindex="5" />
         
-        <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="Payment type">
+        <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
             <option value="Product price">Product price</option>
             <option value="Transport cost">Transport cost</option>
             <option value="Tips">Tips</option>
             <option value="Others">Others</option>
         </select-input>
         
-        <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="Note" tabindex="2" />
+        <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="বর্ণনা" tabindex="2" />
 
         <!-- <file-input v-model="form.photo_path" :error="errors.photo_path" class="pr-6 pb-8 w-full lg:w-1/2" type="file" accept="image/*" label="Money receipt" tabindex="6" /> -->
 
     </div>
     <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
-      <loading-button :loading="sending" class="btn-indigo" type="submit">ADD EXPENSE</loading-button>
+      <loading-button :loading="sending" class="btn-indigo" type="submit">যোগ</loading-button>
   </div>
   
 </form>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="mb-8 font-bold text-3xl">
-            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.products')">&#8678; PRODUCTS</inertia-link>
+            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.products')">&#8678; পণ্য</inertia-link>
             <span class="text-indigo-400 font-medium">/</span>
             {{expense.product_name}} {{expense.product_type}}
         </h1>
@@ -12,21 +12,21 @@
             <form @submit.prevent="submit">
                 <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
 
-                    <text-input disabled v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
+                    <text-input disabled v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="সিরিয়াল" />
 
-                    <text-input type="date" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date" tabindex="1" />
+                    <text-input type="date" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="তারিখ" tabindex="1" />
 
-                    <text-input disabled v-model="form.product" :error="errors.product" class="pr-6 pb-8 w-full lg:w-1/2" label="Product" />
+                    <text-input disabled v-model="form.product" :error="errors.product" class="pr-6 pb-8 w-full lg:w-1/2" label="পণ্য" />
 
-                    <text-input disabled v-model="form.supplier" :error="errors.supplier" class="pr-6 pb-8 w-full lg:w-1/2" label="Supplier" />
+                    <text-input disabled v-model="form.supplier" :error="errors.supplier" class="pr-6 pb-8 w-full lg:w-1/2" label="সাপ্লায়ার" />
 
-                    <text-input disabled type="number" step="any" v-model="form.unit_price" :error="errors.unit_price" class="pr-6 pb-8 w-full lg:w-1/2" label="Unit price" />
+                    <text-input disabled type="number" step="any" v-model="form.unit_price" :error="errors.unit_price" class="pr-6 pb-8 w-full lg:w-1/2" label="প্রতিটির দাম" />
 
-                    <text-input disabled type="number" step="any" v-model="form.quantity" :error="errors.quantity" class="pr-6 pb-8 w-full lg:w-1/2" label="Quantity" />
+                    <text-input disabled type="number" step="any" v-model="form.quantity" :error="errors.quantity" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিমান" />
                     
-                    <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Total" />
+                    <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="মোট টাকার পরিমান" />
 
-                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Due" />
+                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="বাকি টাকার পরিমান" />
 
                     <text-input  
                         v-if="!expense.is_all_paid"
@@ -38,10 +38,10 @@
                         @input="updateDueAmount"
                         :error="errors.paid_amount" 
                         class="pr-6 pb-8 w-full lg:w-1/3" 
-                        label="Pay" 
+                        label="পরিষোধ" 
                         tabindex="2" />
 
-                    <select-input v-if="!expense.is_all_paid" v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="Payment type">
+                    <select-input v-if="!expense.is_all_paid" v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
                         <!-- <option :value="null" /> -->
                         <option value="Product price">Product price</option>
                         <option value="Transport cost">Transport cost</option>
@@ -49,7 +49,7 @@
                         <option value="Others">Others</option>
                     </select-input>
 
-                    <text-input v-if="!expense.is_all_paid" v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="Note" tabindex="3" />
+                    <text-input v-if="!expense.is_all_paid" v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="বর্ণনা" tabindex="3" />
 
                 </div>
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center content-center">
@@ -57,7 +57,7 @@
                         <icon name="trash" class="block w-6 h-6 fill-red-600"/> 
                     </button>
 
-                    <loading-button :loading="sending" v-if="!expense.is_all_paid" class="btn-indigo ml-auto" type="submit">Update</loading-button>
+                    <loading-button :loading="sending" v-if="!expense.is_all_paid" class="btn-indigo ml-auto" type="submit">হালনাগাদ</loading-button>
                 </div>
             </form>
         </div>
@@ -67,10 +67,10 @@
         <div class="mt-6 bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4">Date</th>
-                    <th class="px-6 pt-6 pb-4">Payment type</th>
-                    <th class="px-6 pt-6 pb-4">Amount paid</th>
-                    <th class="px-6 pt-6 pb-4" colspan="2">Note</th>
+                    <th class="px-6 pt-6 pb-4">তারিখ</th>
+                    <th class="px-6 pt-6 pb-4">খরচের ধরন</th>
+                    <th class="px-6 pt-6 pb-4">বর্ণনা</th>
+                    <th class="px-6 pt-6 pb-4" colspan="2">পরিষোধিত টাকার পরিমান</th>
                 </tr>
                 <tr v-for="payment in expense.payments" :key="payment.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
@@ -86,14 +86,14 @@
                     </td>
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
-                            {{ payment.paid_amount }}
+                            {{ payment.note }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
-                            {{ payment.note }}
+                            {{ payment.paid_amount }}
                         </inertia-link>
-                    </td>                    
+                    </td>
                     <td class="border-t w-px">
                         <inertia-link class="px-4 flex items-center" :href="route()" tabindex="-1">
                             <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />

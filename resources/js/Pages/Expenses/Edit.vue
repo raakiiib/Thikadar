@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="mb-8 font-bold text-3xl">
-            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.dailyexpense')">&#8678; Expneses</inertia-link>
+            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.dailyexpense')">&#8678; দৈনন্দিন খরচ</inertia-link>
             <span class="text-indigo-400 font-medium">/</span>
             {{expense.note}}
         </h1>
@@ -12,26 +12,28 @@
             <form @submit.prevent="submit">
                 <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
 
-                    <text-input disabled v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="Invoice number" />
+                    <text-input disabled v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="সিরিয়াল" />
 
-                    <text-input type="date" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date" tabindex="1" />
+                    <text-input type="date" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="তারিখ" tabindex="1" />
 
-                    <text-input disabled v-model="form.expense_name" :error="errors.expense_name" class="pr-6 pb-8 w-full lg:w-1/2" label="Expense name" />
+                    <text-input disabled v-model="form.expense_name" :error="errors.expense_name" class="pr-6 pb-8 w-full lg:w-1/2" label="খরচ" />
 
-                    <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total" />
+                    <!-- <text-input disabled v-model="form.supplier" :error="errors.supplier" class="pr-6 pb-8 w-full lg:w-1/2" label="গ্রহীতা" /> -->
 
-                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due" />
+                    <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="মোট টাকার পরিমান" />
 
-                    <text-input  v-if="!expense.is_all_paid" type="number" :min=1 :max='expense.due_amount' step="any" v-model="form.paid_amount"  @input="updateDueAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Pay" tabindex="2" />
+                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="বাকি টাকার পরিমান" />
 
-                    <select-input v-if="!expense.is_all_paid" v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="Payment type">
+                    <text-input  v-if="!expense.is_all_paid" type="number" :min=1 :max='expense.due_amount' step="any" v-model="form.paid_amount"  @input="updateDueAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিষোধ" tabindex="2" />
+
+                    <select-input v-if="!expense.is_all_paid" v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
                         <option value="Product price">Product price</option>
                         <option value="Transport cost">Transport cost</option>
                         <option value="Tips">Tips</option>
                         <option value="Others">Others</option>
                     </select-input>
 
-                    <text-input v-if="!expense.is_all_paid" v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="Note" tabindex="3" />
+                    <text-input v-if="!expense.is_all_paid" v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="বর্ণনা" tabindex="3" />
 
                 </div>
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center content-center">
@@ -39,7 +41,7 @@
                         <icon name="trash" class="block w-6 h-6 fill-red-600"/> 
                     </button>
 
-                    <loading-button :loading="sending" v-if="!expense.is_all_paid" class="btn-indigo ml-auto" type="submit">Update</loading-button>
+                    <loading-button :loading="sending" v-if="!expense.is_all_paid" class="btn-indigo ml-auto" type="submit">হালনাগাদ</loading-button>
                 </div>
             </form>
         </div>
@@ -49,16 +51,21 @@
         <div class="mt-6 bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4">Date</th>
-                    <th class="px-6 pt-6 pb-4">Payment type</th>
-                    <th class="px-6 pt-6 pb-4">Amount paid</th>
-                    <th class="px-6 pt-6 pb-4" colspan="2">Note</th>
+                    <th class="px-6 pt-6 pb-4">তারিখ</th>
+                    <th class="px-6 pt-6 pb-4">বর্ণনা</th>
+                    <th class="px-6 pt-6 pb-4">খরচের ধরন</th>
+                    <th class="px-6 pt-6 pb-4" colspan="2">পরিষোধিত টাকার পরিমান</th>
                 </tr>
                 <tr v-for="payment in expense.payments" :key="payment.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route()">
                             {{ payment.created_at | formatDate }}
                             <icon v-if="payment.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
+                        </inertia-link>
+                    </td>
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
+                            {{ payment.note }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
@@ -71,11 +78,6 @@
                             {{ payment.paid_amount }}
                         </inertia-link>
                     </td>
-                    <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
-                            {{ payment.note }}
-                        </inertia-link>
-                    </td>                    
                     <td class="border-t w-px">
                         <inertia-link class="px-4 flex items-center" :href="route()" tabindex="-1">
                             <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
@@ -121,6 +123,7 @@ export default {
             form: {
                 expense_id: this.expense.id,
                 expense_name: this.expense.name,
+                // supplier: this.expense.supplier,
                 invoice_number: this.expense.invoice_number,
                 pay_type: null,
                 created_at: new Date().toISOString().slice(0,10),
