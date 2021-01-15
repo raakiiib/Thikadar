@@ -27,10 +27,14 @@
                     <text-input  v-if="!expense.is_all_paid" type="number" :min=1 :max='expense.due_amount' step="any" v-model="form.paid_amount"  @input="updateDueAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিষোধ" tabindex="2" />
 
                     <select-input v-if="!expense.is_all_paid" v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
-                        <option value="Product price">Product price</option>
-                        <option value="Transport cost">Transport cost</option>
-                        <option value="Tips">Tips</option>
-                        <option value="Others">Others</option>
+                        <option value="মূল্য/ দাম">মূল্য/ দাম</option>
+                        <option value="গাড়ি ভাড়া">গাড়ি ভাড়া</option>
+                        <option value="মজুরি">মজুরি</option>
+                        <option value="ক্রয়">ক্রয়</option>
+                        <option value="মেরামত">মেরামত</option>
+                        <option value="বেতন">বেতন</option>
+                        <option value="চাঁদা">চাঁদা</option>
+                        <option value="অন্যান্য">অন্যান্য</option>
                     </select-input>
 
                     <text-input v-if="!expense.is_all_paid" v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="বর্ণনা" tabindex="3" />
