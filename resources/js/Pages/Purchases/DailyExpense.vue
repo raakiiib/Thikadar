@@ -33,6 +33,7 @@
         <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
             <option value="মূল্য/ দাম">মূল্য/ দাম</option>
             <option value="গাড়ি ভাড়া">গাড়ি ভাড়া</option>
+            <option value="মজুরি">মজুরি</option>
             <option value="ক্রয়">ক্রয়</option>
             <option value="মেরামত">মেরামত</option>
             <option value="বেতন">বেতন</option>
