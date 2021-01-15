@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="mb-8 font-bold text-3xl">
-            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('exptypes')">types</inertia-link>
+            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('exptypes')">&#8678; খরচের ধরন</inertia-link>
             <span class="text-indigo-400 font-medium">/</span>
             {{ form.name }}
         </h1>
@@ -11,26 +11,28 @@
         <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
             <form @submit.prevent="submit">
                 <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-                    <text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Name" />
-                    <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/2" label="Note" />
+                    <text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="নাম" />
+                    <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/2" label="বর্ণনা" />
                 </div>
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
-                    <button v-if="!type.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete type</button>
-                    <loading-button :loading="sending" class="btn-indigo ml-auto" type="submit">Update</loading-button>
+                    <button v-if="!type.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">
+                        <icon name="trash" class="block w-6 h-6 fill-red-600"/> 
+                    </button>
+                    <loading-button :loading="sending" class="btn-indigo ml-auto" type="submit">হালনাগাদ</loading-button>
                 </div>
             </form>
         </div>
         <!-- Showing all expenses under this item -->
-        <h2 class="mt-12 font-bold text-2xl">Expenses</h2>
+        <h2 class="mt-12 font-bold text-2xl">{{ form.name }} এর সকল হিসাব</h2>
         <div class="mt-6 bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4">Date</th>
-                    <th class="px-6 pt-6 pb-4">Invoice</th>
-                    <th class="px-6 pt-6 pb-4">Net amount</th>
-                    <th class="px-6 pt-6 pb-4">Paid</th>
-                    <th class="px-6 pt-6 pb-4">Due</th>
-                    <th class="px-6 pt-6 pb-4" colspan="2">Note</th>
+                    <th class="px-6 pt-6 pb-4">তারিখ</th>
+                    <!-- <th class="px-6 pt-6 pb-4">Invoice</th> -->
+                    <th class="px-6 pt-6 pb-4">বর্ণনা</th>
+                    <th class="px-6 pt-6 pb-4">মোট টাকা</th>
+                    <th class="px-6 pt-6 pb-4">পরিষোধিত টাকা</th>
+                    <th class="px-6 pt-6 pb-4" colspan="2">বাকি টাকা</th>
                 </tr>
                 <tr v-for="exp in type.expenses" :key="exp.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
 
@@ -43,9 +45,14 @@
                     </td>
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('dailyexpense.edit', exp.id)" tabindex="-1">
-                            {{ exp.invoice_number }}
+                            {{ exp.note }}
                         </inertia-link>
                     </td>
+<!--                     <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('dailyexpense.edit', exp.id)" tabindex="-1">
+                            {{ exp.invoice_number }}
+                        </inertia-link>
+                    </td> -->
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('dailyexpense.edit', exp.id)" tabindex="-1">
                             {{ exp.net_amount }}
@@ -64,16 +71,33 @@
                         </inertia-link>
                     </td>
 
-                    <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center" :href="route('dailyexpense.edit', exp.id)" tabindex="-1">
-                            {{ exp.note }}
-                        </inertia-link>
-                    </td>
-
                     <td class="border-t w-px">
                         <inertia-link class="px-4 flex items-center" :href="route('dailyexpense.edit', exp.id)" tabindex="-1">
                             <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
                         </inertia-link>
+                    </td>
+                </tr>
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td>&nbsp;</td>
+                    <td class="border-t">
+                        <span class="px-6 py-4 flex items-center">
+                            মোট হিসাব
+                        </span>
+                    </td>
+                    <td class="border-t">
+                        <span class="px-6 py-4 flex items-center">
+                            {{ totalNetAmnt() }}
+                        </span>
+                    </td>
+                    <td class="border-t">
+                        <span class="px-6 py-4 flex items-center">
+                            {{ totalPaidAmnt() }}
+                        </span>
+                    </td>
+                    <td class="border-t">
+                        <span class="px-6 py-4 flex items-center">
+                            {{ totalDueAmnt() }}
+                        </span>
                     </td>
                 </tr>
                 <tr v-if="type.expenses.length === 0">
@@ -119,6 +143,30 @@ export default {
         }
     },
     methods: {
+        totalNetAmnt: function(){
+
+            let total = [];
+            Object.entries(this.type.expenses).forEach(([key, val]) => {
+                total.push(val.net_amount) // the value of the current key.
+            });
+            return total.reduce(function(total, num){ return total + num }, 0);
+        },
+        totalPaidAmnt: function(){
+
+            let total = [];
+            Object.entries(this.type.expenses).forEach(([key, val]) => {
+                total.push(val.paid_amount) // the value of the current key.
+            });
+            return total.reduce(function(total, num){ return total + num }, 0);
+        },
+        totalDueAmnt: function(){
+
+            let total = [];
+            Object.entries(this.type.expenses).forEach(([key, val]) => {
+                total.push(val.due_amount) // the value of the current key.
+            });
+            return total.reduce(function(total, num){ return total + num }, 0);
+        },
         created(){
             console.log('hello');
         },

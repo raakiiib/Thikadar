@@ -55,9 +55,9 @@ class ExpenseTypeController extends Controller
                 'expenses' => $expense->expenses()->where('expense_type', 3)->get()->map->only([
                     'id',
                     'invoice_number',
-                    'net_amount', 
+                    'net_amount',
                     'paid_amount', 
-                    'due_amount', 
+                    'due_amount',
                     'note', 
                     'created_at',
                 ]),
