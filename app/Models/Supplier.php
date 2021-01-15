@@ -13,6 +13,16 @@ class Supplier extends Model
         return $this->hasMany(Contact::class);
     }
 
+    public function product()
+    {
+        return $this->hasMany(Expense::class, 'product_id');
+    }
+
+    public function supplier()
+    {
+        return $this->hasMany(Expense::class, 'vendor_id');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {

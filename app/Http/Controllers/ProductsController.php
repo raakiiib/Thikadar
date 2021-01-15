@@ -10,84 +10,90 @@ use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 
-class DailyExpensesController extends Controller
+class ProductsController extends Controller
 {
+
     public function index()
     {
-        return Inertia::render('Expenses/DailyExpIndex', [
+    	return Inertia::render('Expenses/ProductsIndex', [
             'filters' => Request::all('search', 'trashed'),
-            'expenses' => Auth::user()->account->expenses()
-                ->where('expense_type', 3)
+            'products' => Auth::user()->account->expenses()
+            	->where('expense_type', 1)
                 ->orderBy('created_at', 'DESC')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(25)
-                ->transform( function ( $item ){
+                ->transform(function ( $product ){
                     return [
-                        'id' => $item->id,
-                        'created_at' => date_format($item->created_at, 'd-m-Y'),
-                        'invoice' => $item->invoice_number,
-                        'name' => $item->name,
-                        'exp_type_id' => $item->product_id,
-                        'type' => $item->expenseType->name,
-                        'amount' => $item->net_amount,
-                        'paid' => $item->paid_amount,
-                        'due' => $item->due_amount,
-                        'note' => $item->note,
-                        'deleted_at' => $item->deleted_at,
-                    ];
+                        'id' => $product->id,
+                        'invoice' => $product->invoice_number,
+                        'quantity' => $product->quantity,
+                        'unitprice' => $product->unit_price,
+                        'total' => $product->net_amount,
+                        'due' => $product->due_amount,
+                        'is_all_paid' => $product->is_all_paid,
+                        'created_at' => $product->created_at,
+                        'deleted_at' => $product->deleted_at,
+                        'supplier' => $product->getSupplier->name,
+                        'material' => $product->getMaterial->name,
+                        'unit' => $product->getMaterial->unit,
+                        'created_at' => date_format( $product->created_at, 'd-m-Y'),
+                    ];                    
                 })
         ]);
     }
 
-
     public function create()
     {
-        return Inertia::render('Purchases/DailyExpense', [
-            'invoice_number' => $this->_generateInvoice(),
+    	return Inertia::render('Purchases/Product', [
             'suppliers' => Auth::user()->account
                 ->suppliers()
                 ->orderBy('name')
                 ->get()
                 ->map
                 ->only('id', 'name'),
-            'expenses' => Auth::user()->account->expenseTypes()
+            'products' => Auth::user()->account
+                ->materials()
                 ->orderBy('name')
-                ->filter(Request::only('search', 'trashed'))
-                ->paginate(50)
-                ->only('id', 'name', 'note', 'deleted_at'),
+                ->get()
+                ->map
+                ->only('id', 'name', 'type'),
+            'invoice_number' => $this->_generateInvoice(),
         ]);
     }
-
 
     public function store()
     {
         Request::validate([
-            'product_id' => ['required'],
-            'note' => ['max:300'],
-            'invoice_number' => ['required', 'max:30'],
             'created_at' => ['required'],
+            'invoice_number' => ['required', 'max:30'],
+            'unitprice' => ['required', 'max:10'],
+            'quantity' => ['required', 'max:10'],
             'net_amount' => ['required', 'max:10'],
             'paid_amount' => ['required', 'max:10'],
             'due_amount' => ['required', 'max:10'],
+            'product_id' => ['required'],
+            'vendor_id' => ['required'],
+            'note' => ['max:300'],
         ]);
 
 
         // Start transaction!
         DB::beginTransaction();
-
         try {
             // Validate, then create if valid
             $expense = Auth::user()->account->expenses()->create([
-                'expense_type' => 3, // type = 3
-                'vendor_id' => Request::get('vendor_id'),
-                'product_id' => Request::get('product_id'),
-                'note' => Request::get('note'),
                 'invoice_number' => Request::get('invoice_number'),
                 'created_at' => Request::get('created_at'),
+                'expense_type' => Request::get('expense_type'),
+                'vendor_id' => Request::get('vendor_id'),
+                'product_id' => Request::get('product_id'),
+                'unit_price' => Request::get('unitprice'),
+                'quantity' => Request::get('quantity'),
                 'net_amount' => Request::get('net_amount'),
                 'paid_amount' => Request::get('paid_amount'),
                 'due_amount' => Request::get('due_amount'),
                 'is_all_paid' => Request::get('is_all_paid') ,
+                'note' => Request::get('note'),
                 'photo_path' => Request::file('photo_path') ? Request::file('photo_path')->store('expneses') : null,
             ]);
         } 
@@ -103,7 +109,6 @@ class DailyExpensesController extends Controller
         }
 
         try {
-
             $newPayment = Auth::user()->account->payments()->create([
                 'expense_id' => $expense->id,
                 'net_amount' => Request::get('net_amount'),
@@ -114,8 +119,6 @@ class DailyExpensesController extends Controller
                 'created_at' => Request::get('created_at'),
             ]);
         } catch(ValidationException $e){
-            // Rollback and then redirect
-            // back to form with errors
             DB::rollback();
             return Redirect::route('expenses.dailyexpense')
                 ->withErrors( $e->getErrors() )
@@ -126,26 +129,32 @@ class DailyExpensesController extends Controller
         }
         DB::commit();
 
-        return Redirect::route('expenses.dailyexpense')->with('success', 'Expense added.');
+        return Redirect::route('expenses.products')->with('success', 'Expense added.');
     }
 
-    public function edit(Expense $expense)
+    public function edit(Expense $product)
     {
         
-        return Inertia::render('Expenses/Edit', [
+        return Inertia::render('Products/Edit', [
             'expense' => [
-                'id' => $expense->id,
-                'invoice_number' => $expense->invoice_number,
-                'date' => date_format($expense->created_at, 'd-m-Y'),
-                'expense_type' => $expense->expense_type,
-                'name' => $expense->expenseType->name,
-                'is_all_paid' => $expense->is_all_paid,
-                'net_amount' => $expense->net_amount,
-                'paid_amount' => $expense->paid_amount,
-                'due_amount' => $expense->due_amount,
-                'note' => $expense->note,
-                'deleted_at' => $expense->deleted_at,
-                'payments' => $expense->payments()->get()->map->only([
+
+            	'id' => $product->id,
+                'invoice_number' => $product->invoice_number,
+                'quantity' => $product->quantity,
+                'unit_price' => $product->unit_price,
+                'net_amount' => $product->net_amount,
+                'date' => $product->created_at,
+                'expense_type' => $product->expense_type,
+                'paid_amount' => $product->paid_amount,
+                'due_amount' => $product->due_amount,
+                'deleted_at' => $product->deleted_at,
+                'product_name' => $product->getMaterial->name,
+                'product_type' => $product->getMaterial->type,
+                'product_unit' => $product->getMaterial->unit,
+                'supplier' => $product->getSupplier->name,
+                'is_all_paid' => $product->is_all_paid,
+                'created_at' => date_format( $product->created_at, 'd-m-Y'),
+                'payments' => $product->payments()->get()->map->only([
                     'id', 
                     'paid_amount',
                     'payment_type',
@@ -156,8 +165,7 @@ class DailyExpensesController extends Controller
         ]);
     }
 
-
-    public function update(Expense $expense)
+    public function update(Expense $product)
     {
         // dd($expense);
         Request::validate([
@@ -165,13 +173,12 @@ class DailyExpensesController extends Controller
             'paid_amount' => ['required', 'max:10'],
             'due_amount' => ['required', 'max:10'],
         ]);
-        // numeric|min:2|max:5
 
         DB::beginTransaction();
 
         // Add new payment
         try {
-            $expense->update([
+            $product->update([
                 'paid_amount' => Request::get('total_paid'),
                 'due_amount' => Request::get('due_amount'),
                 'is_all_paid' => Request::get('is_all_paid') ,
@@ -198,22 +205,18 @@ class DailyExpensesController extends Controller
             throw $e;
         }
         DB::commit();
-        return Redirect::route('expenses.dailyexpense')->with('success', 'Payment recorded.');
+        return Redirect::back()->with('success', 'Payment recorded.');
     }
-
 
     public function destroy(Expense $expense)   
     {
         $expense->delete();
-
-        return Redirect::route('expenses.dailyexpense')->with('success', 'Entry removed.');
-        // return Redirect::back()->with('success', 'Entry removed.');
+        return Redirect::route('expenses.products')->with('success', 'Entry removed.');
     }
 
     public function restore(Expense $expense)
     {
         $expense->restore();
-
         return Redirect::back()->with('success', 'Entry restored.');
     }
 

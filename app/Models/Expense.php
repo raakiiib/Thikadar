@@ -7,7 +7,7 @@ class Expense extends Model
 {
     use SoftDeletes;
 
-    public function product()
+    public function getMaterial()
     {
         return $this->belongsTo(RawMaterial::class, 'product_id');
     }
@@ -22,9 +22,9 @@ class Expense extends Model
         return $this->belongsTo(ExpenseType::class, 'product_id');
     }
 
-    public function supplier()
+    public function getSupplier()
     {
-        return $this->belongsTo(Service::class, 'vendor_id');
+        return $this->belongsTo(Supplier::class, 'vendor_id');
     }
 
     public function payments()

@@ -1,30 +1,23 @@
 <template>
     <div class="">
 
-        <ul class="block mb-10">
-            <!-- Tilok -->
-            <li class="inline-block">
-                <inertia-link class="p-2 border-2 border-indigo-400 inline-block" :href="route('expenses.products')" >
-                    <div class="caption">
-                        <h1>PRODUCTS</h1>
-                    </div>
+        <div class="p-1 mr-1 mb-4 flex flex-wrap">
+            <button class="p-1 w-full lg:w-1/3">
+                <inertia-link class="block p-3 bg-indigo-600 text-white border-2 border-blue-700"  :href="route('expenses.dailyexpense')">
+                    <h1>DAILY EXPENSES</h1>
                 </inertia-link>
-            </li>
-            <li class="inline-block ml-2">
-                <inertia-link class="p-2 border-2 border-indigo-400 inline-block" :href="route('expenses.services')" >
-                    <div class="caption">
-                        <h1>SERVICES</h1>
-                    </div>
+            </button>
+            <button class="p-1 w-full lg:w-1/3">
+                <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.products')">
+                    <h1>PRODUCTS</h1>
                 </inertia-link>
-            </li>
-            <li class="inline-block ml-2 bg-indigo-600">
-                <inertia-link class="p-2 border-2 border-indigo-400 inline-block text-white" :href="route('expenses.dailyexpense')" >
-                    <div class="caption">
-                        <h1>DAILY EXPENSES</h1>
-                    </div>
+            </button>
+            <button class="p-1 w-full lg:w-1/3">
+                <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.services')">
+                    <h1>SERVICES</h1>
                 </inertia-link>
-            </li>
-        </ul>
+            </button>
+        </div>
 
         <div class="mb-8 flex justify-between items-center">
             <h1 class="font-bold text-3xl">Daily Expenses</h1>

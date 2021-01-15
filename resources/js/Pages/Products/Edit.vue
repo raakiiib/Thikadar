@@ -1,9 +1,9 @@
 <template>
     <div>
         <h1 class="mb-8 font-bold text-3xl">
-            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.dailyexpense')">&#8678; Expneses</inertia-link>
+            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.products')">&#8678; PRODUCTS</inertia-link>
             <span class="text-indigo-400 font-medium">/</span>
-            {{expense.note}}
+            {{expense.product_name}} {{expense.product_type}}
         </h1>
         <trashed-message v-if="expense.deleted_at" class="mb-6" @restore="restore">
             This entry has been deleted.
@@ -16,15 +16,33 @@
 
                     <text-input type="date" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="Date" tabindex="1" />
 
-                    <text-input disabled v-model="form.expense_name" :error="errors.expense_name" class="pr-6 pb-8 w-full lg:w-1/2" label="Expense name" />
+                    <text-input disabled v-model="form.product" :error="errors.product" class="pr-6 pb-8 w-full lg:w-1/2" label="Product" />
 
-                    <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Total" />
+                    <text-input disabled v-model="form.supplier" :error="errors.supplier" class="pr-6 pb-8 w-full lg:w-1/2" label="Supplier" />
 
-                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due" />
+                    <text-input disabled type="number" step="any" v-model="form.unit_price" :error="errors.unit_price" class="pr-6 pb-8 w-full lg:w-1/2" label="Unit price" />
 
-                    <text-input  v-if="!expense.is_all_paid" type="number" :min=1 :max='expense.due_amount' step="any" v-model="form.paid_amount"  @input="updateDueAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Pay" tabindex="2" />
+                    <text-input disabled type="number" step="any" v-model="form.quantity" :error="errors.quantity" class="pr-6 pb-8 w-full lg:w-1/2" label="Quantity" />
+                    
+                    <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Total" />
+
+                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Due" />
+
+                    <text-input  
+                        v-if="!expense.is_all_paid"
+                        type="number" 
+                        :min=1
+                        :max='expense.due_amount'
+                        step="any" 
+                        v-model="form.paid_amount" 
+                        @input="updateDueAmount"
+                        :error="errors.paid_amount" 
+                        class="pr-6 pb-8 w-full lg:w-1/3" 
+                        label="Pay" 
+                        tabindex="2" />
 
                     <select-input v-if="!expense.is_all_paid" v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="Payment type">
+                        <!-- <option :value="null" /> -->
                         <option value="Product price">Product price</option>
                         <option value="Transport cost">Transport cost</option>
                         <option value="Tips">Tips</option>
@@ -120,8 +138,11 @@ export default {
             sending: false,
             form: {
                 expense_id: this.expense.id,
-                expense_name: this.expense.name,
+                product: this.expense.product_name+' '+this.expense.product_type,
                 invoice_number: this.expense.invoice_number,
+                supplier: this.expense.supplier,
+                unit_price: String(this.expense.unit_price),
+                quantity: String(this.expense.quantity),
                 pay_type: null,
                 created_at: new Date().toISOString().slice(0,10),
                 net_amount: String(this.expense.net_amount),
@@ -155,7 +176,7 @@ export default {
         },
         submit() {
             console.log(this.form)
-            this.$inertia.put(this.route('expenses.update', this.expense.id), this.form, {
+            this.$inertia.put(this.route('product.update', this.expense.id), this.form, {
                 onStart: () => this.sending = true,
                 onFinish: () => this.sending = false,
             })
@@ -163,12 +184,12 @@ export default {
         destroy() {
             console.log(this.expense.id)
             if (confirm('Are you sure you want to delete this entry?')) {
-                this.$inertia.delete(this.route('expenses.destroy', this.expense.id))
+                this.$inertia.delete(this.route('product.destroy', this.expense.id))
             }
         },
         restore() {
             if (confirm('Are you sure you want to restore this entry?')) {
-                this.$inertia.put(this.route('expenses.restore', this.expense.id))
+                this.$inertia.put(this.route('product.restore', this.expense.id))
             }
         },
     },

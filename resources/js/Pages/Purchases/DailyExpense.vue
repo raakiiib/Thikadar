@@ -3,8 +3,8 @@
     <h1 class="mb-8 font-bold text-3xl">
       <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.dailyexpense')">Daily Expense</inertia-link>
       <span class="text-indigo-400 font-medium">/</span> Add
-    </h1>
-    <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
+  </h1>
+  <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
       <form @submit.prevent="submit">
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
 
@@ -22,32 +22,33 @@
           <select-input v-model="form.vendor_id" :error="errors.vendor_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Receiver">
             <option :value="null" />
             <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">{{ supplier.name }}</option>
-          </select-input>
+        </select-input>
 
-          <text-input type="number" step="any" v-model="form.net_amount" @input="updateAmount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Amount" tabindex="3" />
+        <text-input type="number" step="any" v-model="form.net_amount" @input="updateAmount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Amount" tabindex="3" />
 
-          <text-input type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Paid" tabindex="4"/>
+        <text-input type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Paid" tabindex="4"/>
 
-          <text-input disabled type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Due" tabindex="5" />
-          
-          <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="Payment type">
-            <option :value="null" />
-            <option value="Cost">Cost</option>
-            <option value="Rent">Rent</option>
-          </select-input>
-          
-          <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="Note" tabindex="2" />
-
-          <!-- <file-input v-model="form.photo_path" :error="errors.photo_path" class="pr-6 pb-8 w-full lg:w-1/2" type="file" accept="image/*" label="Money receipt" tabindex="6" /> -->
-
-        </div>
-        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
-          <loading-button :loading="sending" class="btn-indigo" type="submit">ADD EXPENSE</loading-button>
-        </div>
+        <text-input disabled type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="Due" tabindex="5" />
         
-      </form>
+        <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="Payment type">
+            <option value="Product price">Product price</option>
+            <option value="Transport cost">Transport cost</option>
+            <option value="Tips">Tips</option>
+            <option value="Others">Others</option>
+        </select-input>
+        
+        <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="Note" tabindex="2" />
+
+        <!-- <file-input v-model="form.photo_path" :error="errors.photo_path" class="pr-6 pb-8 w-full lg:w-1/2" type="file" accept="image/*" label="Money receipt" tabindex="6" /> -->
+
     </div>
+    <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
+      <loading-button :loading="sending" class="btn-indigo" type="submit">ADD EXPENSE</loading-button>
   </div>
+  
+</form>
+</div>
+</div>
 </template>
 
 <script>
@@ -66,20 +67,19 @@ export default {
     SelectInput,
     TextInput,
     FileInput
-  },
-  props: {
+},
+props: {
     invoice_number: String,
     expenses: Object,
     suppliers: Array,
     errors: Object,
-  },
-  remember: 'form',
-  data() {
+},
+remember: 'form',
+data() {
     return {
       sending: false,
       form: {
         expense_type: Number(3), // Daily expense
-        // vendor_id: null,
         product_id: null,
         vendor_id: null,
         invoice_number: this.invoice_number,
@@ -91,10 +91,10 @@ export default {
         note: null,
         photo_path: null,
         created_at: new Date().toISOString().slice(0,10),
-      },
-    }
-  },
-  methods: {
+    },
+}
+},
+methods: {
     updateAmount: function() {
         var total = this.form.net_amount
         var paid = this.form.paid_amount
@@ -126,20 +126,20 @@ export default {
 
       if( this.form.is_all_paid ){
         formData.append('is_all_paid', 1)
-      }else{
+    }else{
         formData.append('is_all_paid', 0)
-      }
+    }
 
-      formData.append('photo_path', this.form.photo_path || '')
+    formData.append('photo_path', this.form.photo_path || '')
 
-      console.log(this.formData)
+    console.log(this.formData)
 
-      this.$inertia.post(this.route('dailyexpense.store'), formData, {
+    this.$inertia.post(this.route('dailyexpense.store'), formData, {
         onStart: () => this.sending = true,
         onFinish: () => this.sending = false,
-      })
+    })
 
-    },
-  },
+},
+},
 }
 </script>

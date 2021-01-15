@@ -1,31 +1,24 @@
 <template>
     <div class="">
 
-        <ul class="block mb-10">
-            <!-- Tilok -->
-            <li class="inline-block bg-indigo-600">
-                <inertia-link class="p-2 border-2 border-indigo-400 inline-block text-white" :href="route('expenses.products')" >
-                    <div class="caption">
-                        <h1>PRODUCTS</h1>
-                    </div>
+        <div class="p-1 mr-1 mb-4 flex flex-wrap">
+            
+            <button class="p-1 w-full lg:w-1/3">
+                <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.dailyexpense')">
+                    <h1>DAILY EXPENSES</h1>
                 </inertia-link>
-            </li>
-            <li class="inline-block ml-2">
-                <inertia-link class="p-2 border-2 border-indigo-400 inline-block" :href="route('expenses.services')" >
-                    <div class="caption">
-                        <h1>SERVICES</h1>
-                    </div>
+            </button>
+            <button class="p-1 w-full lg:w-1/3">
+                <inertia-link class="block p-3 bg-indigo-600 text-white border-2 border-blue-700"  :href="route('expenses.products')">
+                    <h1>PRODUCTS</h1>
                 </inertia-link>
-            </li>
-            <li class="inline-block ml-2">
-                <inertia-link class="p-2 border-2 border-indigo-400 inline-block" :href="route('expenses.dailyexpense')" >
-                    <div class="caption">
-                        <h1>DAILY EXPENSES</h1>
-                    </div>
+            </button>
+            <button class="p-1 w-full lg:w-1/3">
+                <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.services')">
+                    <h1>SERVICES</h1>
                 </inertia-link>
-            </li>
-        </ul>
-
+            </button>
+        </div>
 
         <div class="mb-8 flex justify-between items-center">
             <h1 class="font-bold text-3xl">PRODUCTS</h1>
@@ -64,6 +57,7 @@
                     <th class="px-6 pt-6 pb-4">&#35; পরিমান</th>
                     <th class="px-6 pt-6 pb-4">&#x09F3; প্রতিটির দাম</th>
                     <th class="px-6 pt-6 pb-4">&#x09F3; মোট টাকার পরিমান</th>
+                    <th class="px-6 pt-6 pb-4">&#x09F3; বাকি টাকার পরিমান</th>
                 </tr>
                 <tr
                     v-for="product in products.data"
@@ -71,20 +65,18 @@
                     class="hover:bg-gray-400 focus-within:bg-gray-100"
                 >
                     <td class="border-t">
-<!--                         <inertia-link
+                        <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('purchase.product.edit', product.id)"
+                            :href="route('product.edit', product.id)"
                         >
-                        </inertia-link> -->
-                        <span class="px-6 py-4 flex items-center focus:text-indigo-500">
-                            {{ product.created_at }}
-                        </span>
+                        {{ product.created_at }}
+                        </inertia-link>
                     </td>
 
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('purchase.product.edit', product.id)"
+                            :href="route('product.edit', product.id)"
                         >
                             <img
                                 v-if="product.photo_path"
@@ -103,33 +95,33 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('purchase.product.edit', product.id)"
+                            :href="route('product.edit', product.id)"
                         >
-                            {{ product.material.name }}
+                            {{ product.material }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('purchase.product.edit', product.id)"
+                            :href="route('product.edit', product.id)"
                             tabindex="-1"
                         >
-                            {{ product.supplier.name }}
+                            {{ product.supplier }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('purchase.product.edit', product.id)"
+                            :href="route('product.edit', product.id)"
                             tabindex="-1"
                         >
-                            {{ product.quantity }}
+                            {{ product.quantity }} {{ product.unit }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('purchase.product.edit', product.id)"
+                            :href="route('product.edit', product.id)"
                             tabindex="-1"
                         >
                             {{ product.unitprice }}
@@ -139,10 +131,20 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('purchase.product.edit', product.id)"
+                            :href="route('product.edit', product.id)"
                             tabindex="-1"
                         >
                             {{ product.total }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center"
+                            :href="route('product.edit', product.id)"
+                            tabindex="-1"
+                        >
+                            {{ product.due }}
                         </inertia-link>
                     </td>
 
@@ -153,8 +155,8 @@
                             tabindex="-1"
                         >
                             <icon
-                                name="trash"
-                                class="block w-6 h-6 fill-gray-400"
+                                name="cheveron-right"
+                                class="block w-6 h-6 fill-indigo-400"
                             />
                         </inertia-link>
                     </td>
@@ -190,9 +192,12 @@ export default {
     props: {
         products: Object,
         filters: Object
+
     },
     data() {
+        
         return {
+            isPaid: Boolean(this.products.data.is_all_paid),
             form: {
                 search: this.filters.search,
                 trashed: this.filters.trashed
