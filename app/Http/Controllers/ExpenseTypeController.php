@@ -52,7 +52,7 @@ class ExpenseTypeController extends Controller
                 'name' => $expense->name,
                 'note' => $expense->note,
                 'deleted_at' => $expense->deleted_at,
-                'expenses' => $expense->expenses()->get()->map->only([
+                'expenses' => $expense->expenses()->where('expense_type', 3)->get()->map->only([
                     'id',
                     'invoice_number',
                     'net_amount', 
