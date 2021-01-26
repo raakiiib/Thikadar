@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Models\Expense;
-use App\Models\ExpenseType;
+use App\Models\Beneficiary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -29,7 +29,8 @@ class DailyExpensesController extends Controller
                         'invoice' => $item->invoice_number,
                         'name' => $item->name,
                         'exp_type_id' => $item->product_id,
-                        'type' => $item->expenseType->name,
+                        'type' => $item->beneficiary->name,
+                        // 'type' => '',
                         'amount' => $item->net_amount,
                         'paid' => $item->paid_amount,
                         'due' => $item->due_amount,
@@ -51,7 +52,7 @@ class DailyExpensesController extends Controller
                 ->get()
                 ->map
                 ->only('id', 'name'),
-            'expenses' => Auth::user()->account->expenseTypes()
+            'expenses' => Auth::user()->account->beneficiary()
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(50)
@@ -139,7 +140,7 @@ class DailyExpensesController extends Controller
                 'invoice_number' => $expense->invoice_number,
                 'date' => date_format($expense->created_at, 'd-m-Y'),
                 'expense_type' => $expense->expense_type,
-                'name' => $expense->expenseType->name,
+                'name' => $expense->beneficiary->name,
                 // 'supplier' => $expense->getSupplier->name,
                 'is_all_paid' => $expense->is_all_paid,
                 'net_amount' => $expense->net_amount,
@@ -219,7 +220,7 @@ class DailyExpensesController extends Controller
         return Redirect::back()->with('success', 'Entry restored.');
     }
 
-    public function show(ExpenseType $expense)
+    public function show(Beneficiary $expense)
     {
         return Inertia::render('DailyExpenses/Single', [
             'type' => [

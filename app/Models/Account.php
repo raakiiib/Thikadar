@@ -74,9 +74,9 @@ class Account extends Model
         return $this->hasMany(Purchase::class);
     }
 
-     public function expenseTypes()
+     public function beneficiary()
     {
-        return $this->hasMany(ExpenseType::class);
+        return $this->hasMany(Beneficiary::class);
     }
 
 }

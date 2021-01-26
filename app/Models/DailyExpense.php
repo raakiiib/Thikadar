@@ -17,9 +17,9 @@ class DailyExpense extends Model
         return $this->belongsTo(Service::class, 'product_id');
     }
 
-    public function expenseType()
+    public function beneficiary()
     {
-        return $this->belongsTo(ExpenseType::class, 'product_id');
+        return $this->belongsTo(Beneficiary::class, 'product_id');
     }
 
     public function supplier()

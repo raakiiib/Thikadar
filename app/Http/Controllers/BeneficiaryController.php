@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ExpenseType;
+use App\Models\Beneficiary;
 use App\Models\Expense;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 
-class ExpenseTypeController extends Controller
+class BeneficiaryController extends Controller
 {
     public function index()
     {
         return Inertia::render('ExpenseTypes/Index', [
             'filters' => Request::all('search', 'trashed'),
-            'exptypes' => Auth::user()->account->expenseTypes()
+            'exptypes' => Auth::user()->account->beneficiary()
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(50)
@@ -34,7 +34,7 @@ class ExpenseTypeController extends Controller
     
     public function store()
     {
-        Auth::user()->account->ExpenseTypes()->create(
+        Auth::user()->account->beneficiary()->create(
             Request::validate([
                 'name' => ['required', 'max:100'],
                 'note' => ['nullable', 'max:150'],
@@ -44,7 +44,7 @@ class ExpenseTypeController extends Controller
         return Redirect::route('exptypes')->with('success', 'Type added.');
     }
 
-    public function edit(ExpenseType $expense)
+    public function edit(Beneficiary $expense)
     {
         return Inertia::render('ExpenseTypes/Edit', [
             'type' => [
@@ -65,7 +65,7 @@ class ExpenseTypeController extends Controller
         ]);
     }
 
-    public function update(ExpenseType $type)
+    public function update(Beneficiary $type)
     {
         $type->update(
             Request::validate([
@@ -77,14 +77,14 @@ class ExpenseTypeController extends Controller
         return Redirect::back()->with('success', 'Type updated.');
     }
 
-    public function destroy(ExpenseType $type)
+    public function destroy(Beneficiary $type)
     {
         $type->delete();
 
         return Redirect::back()->with('success', 'Type deleted.');
     }
 
-    public function restore(ExpenseType $type)
+    public function restore(Beneficiary $type)
     {
         $type->restore();
         return Redirect::back()->with('success', 'Type restored.');

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ExpenseType extends Model
+class Beneficiary extends Model
 {
     use SoftDeletes;
 

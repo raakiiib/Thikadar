@@ -9,7 +9,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\DailyExpensesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ExpensesController;
-use App\Http\Controllers\ExpenseTypeController;
+use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\StaffsController;
 use App\Http\Controllers\RawMaterialsController;
@@ -309,31 +309,31 @@ Route::get('expenses/services', [ExpensesController::class, 'services'])
     
 
 // Expense Types
-Route::get('exptypes', [ExpenseTypeController::class, 'index'])
+Route::get('exptypes', [BeneficiaryController::class, 'index'])
     ->name('exptypes')
     ->middleware('auth');
 
-Route::get('exptypes/create', [ExpenseTypeController::class, 'create'])
+Route::get('exptypes/create', [BeneficiaryController::class, 'create'])
     ->name('exptypes.create')
     ->middleware('auth');
 
-Route::post('exptypes', [ExpenseTypeController::class, 'store'])
+Route::post('exptypes', [BeneficiaryController::class, 'store'])
     ->name('exptypes.store')
     ->middleware('auth');
     
-Route::get('exptypes/{expense}/edit', [ExpenseTypeController::class, 'edit'])
+Route::get('exptypes/{expense}/edit', [BeneficiaryController::class, 'edit'])
     ->name('exptypes.edit')
     ->middleware('auth');
 
-Route::put('exptypes/{type}', [ExpenseTypeController::class, 'update'])
+Route::put('exptypes/{type}', [BeneficiaryController::class, 'update'])
     ->name('exptypes.update')
     ->middleware('auth');
 
-Route::delete('exptypes/{type}', [ExpenseTypeController::class, 'destroy'])
+Route::delete('exptypes/{type}', [BeneficiaryController::class, 'destroy'])
     ->name('exptypes.destroy')
     ->middleware('auth');
 
-Route::put('exptypes/{type}/restore', [ExpenseTypeController::class, 'restore'])
+Route::put('exptypes/{type}/restore', [BeneficiaryController::class, 'restore'])
     ->name('exptypes.restore')
     ->middleware('auth');
 
