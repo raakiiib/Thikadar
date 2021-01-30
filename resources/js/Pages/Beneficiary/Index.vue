@@ -59,7 +59,7 @@ import SearchFilter from '@/Shared/SearchFilter'
 import throttle from 'lodash/throttle'
 
 export default {
-    metaInfo: { title: 'Suppliers' },
+    metaInfo: { title: 'পাওনাদার' },
     layout: Layout,
     components: {
         Icon,

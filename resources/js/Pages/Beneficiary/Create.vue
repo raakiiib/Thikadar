@@ -27,7 +27,7 @@ import SelectInput from '@/Shared/SelectInput'
 import TextInput from '@/Shared/TextInput'
 
 export default {
-  metaInfo: { title: 'Create supplier' },
+  metaInfo: { title: 'পাওনাদার যোগ করুন' },
   layout: Layout,
   components: {
     LoadingButton,
