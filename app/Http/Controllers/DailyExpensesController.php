@@ -30,7 +30,6 @@ class DailyExpensesController extends Controller
                         'name' => $item->name,
                         'exp_type_id' => $item->product_id,
                         'type' => $item->beneficiary->name,
-                        // 'type' => '',
                         'amount' => $item->net_amount,
                         'paid' => $item->paid_amount,
                         'due' => $item->due_amount,

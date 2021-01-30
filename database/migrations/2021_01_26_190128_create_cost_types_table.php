@@ -18,7 +18,6 @@ class CreateCostTypesTable extends Migration
             $table->integer('account_id')->index();
             $table->string('name', 50)->nullable();
             $table->string('note', 300)->nullable();
-            $table->string('photo_path', 300)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

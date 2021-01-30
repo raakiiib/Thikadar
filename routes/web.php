@@ -10,6 +10,7 @@ use App\Http\Controllers\DailyExpensesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\BeneficiaryController;
+use App\Http\Controllers\CostTypeController;
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\StaffsController;
 use App\Http\Controllers\RawMaterialsController;
@@ -308,35 +309,64 @@ Route::get('expenses/services', [ExpensesController::class, 'services'])
     ->middleware('auth');
     
 
-// Expense Types
-Route::get('exptypes', [BeneficiaryController::class, 'index'])
-    ->name('exptypes')
+// Beneficiary
+Route::get('beneficiary', [BeneficiaryController::class, 'index'])
+    ->name('beneficiary')
     ->middleware('auth');
 
-Route::get('exptypes/create', [BeneficiaryController::class, 'create'])
-    ->name('exptypes.create')
+Route::get('beneficiary/create', [BeneficiaryController::class, 'create'])
+    ->name('beneficiary.create')
     ->middleware('auth');
 
-Route::post('exptypes', [BeneficiaryController::class, 'store'])
-    ->name('exptypes.store')
+Route::post('beneficiary', [BeneficiaryController::class, 'store'])
+    ->name('beneficiary.store')
     ->middleware('auth');
     
-Route::get('exptypes/{expense}/edit', [BeneficiaryController::class, 'edit'])
-    ->name('exptypes.edit')
+Route::get('beneficiary/{expense}/edit', [BeneficiaryController::class, 'edit'])
+    ->name('beneficiary.edit')
     ->middleware('auth');
 
-Route::put('exptypes/{type}', [BeneficiaryController::class, 'update'])
-    ->name('exptypes.update')
+Route::put('beneficiary/{type}', [BeneficiaryController::class, 'update'])
+    ->name('beneficiary.update')
     ->middleware('auth');
 
-Route::delete('exptypes/{type}', [BeneficiaryController::class, 'destroy'])
-    ->name('exptypes.destroy')
+Route::delete('beneficiary/{type}', [BeneficiaryController::class, 'destroy'])
+    ->name('beneficiary.destroy')
     ->middleware('auth');
 
-Route::put('exptypes/{type}/restore', [BeneficiaryController::class, 'restore'])
-    ->name('exptypes.restore')
+Route::put('beneficiary/{type}/restore', [BeneficiaryController::class, 'restore'])
+    ->name('beneficiary.restore')
     ->middleware('auth');
 
+
+####    COST TYPES    ####
+Route::get('costs', [CostTypeController::class, 'index'])
+    ->name('costs')
+    ->middleware('auth');
+
+Route::get('costs/create', [CostTypeController::class, 'create'])
+    ->name('costs.create')
+    ->middleware('auth');
+
+Route::post('costs', [CostTypeController::class, 'store'])
+    ->name('costs.store')
+    ->middleware('auth');
+    
+Route::get('costs/{expense}/edit', [CostTypeController::class, 'edit'])
+    ->name('costs.edit')
+    ->middleware('auth');
+
+Route::put('costs/{type}', [CostTypeController::class, 'update'])
+    ->name('costs.update')
+    ->middleware('auth');
+
+Route::delete('costs/{type}', [CostTypeController::class, 'destroy'])
+    ->name('costs.destroy')
+    ->middleware('auth');
+
+Route::put('costs/{type}/restore', [CostTypeController::class, 'restore'])
+    ->name('costs.restore')
+    ->middleware('auth');
 ######## IMAGE ########
 Route::get('/img/{path}', [ImagesController::class, 'show'])->where('path', '.*');
 

@@ -1,19 +1,19 @@
 <template>
   <div>
     <h1 class="mb-8 font-bold text-3xl">
-      <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('exptypes')">Expense types</inertia-link>
-      <span class="text-indigo-400 font-medium">/</span> Create
+      <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('beneficiary')">পাওনাদার</inertia-link>
+      <span class="text-indigo-400 font-medium">/</span> যোগ
   </h1>
   <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
       <form @submit.prevent="submit">
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-          <text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Name" />
+          <text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="নাম" />
 
-          <text-input v-model="form.note" :error="errors.address" class="pr-6 pb-8 w-full lg:w-1/1" label="Note" />
+          <text-input v-model="form.note" :error="errors.address" class="pr-6 pb-8 w-full lg:w-1/1" label="বিবরণ" />
           
     </div>
     <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
-      <loading-button :loading="sending" class="btn-indigo" type="submit">ADD ITEM</loading-button>
+      <loading-button :loading="sending" class="btn-indigo" type="submit">যোগ করুন</loading-button>
   </div>
 </form>
 </div>
@@ -49,7 +49,7 @@ data() {
 },
 methods: {
     submit() {
-      this.$inertia.post(this.route('exptypes.store'), this.form, {
+      this.$inertia.post(this.route('beneficiary.store'), this.form, {
         onStart: () => this.sending = true,
         onFinish: () => this.sending = false,
     })

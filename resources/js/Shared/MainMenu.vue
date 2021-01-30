@@ -43,10 +43,17 @@
 </div>
 
 <div class="mb-4">
-  <inertia-link class="flex items-center group py-3" :href="route('exptypes')">
-    <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('exptypes') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
-    <div :class="isUrl('exptypes') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">খরচের ধরন</div>
-</inertia-link>
+  <inertia-link class="flex items-center group py-3" :href="route('beneficiary')">
+    <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('beneficiary') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+    <div :class="isUrl('beneficiary') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">পাওনাদার</div>
+  </inertia-link>
+</div>
+
+<div class="mb-4">
+  <inertia-link class="flex items-center group py-3" :href="route('costs')">
+    <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('costs') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+    <div :class="isUrl('costs') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">খরচের ধরন</div>
+  </inertia-link>
 </div>
 
 <div class="mb-4">

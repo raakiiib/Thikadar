@@ -14,9 +14,9 @@ class BeneficiaryController extends Controller
 {
     public function index()
     {
-        return Inertia::render('ExpenseTypes/Index', [
+        return Inertia::render('Beneficiary/Index', [
             'filters' => Request::all('search', 'trashed'),
-            'exptypes' => Auth::user()->account->beneficiary()
+            'beneficiary' => Auth::user()->account->beneficiary()
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(50)
@@ -28,7 +28,7 @@ class BeneficiaryController extends Controller
     public function create()
     {
 
-        return Inertia::render('ExpenseTypes/Create');
+        return Inertia::render('Beneficiary/Create');
     
     }
     
@@ -41,12 +41,12 @@ class BeneficiaryController extends Controller
             ])
         );
 
-        return Redirect::route('exptypes')->with('success', 'Type added.');
+        return Redirect::route('beneficiary')->with('success', 'Type added.');
     }
 
     public function edit(Beneficiary $expense)
     {
-        return Inertia::render('ExpenseTypes/Edit', [
+        return Inertia::render('Beneficiary/Edit', [
             'type' => [
                 'id' => $expense->id,
                 'name' => $expense->name,

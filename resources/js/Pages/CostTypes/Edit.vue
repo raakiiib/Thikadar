@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="mb-8 font-bold text-3xl">
-            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('exptypes')">&#8678; খরচের ধরন</inertia-link>
+            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('costs')">&#8678; খরচের ধরন</inertia-link>
             <span class="text-indigo-400 font-medium">/</span>
             {{ form.name }}
         </h1>
@@ -175,19 +175,19 @@ export default {
         },
         submit() {
             console.log(this.form)
-            this.$inertia.put(this.route('exptypes.update', this.type.id), this.form, {
+            this.$inertia.put(this.route('costs.update', this.type.id), this.form, {
                 onStart: () => this.sending = true,
                 onFinish: () => this.sending = false,
             })
         },
         destroy() {
             if (confirm('Are you sure you want to delete this type?')) {
-                this.$inertia.delete(this.route('exptypes.destroy', this.type.id))
+                this.$inertia.delete(this.route('costs.destroy', this.type.id))
             }
         },
         restore() {
             if (confirm('Are you sure you want to restore this type?')) {
-                this.$inertia.put(this.route('exptypes.restore', this.type.id))
+                this.$inertia.put(this.route('costs.restore', this.type.id))
             }
         },
     },

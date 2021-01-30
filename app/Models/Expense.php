@@ -7,26 +7,37 @@ class Expense extends Model
 {
     use SoftDeletes;
 
+    // Material Info
     public function getMaterial()
     {
         return $this->belongsTo(RawMaterial::class, 'product_id');
     }
 
+    // Service Info
     public function service()
     {
         return $this->belongsTo(Service::class, 'product_id');
     }
 
+    // Expense type
     public function expenseType()
     {
         return $this->belongsTo(ExpenseType::class, 'product_id');
     }
 
+    // Beneficiary info
+    public function beneficiary()
+    {
+        return $this->belongsTo(Beneficiary::class, 'product_id');
+    }
+
+    // Supplier info
     public function getSupplier()
     {
         return $this->belongsTo(Supplier::class, 'vendor_id');
     }
 
+    // Payments
     public function payments()
     {
         return $this->hasMany(Payment::class, 'expense_id');

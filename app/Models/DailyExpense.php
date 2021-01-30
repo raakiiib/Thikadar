@@ -19,7 +19,7 @@ class DailyExpense extends Model
 
     public function beneficiary()
     {
-        return $this->belongsTo(Beneficiary::class, 'product_id');
+        return $this->belongsTo(Beneficiary::class, 'vendor_id');
     }
 
     public function supplier()
