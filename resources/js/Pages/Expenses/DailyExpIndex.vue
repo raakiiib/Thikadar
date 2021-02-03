@@ -1,7 +1,7 @@
 <template>
     <div class="">
 
-        <div class="p-1 mr-1 mb-4 flex flex-wrap">
+        <!-- <div class="p-1 mr-1 mb-4 flex flex-wrap">
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 bg-indigo-600 text-white border-2 border-blue-700"  :href="route('expenses.dailyexpense')">
                     <h1>দৈনন্দিন খরচ</h1>
@@ -17,7 +17,7 @@
                     <h1>সেবা</h1>
                 </inertia-link>
             </button>
-        </div>
+        </div> -->
 
         <div class="mb-8 flex justify-between items-center">
             <h1 class="font-bold text-3xl">দৈনন্দিন খরচ</h1>

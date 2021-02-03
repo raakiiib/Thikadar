@@ -1,18 +1,42 @@
 <template>
-  <div>
-    <div class="mb-4">
-      <inertia-link class="flex items-center group py-3" :href="route('dashboard')">
-        <icon name="dashboard" class="w-4 h-4 mr-2" :class="isUrl('') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
-        <div :class="isUrl('') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">ড্যাশবোর্ড</div>
-    </inertia-link>
-</div>
+    <div>
+        <div class="mb-4">
+            <inertia-link class="flex items-center group py-3" :href="route('dashboard')">
+                <icon name="dashboard" class="w-4 h-4 mr-2" :class="isUrl('') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+                <div :class="isUrl('') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">ড্যাশবোর্ড</div>
+            </inertia-link>
+        </div>
 
-<div class="mb-4">
-  <inertia-link class="flex items-center group py-3" :href="route('expenses.dailyexpense')">
-    <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('expenses.products') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
-    <div :class="isUrl('expenses') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">খরচ</div>
-</inertia-link>
-</div>
+        <div class="mb-4">
+            <inertia-link class="flex items-center group py-3" :href="route('expenses.dailyexpense')">
+                <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('expenses/regular') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+                <div :class="isUrl('expenses/regular') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">দৈনন্দিন খরচ</div>
+            </inertia-link>
+        </div>
+
+        <div class="mb-4">
+            <inertia-link class="flex items-center group py-3" :href="route('expenses.products')">
+                    <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('expenses/products') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+                <div :class="isUrl('expenses/products') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">পণ্য ক্রয় </div>
+            </inertia-link>
+        </div>
+
+        <div class="mb-4">
+            <inertia-link class="flex items-center group py-3" :href="route('expenses.services')">
+                    <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('expenses/services') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+                <div :class="isUrl('expenses/services') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">সেবা সমূহ </div>
+            </inertia-link>
+        </div>
+
+        <!-- <div class="mb-4">
+            <inertia-link class="flex items-center group py-3" :href="route('settings')">
+                    <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('settings') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+                <div :class="isUrl('settings') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">সেটিংস </div>
+            </inertia-link>
+        </div> -->
+
+
+
 
     <!-- <div class="mb-4">
       <inertia-link class="flex items-center group py-3" :href="route('invoices')">
@@ -46,14 +70,14 @@
   <inertia-link class="flex items-center group py-3" :href="route('beneficiary')">
     <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('beneficiary') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
     <div :class="isUrl('beneficiary') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">পাওনাদার</div>
-  </inertia-link>
+</inertia-link>
 </div>
 
 <div class="mb-4">
   <inertia-link class="flex items-center group py-3" :href="route('costs')">
     <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('costs') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
     <div :class="isUrl('costs') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">খরচের ধরন</div>
-  </inertia-link>
+</inertia-link>
 </div>
 
 <div class="mb-4">
@@ -91,19 +115,6 @@
     </inertia-link>
 </div>
 
-<div class="mb-4">
-    <dropdown class="mt-1" placement="bottom-end">
-        <inertia-link class="flex items-center group py-3" :href="route('contacts')">
-            <icon name="users" class="w-4 h-4 mr-2" :class="isUrl('contacts') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
-            <div :class="isUrl('contacts') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">Dropdown</div>
-        </inertia-link>
-        <div slot="dropdown" class="mt-2 py-2 shadow-xl bg-white rounded text-sm">
-            <inertia-link class="block px-6 py-2 hover:bg-indigo-500 hover:text-white" :href="route('users.edit', $page.auth.user.id)">My Profile</inertia-link>
-            <inertia-link class="block px-6 py-2 hover:bg-indigo-500 hover:text-white" :href="route('users')">Manage Users</inertia-link>
-            <inertia-link class="block px-6 py-2 hover:bg-indigo-500 hover:text-white" :href="route('logout')" method="post">Logout</inertia-link>
-        </div>
-    </dropdown>
-</div>
 
 </div>
 </template>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\ProductsController;
@@ -380,6 +381,11 @@ Route::put('costs/{type}/restore', [CostTypeController::class, 'restore'])
 ######## IMAGE ########
 Route::get('/img/{path}', [ImagesController::class, 'show'])->where('path', '.*');
 
+
+// Settings
+Route::get('settings', [SettingsController::class, 'index'])
+    ->name('settings')
+    ->middleware('auth');
 // 500 error
 
 Route::get('500', function () {
