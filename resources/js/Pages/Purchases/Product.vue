@@ -34,9 +34,9 @@
                     <text-input disabled type="number" step="0.01" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/3" label="বাকি টাকার পরিমান"/>
 
                     <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
-                        <option value="মূল্য/ দাম">মূল্য/ দাম</option>
-                        <option value="গাড়ি ভাড়া">গাড়ি ভাড়া</option>
-                        <option value="অন্যান্য">অন্যান্য</option>
+                        <option v-for="cost in pay_types.data" :key="cost.id" :value="cost.name">
+                            {{cost.name}}
+                        </option>
                     </select-input>
                     
                     <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="বর্ণনা"/>
@@ -73,6 +73,7 @@
             products: Array,
             invoice_number: String,
             errors: Object,
+            pay_types: Object,
         },
         remember: 'form',
         data() {

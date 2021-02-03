@@ -13,6 +13,16 @@ class Expense extends Model
         return $this->belongsTo(RawMaterial::class, 'product_id');
     }
 
+    public function material_expenses()
+    {
+        return $this->belongsTo(RawMaterial::class, 'product_id');
+    }
+
+    public function vendor_expenses()
+    {
+        return $this->belongsTo(Supplier::class, 'vendor_id');
+    }
+
     // Service Info
     public function service()
     {

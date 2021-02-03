@@ -22,7 +22,8 @@ class DailyExpensesController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(25)
-                ->transform( function ( $item ){
+                ->transform( function ( $item ) {
+
                     return [
                         'id' => $item->id,
                         'created_at' => date_format($item->created_at, 'd-m-Y'),
@@ -36,6 +37,7 @@ class DailyExpensesController extends Controller
                         'note' => $item->note,
                         'deleted_at' => $item->deleted_at,
                     ];
+
                 })
         ]);
     }
@@ -56,6 +58,11 @@ class DailyExpensesController extends Controller
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(50)
                 ->only('id', 'name', 'note', 'deleted_at'),
+            'costs' => Auth::user()->account->cost_types()
+                ->orderBy('name')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate(50)
+                ->only('id', 'name',)
         ]);
     }
 
@@ -141,6 +148,7 @@ class DailyExpensesController extends Controller
                 'expense_type' => $expense->expense_type,
                 'name' => $expense->beneficiary->name,
                 // 'supplier' => $expense->getSupplier->name,
+                // 'payment_type' => $expense->
                 'is_all_paid' => $expense->is_all_paid,
                 'net_amount' => $expense->net_amount,
                 'paid_amount' => $expense->paid_amount,
@@ -155,6 +163,11 @@ class DailyExpensesController extends Controller
                     'created_at',
                 ]),
             ],
+            'costs' => Auth::user()->account->cost_types()
+                ->orderBy('name')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate(50)
+                ->only('id', 'name',)
         ]);
     }
 

@@ -21,13 +21,13 @@ class DatabaseSeeder extends Seeder
             'owner' => true,
         ]);
 
-        factory(User::class, 5)->create(['account_id' => $account->id]);
+        factory(User::class, 3)->create(['account_id' => $account->id]);
 
 
-        $suppliers = factory(Supplier::class, 20)
+        $suppliers = factory(Supplier::class, 10)
             ->create(['account_id' => $account->id]);
 
-        factory(Contact::class, 20)
+        factory(Contact::class, 10)
             ->create(['account_id' => $account->id])
             ->each(function ($contact) use ($suppliers) {
                 $contact->update(['supplier_id' => $suppliers->random()->id]);

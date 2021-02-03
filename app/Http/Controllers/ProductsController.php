@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Models\Expense;
+use App\Models\RawMaterial;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -31,6 +33,8 @@ class ProductsController extends Controller
                         'total' => $product->net_amount,
                         'due' => $product->due_amount,
                         'is_all_paid' => $product->is_all_paid,
+                        'product_id' => $product->product_id,
+                        'vendor_id' => $product->vendor_id,
                         'created_at' => $product->created_at,
                         'deleted_at' => $product->deleted_at,
                         'supplier' => $product->getSupplier->name,
@@ -57,6 +61,11 @@ class ProductsController extends Controller
                 ->get()
                 ->map
                 ->only('id', 'name', 'type'),
+            'pay_types' => Auth::user()->account->cost_types()
+                ->orderBy('name')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate(50)
+                ->only('id', 'name'),
             'invoice_number' => $this->_generateInvoice(),
         ]);
     }
@@ -132,12 +141,58 @@ class ProductsController extends Controller
         return Redirect::route('expenses.products')->with('success', 'Expense added.');
     }
 
+    public function show(RawMaterial $product)
+    {
+        $data = Inertia::render('Products/Single', [
+            'products' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'note' => $product->note,
+                'deleted_at' => $product->deleted_at,
+                'expenses' => $product->material_expenses()->where('expense_type', 1)->get()->map->only([
+                    'id',
+                    'invoice_number',
+                    'net_amount',
+                    'paid_amount', 
+                    'due_amount',
+                    'note', 
+                    'created_at',
+                ]),
+            ],
+        ]);
+
+        return $data;
+    }
+
+
+    public function show_vendor(Supplier $vendor)
+    {
+        $data = Inertia::render('Expenses/VendorSingle', [
+            'vendor' => [
+                'id' => $vendor->id,
+                'name' => $vendor->name,
+                'phone' => $vendor->phone,
+                'deleted_at' => $vendor->deleted_at,
+                'expenses' => $vendor->vendor_expenses()->where('expense_type', 1)->get()->map->only([
+                    'id',
+                    'invoice_number',
+                    'net_amount',
+                    'paid_amount', 
+                    'due_amount',
+                    'note', 
+                    'created_at',
+                ]),
+            ],
+        ]);
+
+        return $data;
+    }
+
     public function edit(Expense $product)
     {
         
         return Inertia::render('Products/Edit', [
             'expense' => [
-
             	'id' => $product->id,
                 'invoice_number' => $product->invoice_number,
                 'quantity' => $product->quantity,
@@ -162,6 +217,11 @@ class ProductsController extends Controller
                     'created_at',
                 ]),
             ],
+            'pay_types' => Auth::user()->account->cost_types()
+                ->orderBy('name')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate(50)
+                ->only('id', 'name'),
         ]);
     }
 

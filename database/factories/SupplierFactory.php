@@ -10,7 +10,7 @@ $factory->define(App\Models\Supplier::class, function (Faker $faker) {
         'address' => $faker->streetAddress,
         'city' => $faker->city,
         'region' => $faker->state,
-        'country' => 'US',
+        'country' => 'BD',
         'postal_code' => $faker->postcode,
     ];
 });

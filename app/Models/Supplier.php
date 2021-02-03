@@ -18,9 +18,14 @@ class Supplier extends Model
         return $this->hasMany(Expense::class, 'product_id');
     }
 
-    public function supplier()
+    public function vendor_expenses()
     {
         return $this->hasMany(Expense::class, 'vendor_id');
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
     }
 
     public function scopeFilter($query, array $filters)

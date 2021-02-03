@@ -41,12 +41,10 @@
                         label="পরিষোধ" 
                         tabindex="2" />
 
-                    <select-input v-if="!expense.is_all_paid" v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
-                        <!-- <option :value="null" /> -->
-                        <option value="Product price">Product price</option>
-                        <option value="Transport cost">Transport cost</option>
-                        <option value="Tips">Tips</option>
-                        <option value="Others">Others</option>
+                    <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
+                        <option v-for="cost in pay_types.data" :key="cost.id" :value="cost.name">
+                            {{cost.name}}
+                        </option>
                     </select-input>
 
                     <text-input v-if="!expense.is_all_paid" v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="বর্ণনা" tabindex="3" />
@@ -131,6 +129,7 @@ export default {
     props: {
         errors: Object,
         expense: Object,
+        pay_types: Object,
     },
     remember: 'form',
     data() {

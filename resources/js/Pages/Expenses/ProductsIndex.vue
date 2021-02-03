@@ -73,40 +73,21 @@
                         </inertia-link>
                     </td>
 
-                    <!-- <td class="border-t">
-                        <inertia-link
-                            class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('product.edit', product.id)"
-                        >
-                            <img
-                                v-if="product.photo_path"
-                                class="block w-5 h-5 rounded-full mr-2 -my-2"
-                                :src="product.photo_path"
-                            />
-                            {{ product.invoice }}
-                            <icon
-                                v-if="product.deleted_at"
-                                name="trash"
-                                class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2"
-                            />
-                        </inertia-link>
-                    </td> -->
-
                     <td class="border-t">
                         <inertia-link
-                            class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('product.edit', product.id)"
+                            class="px-6 py-4 flex items-center text-indigo-600 focus:text-indigo-500"
+                            :href="route('single.products.show', product.product_id)"
                         >
-                            {{ product.material }}
+                            <strong>{{ product.material }}</strong>
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
-                            class="px-6 py-4 flex items-center"
-                            :href="route('product.edit', product.id)"
+                            class="px-6 py-4 flex items-center text-blue-600 focus:text-blue-500"
+                            :href="route('vendor.expense.show', product.vendor_id)"
                             tabindex="-1"
                         >
-                            {{ product.supplier }}
+                            <strong>{{ product.supplier }}</strong>
                         </inertia-link>
                     </td>
                     <td class="border-t">

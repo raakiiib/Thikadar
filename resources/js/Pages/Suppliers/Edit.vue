@@ -30,6 +30,87 @@
                 </div>
             </form>
         </div>
+        <!-- Showing all expenses under this item -->
+        <h2 class="mt-12 font-bold text-2xl">{{ form.name }} এর সকল হিসাব</h2>
+        <div class="mt-6 bg-white rounded shadow overflow-x-auto">
+            <table class="w-full whitespace-no-wrap">
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4">তারিখ</th>
+                    <th class="px-6 pt-6 pb-4">বর্ণনা</th>
+                    <th class="px-6 pt-6 pb-4">মোট টাকা</th>
+                    <th class="px-6 pt-6 pb-4">পরিষোধিত টাকা</th>
+                    <th class="px-6 pt-6 pb-4" colspan="2">বাকি টাকা</th>
+                </tr>
+                
+                <tr v-for="expense in supplier.expenses" :key="expense.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('dailyexpense.edit', expense.id)">
+                            {{ expense.created_at | formatDate }}
+                            <icon v-if="expense.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('dailyexpense.edit', expense.id)" tabindex="-1">
+                            {{ expense.note }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('dailyexpense.edit', expense.id)" tabindex="-1">
+                            {{ expense.net_amount }}
+                        </inertia-link>
+                    </td>"-1">
+
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('dailyexpense.edit', expense.id)" tabindex="-1">
+                            {{ expense.paid_amount }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('dailyexpense.edit', expense.id)" tabindex="-1">
+                            {{ expense.due_amount }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t w-px">
+                        <inertia-link class="px-4 flex items-center" :href="route('dailyexpense.edit', expense.id)" tabindex="-1">
+                            <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
+                        </inertia-link>
+                    </td>
+
+                </tr>
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td>&nbsp;</td>
+                    <td class="border-t">
+                        <span class="px-6 py-4 flex items-center">
+                            মোট হিসাব
+                        </span>
+                    </td>
+                    <td class="border-t">
+                        <span class="px-6 py-4 flex items-center">
+                            {{ totalNetAmnt() }}
+                        </span>
+                    </td>
+                    <td class="border-t">
+                        <span class="px-6 py-4 flex items-center">
+                            {{ totalPaidAmnt() }}
+                        </span>
+                    </td>
+                    <td class="border-t">
+                        <span class="px-6 py-4 flex items-center">
+                            {{ totalDueAmnt() }}
+                        </span>
+                    </td>
+                </tr>
+                <tr v-if="supplier.expenses.length === 0">
+                    <td class="border-t px-6 py-4" colspan="4">No entry found.</td>
+                </tr>
+            </table>
+        </div>
+
         <h2 class="mt-12 font-bold text-2xl">Contacts</h2>
         <div class="mt-6 bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
@@ -66,6 +147,7 @@
                 </tr>
             </table>
         </div>
+
     </div>
 </template>
 
@@ -110,6 +192,30 @@ export default {
         }
     },
     methods: {
+        totalNetAmnt: function(){
+
+            let total = [];
+            Object.entries(this.supplier.expenses).forEach(([key, val]) => {
+                total.push(val.net_amount) // the value of the current key.
+            });
+            return total.reduce(function(total, num){ return total + num }, 0);
+        },
+        totalPaidAmnt: function(){
+
+            let total = [];
+            Object.entries(this.supplier.expenses).forEach(([key, val]) => {
+                total.push(val.paid_amount) // the value of the current key.
+            });
+            return total.reduce(function(total, num){ return total + num }, 0);
+        },
+        totalDueAmnt: function(){
+
+            let total = [];
+            Object.entries(this.supplier.expenses).forEach(([key, val]) => {
+                total.push(val.due_amount) // the value of the current key.
+            });
+            return total.reduce(function(total, num){ return total + num }, 0);
+        },
         created(){
             console.log('hello');
         },

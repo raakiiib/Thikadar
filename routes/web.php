@@ -242,9 +242,19 @@ Route::post('expenses/products', [ProductsController::class, 'store'])
     ->name('product.store')
     ->middleware('auth');
 // Product Edit 
-Route::get('expenses/products/{product}/edit', [ProductsController::class, 'edit'])
+Route::get('expenses/product/{product}/edit', [ProductsController::class, 'edit'])
     ->name('product.edit')
     ->middleware('auth');
+// Show individual Product by ProductType
+Route::get('expenses/product/{product}/show', [ProductsController::class, 'show'])
+    ->name('single.products.show')
+    ->middleware('auth');
+
+// Show individual Product by ProductType
+Route::get('expenses/vendor/{vendor}/show', [ProductsController::class, 'show_vendor'])
+    ->name('vendor.expense.show')
+    ->middleware('auth');
+
 // Product Update
 Route::put('expenses/products/{product}', [ProductsController::class, 'update'])
     ->name('product.update')

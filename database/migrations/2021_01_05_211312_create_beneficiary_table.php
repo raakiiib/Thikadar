@@ -13,7 +13,7 @@ class CreateBeneficiaryTable extends Migration
      */
     public function up()
     {
-        Schema::create('beneficiary', function (Blueprint $table) {
+        Schema::create('beneficiaries', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id')->index();
             $table->string('name', 50)->nullable();
@@ -34,6 +34,6 @@ class CreateBeneficiaryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expense_types');
+        Schema::dropIfExists('beneficiaries');
     }
 }

@@ -12,7 +12,7 @@
 
           <text-input type="date" value="28-12-2020" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="তারিখ" />
 
-          <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/2" label="প্রাপক" tabindex="1">
+          <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/2" label="পাওনাদার" tabindex="1">
               <option :value="null" />
               <option v-for="expense in expenses.data" :key="expense.id" :value="expense.id">
                   {{ expense.name }}
@@ -31,14 +31,10 @@
         <text-input disabled type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="বাকি টাকার পরিমান" tabindex="5" />
         
         <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
-            <option value="মূল্য/ দাম">মূল্য/ দাম</option>
-            <option value="গাড়ি ভাড়া">গাড়ি ভাড়া</option>
-            <option value="মজুরি">মজুরি</option>
-            <option value="ক্রয়">ক্রয়</option>
-            <option value="মেরামত">মেরামত</option>
-            <option value="বেতন">বেতন</option>
-            <option value="চাঁদা">চাঁদা</option>
-            <option value="অন্যান্য">অন্যান্য</option>
+            <option :value="null" />
+            <option v-for="cost in costs.data" :key="cost.id" :value="cost.name">
+                {{cost.name}}
+            </option>
         </select-input>
         
         <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="বর্ণনা" tabindex="2" />
@@ -64,7 +60,7 @@ import FileInput from '@/Shared/FileInput'
 
 
 export default {
-  metaInfo: { title: 'CREATE MATERIAL' },
+  metaInfo: { title: 'দৈনন্দিন খরচ যোগ' },
   layout: Layout,
   components: {
     LoadingButton,
@@ -77,6 +73,7 @@ props: {
     expenses: Object,
     suppliers: Array,
     errors: Object,
+    costs: Object,
 },
 remember: 'form',
 data() {
