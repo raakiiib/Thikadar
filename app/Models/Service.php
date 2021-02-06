@@ -13,6 +13,11 @@ class Service extends Model
         return $this->hasMany(Supplier::class);
     }
 
+    public function service_expenses()
+    {
+        return $this->hasMany(Expense::class, 'product_id');
+    }
+
     // public function product()
     // {
     //     return $this->hasMany(Purchase::class);

@@ -48,80 +48,77 @@ class PurchasesController extends Controller
     }
 
 
-    public function createProduct()
-    {
-        return Inertia::render('Purchases/Product', [
-            'suppliers' => Auth::user()->account
-                ->suppliers()
-                ->orderBy('name')
-                ->get()
-                ->map
-                ->only('id', 'name'),
-            'products' => Auth::user()->account
-                ->materials()
-                ->orderBy('name')
-                ->get()
-                ->map
-                ->only('id', 'name', 'type'),
-            'invoice_number' => $this->_generateInvoice(),
-        ]);
-    }
+    // public function createProduct()
+    // {
+    //     return Inertia::render('Purchases/Product', [
+    //         'suppliers' => Auth::user()->account
+    //             ->suppliers()
+    //             ->orderBy('name')
+    //             ->get()
+    //             ->map
+    //             ->only('id', 'name'),
+    //         'products' => Auth::user()->account
+    //             ->materials()
+    //             ->orderBy('name')
+    //             ->get()
+    //             ->map
+    //             ->only('id', 'name', 'type'),
+    //         'invoice_number' => $this->_generateInvoice(),
+    //     ]);
+    // }
 
-    public function createDailyExpenses()
-    {
-        return Inertia::render('Purchases/DailyExpense', [
-            'invoice_number' => $this->_generateInvoice(),
-            'products' => Auth::user()->account
-                ->materials()
-                ->orderBy('name')
-                ->get()
-                ->map
-                ->only('id', 'name', 'type')
-        ]);
-    }
+    // public function createDailyExpenses()
+    // {
+    //     return Inertia::render('Purchases/DailyExpense', [
+    //         'invoice_number' => $this->_generateInvoice(),
+    //         'products' => Auth::user()->account
+    //             ->materials()
+    //             ->orderBy('name')
+    //             ->get()
+    //             ->map
+    //             ->only('id', 'name', 'type')
+    //     ]);
+    // }
 
 
-    public function editDailyExpenses(DailyExpense $expense)
-    {
-        // dd($supplier);
-        return Inertia::render('Purchases/EditDailyExp', [
-            'expense' => [
-                'id' => $expense->id,
-                'invoice_number' => $expense->invoice_number,
-                'name' => $expense->name,
-                'note' => $expense->note,
-                'net_amount' => $expense->net_amount,
-                'paid_amount' => $expense->paid_amount,
-                'due_amount' => $expense->due_amount,
-                'is_all_paid' => $expense->is_all_paid,
-                'created_at' => $expense->created_at,
-                'deleted_at' => $expense->deleted_at,
-                // 'contacts' => $expense->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
-            ],
-        ]);
-    }
+    // public function editDailyExpenses(DailyExpense $expense)
+    // {
+    //     return Inertia::render('Purchases/EditDailyExp', [
+    //         'expense' => [
+    //             'id' => $expense->id,
+    //             'invoice_number' => $expense->invoice_number,
+    //             'name' => $expense->name,
+    //             'note' => $expense->note,
+    //             'net_amount' => $expense->net_amount,
+    //             'paid_amount' => $expense->paid_amount,
+    //             'due_amount' => $expense->due_amount,
+    //             'is_all_paid' => $expense->is_all_paid,
+    //             'created_at' => $expense->created_at,
+    //             'deleted_at' => $expense->deleted_at,
+    //         ],
+    //     ]);
+    // }
 
-    public function editProduct(Purchases $purchase)
-    {
-        return Inertia::render('Purchases/EditProduct', [
-            'purchases' => [
-                'id' => $purchase->id,
-                'supplier_id' => '',
-                'material_id' => '',
-                'invoice_number' => $purchase->invoice_number,
-                'quantity' => $supplier->email,
-                'phone' => $supplier->phone,
-                'address' => $supplier->address,
-                'city' => $supplier->city,
-                'region' => $supplier->region,
-                'country' => $supplier->country,
-                'postal_code' => $supplier->postal_code,
-                'deleted_at' => $supplier->deleted_at,
-                'contacts' => $supplier->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
-            ],
-        ]);
-    }
-
+    // public function editProduct(Purchases $purchase)
+    // {
+    //     return Inertia::render('Purchases/EditProduct', [
+    //         'purchases' => [
+    //             'id' => $purchase->id,
+    //             'supplier_id' => '',
+    //             'material_id' => '',
+    //             'invoice_number' => $purchase->invoice_number,
+    //             'quantity' => $supplier->email,
+    //             'phone' => $supplier->phone,
+    //             'address' => $supplier->address,
+    //             'city' => $supplier->city,
+    //             'region' => $supplier->region,
+    //             'country' => $supplier->country,
+    //             'postal_code' => $supplier->postal_code,
+    //             'deleted_at' => $supplier->deleted_at,
+    //             'contacts' => $supplier->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
+    //         ],
+    //     ]);
+    // }
 
     public function createServices()
     {

@@ -1,7 +1,7 @@
 <template>
     <div class="">
 
-        <div class="p-1 mr-1 mb-4 flex flex-wrap">
+        <!-- <div class="p-1 mr-1 mb-4 flex flex-wrap">
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.dailyexpense')">
                     <h1>দৈনন্দিন খরচ</h1>
@@ -17,15 +17,14 @@
                     <h1>সেবা</h1>
                 </inertia-link>
             </button>
-        </div>
+        </div> -->
 
 
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">SERVICES</h1>
-
-            <inertia-link class="btn-indigo" :href="route('purchase.service')">
-                <span>NEW</span>
-                <span class="hidden md:inline">CONTRACT</span>
+            <h1 class="font-bold text-3xl">সেবা সমূহ </h1>
+            <inertia-link class="btn-indigo" :href="route('expenses.service')">
+                <span>নতুন</span>
+                <span class="hidden md:inline">সেবা যোগ করুন</span>
             </inertia-link>
         </div>
 
@@ -48,13 +47,14 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
 
-                    <th class="px-6 pt-6 pb-4">Date</th>
-                    <th class="px-6 pt-6 pb-4">Invoice</th>
-                    <th class="px-6 pt-6 pb-4">service</th>
-                    <th class="px-6 pt-6 pb-4">Supplier</th>
-                    <th class="px-6 pt-6 pb-4">Quantity</th>
-                    <th class="px-6 pt-6 pb-4">Unit price</th>
-                    <th class="px-6 pt-6 pb-4">Amount</th>
+                    <th class="px-6 pt-6 pb-4">তারিখ</th>
+                    <th class="px-6 pt-6 pb-4">পণ্য/ সেবা</th>
+                    <th class="px-6 pt-6 pb-4">সাপ্লায়ার</th>
+                    <th class="px-6 pt-6 pb-4">পরিমান</th>
+                    <th class="px-6 pt-6 pb-4">সাইজ</th>
+                    <th class="px-6 pt-6 pb-4">একক মূল্য</th>
+                    <th class="px-6 pt-6 pb-4">মোট</th>
+                    <th class="px-6 pt-6 pb-4">বাকি</th>
                 </tr>
                 <tr
                     v-for="service in services.data"
@@ -70,7 +70,7 @@
                         </inertia-link>
                     </td>
 
-                    <td class="border-t">
+                    <!-- <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
                             :href="route('', service.id)"
@@ -87,29 +87,29 @@
                                 class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2"
                             />
                         </inertia-link>
-                    </td>
+                    </td> -->
 
                     <td class="border-t">
                         <inertia-link
-                            class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', service.id)"
+                            class="px-6 py-4 flex items-center focus:text-indigo-500 text-indigo-500"
+                            :href="route('single.service.show', service.service_id)"
                         >
-                            {{ service.material.name }}
+                            {{ service.service }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
-                            class="px-6 py-4 flex items-center"
-                            :href="route('', service.id)"
+                            class="px-6 py-4 flex items-center focus:text-indigo-500 text-indigo-500"
+                            :href="route('single.supplier.show', service.supplier_id)"
                             tabindex="-1"
                         >
-                            {{ service.supplier.name }}
+                            {{ service.supplier }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('service.edit', service.id)"
                             tabindex="-1"
                         >
                             {{ service.quantity }}
@@ -118,7 +118,16 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('service.edit', service.id)"
+                            tabindex="-1"
+                        >
+                            {{ service.size }}
+                        </inertia-link>
+                    </td>
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center"
+                            :href="route('service.edit', service.id)"
                             tabindex="-1"
                         >
                             {{ service.unitprice }}
@@ -128,17 +137,27 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('service.edit', service.id)"
                             tabindex="-1"
                         >
                             {{ service.total }}
                         </inertia-link>
                     </td>
 
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center"
+                            :href="route('service.edit', service.id)"
+                            tabindex="-1"
+                        >
+                            {{ service.due }}
+                        </inertia-link>
+                    </td>
+
                     <td class="border-t w-px">
                         <inertia-link
                             class="px-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('service.edit', service.id)"
                             tabindex="-1"
                         >
                             <icon
@@ -169,7 +188,7 @@ import SearchFilter from "@/Shared/SearchFilter";
 import throttle from "lodash/throttle";
 
 export default {
-    metaInfo: { title: "services" },
+    metaInfo: { title: "সেবা সমূহ" },
     layout: Layout,
     components: {
         Icon,

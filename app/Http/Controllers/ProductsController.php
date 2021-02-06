@@ -85,7 +85,6 @@ class ProductsController extends Controller
             'note' => ['max:300'],
         ]);
 
-
         // Start transaction!
         DB::beginTransaction();
         try {

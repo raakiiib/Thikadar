@@ -8,6 +8,7 @@ use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\DailyExpensesController;
+use App\Http\Controllers\ServiceExpensesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\BeneficiaryController;
@@ -186,10 +187,24 @@ Route::get('purchases', [PurchasesController::class, 'index'])
     ->middleware('auth');
 
 // Create Services Expense
-Route::get('purchases/service', [PurchasesController::class, 'createServices'])
-    ->name('purchase.service')
+// Route::get('purchases/service', [PurchasesController::class, 'createServices'])
+//     ->name('purchase.service')
+//     ->middleware('auth');
+
+Route::get('expenses/service/create', [ServiceExpensesController::class, 'create'])
+    ->name('expenses.service')
+    ->middleware('auth');
+Route::get('expenses/{service}/get', [ServiceExpensesController::class, 'get_service_single'])
+    ->name('expenses.service.single')
     ->middleware('auth');
 
+Route::post('expenses/service', [ServiceExpensesController::class, 'store'])
+    ->name('expenses.service.store')
+    ->middleware('auth');
+
+Route::post('purchase_services', [PurchasesController::class, 'storeService'])
+    ->name('purchases.storeService')
+    ->middleware('auth');
 /**
  * DAILY EXPENSES MODULE
  */
@@ -269,10 +284,6 @@ Route::put('expenses/product/{expense}/restore', [ProductsController::class, 're
     ->name('product.restore')
     ->middleware('auth');
 
-Route::post('purchase_services', [PurchasesController::class, 'storeService'])
-    ->name('purchases.storeService')
-    ->middleware('auth');
-
 ######## INVOICES ########
 Route::get('invoices', [InvoicesController::class, 'index'])
     ->name('invoices')
@@ -313,13 +324,22 @@ Route::put('services/{service}/restore', [ServicesController::class, 'restore'])
     ->name('services.restore')
     ->middleware('auth');
 
-
 // SERVICE_EXPENSE INDEX
-Route::get('expenses/services', [ExpensesController::class, 'services'])
+Route::get('expenses/services', [ServiceExpensesController::class, 'index'])
     ->name('expenses.services')
     ->middleware('auth');
-    
-
+Route::get('expenses/service/{service}/edit', [ServiceExpensesController::class, 'edit'])
+    ->name('service.edit')
+    ->middleware('auth');
+Route::put('expenses/service/{service}', [ServiceExpensesController::class, 'update'])
+    ->name('service.update')
+    ->middleware('auth');
+Route::get('expenses/service/{service}/show', [ServiceExpensesController::class, 'show_service'])
+    ->name('single.service.show')
+    ->middleware('auth');
+Route::get('expenses/supplier/{vendor}/show', [ServiceExpensesController::class, 'show_vendor'])
+    ->name('single.supplier.show')
+    ->middleware('auth');
 // Beneficiary
 Route::get('beneficiary', [BeneficiaryController::class, 'index'])
     ->name('beneficiary')
