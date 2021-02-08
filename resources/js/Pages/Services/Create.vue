@@ -61,7 +61,7 @@ export default {
   methods: {
     getActualSize: function(){
         const dimension = this.form.dimension
-        const dimension_array = dimension.split('-')
+        const dimension_array = dimension.split(',')
         const size_of_dimenstion = dimension_array.length;
 
         if( size_of_dimenstion == 2 ){
