@@ -134,7 +134,7 @@ class DailyExpensesController extends Controller
         }
         DB::commit();
 
-        return Redirect::route('expenses.dailyexpense')->with('success', 'Expense added.');
+        return Redirect::route('expenses.dailyexpense')->with('success', 'খরচ যোগ হয়েছে');
     }
 
     public function edit(Expense $expense)
@@ -213,7 +213,8 @@ class DailyExpensesController extends Controller
             throw $e;
         }
         DB::commit();
-        return Redirect::route('expenses.dailyexpense')->with('success', 'Payment recorded.');
+        // return Redirect::route('expenses.dailyexpense')->with('success', 'Payment recorded.');
+        return Redirect::route('expenses.dailyexpense')->with('success', 'বাকি পরিষোধ হয়েছে');
     }
 
 

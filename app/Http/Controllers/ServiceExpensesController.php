@@ -140,7 +140,7 @@ class ServiceExpensesController extends Controller
         }
         DB::commit();
 
-        return Redirect::route('expenses.services')->with('success', 'সেবা যোগ হয়েছে.');
+        return Redirect::route('expenses.services')->with('success', 'ব্লক কাস্টিং যোগ হয়েছে.');
     }
 
 
@@ -218,7 +218,9 @@ class ServiceExpensesController extends Controller
             throw $e;
         }
         DB::commit();
-        return Redirect::back()->with('success', 'সেবা হালনাগাদ হয়েছে');
+        // return Redirect::back()->with('success', 'ব্লক কাস্টিং হালনাগাদ হয়েছে');
+        return Redirect::route('expenses.services')->with('success', 'ব্লক কাস্টিং হালনাগাদ হয়েছে.');
+        
     }
 
     public function show_service(Service $service)

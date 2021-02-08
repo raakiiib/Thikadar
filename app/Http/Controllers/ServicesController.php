@@ -64,27 +64,27 @@ class ServicesController extends Controller
     {
         $service->update(
             Request::validate([
-            	'name' => ['required', 'max:100'],
                 'name' => ['required', 'max:100'],
-                'unit' => ['required', 'max:20'],
+                'dimension' => ['nullable', 'max:100'],
+                'size' => ['nullable', 'max:50'],
+                'unit' => ['nullable', 'max:20'],
                 'description' => ['nullable', 'max:450'],
             ])
         );
 
-        return Redirect::back()->with('success', 'service updated.');
+        return Redirect::route('services')->with('success', 'ব্লক হালনাগাদ হয়েছে.');
     }
 
     public function destroy(Service $service)
     {
         $service->delete();
+        return Redirect::route('services')->with('success', 'ব্লক মোছা হয়েছে.');
 
-        return Redirect::back()->with('success', 'service deleted.');
     }
 
     public function restore(Service $service)
     {
         $service->restore();
-
-        return Redirect::back()->with('success', 'service restored.');
+        return Redirect::route('services')->with('success', 'ব্লক পুনরূদ্ধার করা হয়েছে.');
     }
 }

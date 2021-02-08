@@ -137,7 +137,7 @@ class ProductsController extends Controller
         }
         DB::commit();
 
-        return Redirect::route('expenses.products')->with('success', 'Expense added.');
+        return Redirect::route('expenses.products')->with('success', 'খরচ যোগ হয়েছে.');
     }
 
     public function show(RawMaterial $product)
@@ -264,7 +264,9 @@ class ProductsController extends Controller
             throw $e;
         }
         DB::commit();
-        return Redirect::back()->with('success', 'Payment recorded.');
+        // return Redirect::back()->with('success', 'Payment recorded.');
+        return Redirect::route('expenses.products')->with('success', 'বাকি পরিষোধ হয়েছে.');
+        
     }
 
     public function destroy(Expense $expense)   
