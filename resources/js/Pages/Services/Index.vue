@@ -1,10 +1,10 @@
 <template>
     <div class="">
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">Services</h1>
+            <h1 class="font-bold text-3xl">ব্লক</h1>
             <inertia-link class="btn-indigo" :href="route('services.create')">
-                <span>ADD</span>
-                <span class="hidden md:inline">SERVICE</span>
+                <span>নতুন</span>
+                <span class="hidden md:inline">ব্লক যোগ করুন</span>
             </inertia-link>
         </div>
         <div class="mb-6 flex justify-between items-center">
@@ -20,11 +20,11 @@
         <div class="bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4">Name</th>
-                    <th class="px-6 pt-6 pb-4">Dimension</th>
-                    <th class="px-6 pt-6 pb-4">Block size</th>
-                    <th class="px-6 pt-6 pb-4">Unit</th>
-                    <th class="px-6 pt-6 pb-4" colspan="2">Description</th>
+                    <th class="px-6 pt-6 pb-4">নাম</th>
+                    <th class="px-6 pt-6 pb-4">আকার</th>
+                    <th class="px-6 pt-6 pb-4">পরিমাপ</th>
+                    <th class="px-6 pt-6 pb-4">একক</th>
+                    <th class="px-6 pt-6 pb-4">বিবরণ</th>
                 </tr>
                 <tr v-for="service in services.data" :key="service.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
                     <td class="border-t">

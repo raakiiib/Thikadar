@@ -2,7 +2,7 @@
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('services')">ব্লক</inertia-link>
-      <span class="text-indigo-400 font-medium">/</span> Create
+      <span class="text-indigo-400 font-medium">/</span> নতুন
     </h1>
     <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
       <form @submit.prevent="submit">
@@ -16,11 +16,11 @@
           <text-input v-model="form.unit" disabled="true" :error="errors.unit" class="pr-6 pb-8 w-full lg:w-1/2" label="একক" placeholder="CFT" />
 
 
-          <text-input v-model="form.description" :error="errors.description" class="pr-6 pb-8 w-full lg:w-1/2" label="বিবরণ" placeholder="বিবরণ" />
+          <text-input v-model="form.description" :error="errors.description" class="pr-6 pb-8 w-full lg:w-1/1" label="বিবরণ" placeholder="বিবরণ" />
 
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
-          <loading-button :loading="sending" class="btn-indigo" type="submit">ADD SERVICE</loading-button>
+          <loading-button :loading="sending" class="btn-indigo" type="submit">যোগ করুন</loading-button>
         </div>
         
       </form>
