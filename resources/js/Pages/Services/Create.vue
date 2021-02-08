@@ -7,16 +7,16 @@
     <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
       <form @submit.prevent="submit">
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-          <text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Name" placeholder="Name(Dimension)" />
+          <text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="নাম" placeholder="CC BLOCK " />
 
-          <text-input v-model="form.dimension" @input="getActualSize" :error="errors.dimension" class="pr-6 pb-8 w-full lg:w-1/2" label="Dimension" placeholder="45x45x45" />
+          <text-input v-model="form.dimension" @input="getActualSize" :error="errors.dimension" class="pr-6 pb-8 w-full lg:w-1/2" label="আকার" placeholder="45,45,45" />
 
-          <text-input v-model="form.size" :error="errors.size" class="pr-6 pb-8 w-full lg:w-1/2" label="Size" placeholder="2.14" />
+          <text-input v-model="form.size" :error="errors.size" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিমাপ" placeholder="2.14" />
           
-          <text-input v-model="form.unit" disabled="true" :error="errors.unit" class="pr-6 pb-8 w-full lg:w-1/2" label="Unit" placeholder="CFT" />
+          <text-input v-model="form.unit" disabled="true" :error="errors.unit" class="pr-6 pb-8 w-full lg:w-1/2" label="একক" placeholder="CFT" />
 
 
-          <text-input v-model="form.description" :error="errors.description" class="pr-6 pb-8 w-full lg:w-1/2" label="Description" placeholder="Brief Description" />
+          <text-input v-model="form.description" :error="errors.description" class="pr-6 pb-8 w-full lg:w-1/2" label="বিবরণ" placeholder="বিবরণ" />
 
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
