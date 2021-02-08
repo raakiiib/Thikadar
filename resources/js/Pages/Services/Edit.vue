@@ -13,23 +13,11 @@
 				<div class="p-8 -mr-6 -mb-8 flex flex-wrap">
 					<text-input v-model="form.name" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Name" />
 
-					<text-input v-model="form.size" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Size" />
+					<text-input v-model="form.dimension" :error="errors.dimension" class="pr-6 pb-8 w-full lg:w-1/2" label="Size" />
+					
+					<text-input v-model="form.size" :error="errors.size" class="pr-6 pb-8 w-full lg:w-1/2" label="Size" />
 
-					<select-input v-model="form.unit" :error="errors.unit" class="pr-6 pb-8 w-full lg:w-1/2" label="Input type">
-						<option value="cm" >Centimeter</option>
-			            <option value="m" >Meter</option>
-			            <option value="ft">Feet</option>
-			            <option value="cft">Cubic Feet(CFT)</option>
-			            <option value="sft">Square Feet(SFT)</option>
-					</select-input>
-
-					<select-input v-model="form.convert_to" :error="errors.convert_to" class="pr-6 pb-8 w-full lg:w-1/2" label="Change to">
-						<option value="cm" >Centimeter</option>
-			            <option value="m" >Meter</option>
-			            <option value="ft">Feet</option>
-			            <option value="cft">Cubic Feet(CFT)</option>
-			            <option value="sft">Square Feet(SFT)</option>
-					</select-input>
+					
 
 					<text-input v-model="form.description" :error="errors.description" class="pr-6 pb-8 w-full lg:w-1/1" label="Description" />
 				</div>
@@ -75,16 +63,15 @@ export default {
 			sending: false,
 			form: {
 				name: this.service.name,
+		        dimension: this.service.dimension,
 		        size: this.service.size,
 		        unit: this.service.unit,
-		        convert_to: this.service.convert_to,
 				description: this.service.description,
 			},
 		}
 	},
 	methods: {
 		submit() {
-			// console.log(this.form);
 			this.$inertia.put(this.route('services.update', this.service.id), this.form, {
 				onStart: () => this.sending = true,
 				onFinish: () => this.sending = false,

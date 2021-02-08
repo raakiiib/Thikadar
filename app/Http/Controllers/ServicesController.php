@@ -21,7 +21,7 @@ class ServicesController extends Controller
                 ->orderBy('name')
 				->filter(Request::only('search', 'trashed'))
 				->paginate()
-				->only('id', 'name', 'size', 'type', 'unit', 'convert_to', 'description', 'created_at', 'deleted_at'),
+				->only('id', 'name', 'dimension', 'size', 'unit', 'description', 'created_at', 'deleted_at'),
         ]);
 	}
 
@@ -35,8 +35,7 @@ class ServicesController extends Controller
         Auth::user()->account->services()->create(
             Request::validate([
             	'name' => ['required', 'max:100'],
-                'type' => ['nullable', 'max:100'],
-                'convert_to' => ['nullable', 'max:50'],
+                'dimension' => ['nullable', 'max:100'],
                 'size' => ['nullable', 'max:50'],
                 'unit' => ['nullable', 'max:20'],
                 'description' => ['nullable', 'max:450'],
@@ -52,9 +51,8 @@ class ServicesController extends Controller
             'service' => [
                 'id' => $service->id,
                 'name' => $service->name,
+                'dimension' => $service->dimension,
                 'size' => $service->size,
-                'type' => $service->type,
-                'convert_to' => $service->convert_to,
                 'unit' => $service->unit,
                 'description' => $service->description,
                 'deleted_at' => $service->deleted_at,

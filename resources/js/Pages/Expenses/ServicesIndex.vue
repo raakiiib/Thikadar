@@ -21,10 +21,10 @@
 
 
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">সেবা সমূহ </h1>
+            <h1 class="font-bold text-3xl">ব্লক কাস্টিং </h1>
             <inertia-link class="btn-indigo" :href="route('expenses.service')">
-                <span>নতুন</span>
-                <span class="hidden md:inline">সেবা যোগ করুন</span>
+                <span>নতুন ব্লক কাস্টিং</span>
+                <span class="hidden md:inline"> যোগ করুন</span>
             </inertia-link>
         </div>
 

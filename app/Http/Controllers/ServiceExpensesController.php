@@ -63,7 +63,7 @@ class ServiceExpensesController extends Controller
                 ->orderBy('id')
                 ->get()
                 ->map
-                ->only('id', 'name', 'size', 'unit', 'convert_to'),
+                ->only('id', 'name', 'dimension', 'size', 'unit'),
             'pay_types' => Auth::user()->account->cost_types()
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))

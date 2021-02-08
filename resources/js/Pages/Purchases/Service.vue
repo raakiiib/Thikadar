@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="mb-8 font-bold text-3xl">
-            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.services')">সেবা</inertia-link>
+            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.services')">ব্লক কাস্টিং</inertia-link>
             <span class="text-indigo-400 font-medium">/</span> নতুন
             <br/>
         </h1>
@@ -15,7 +15,7 @@
 
                     <select-input v-model="form.service_id" :error="errors.service_id" @input="calculateTotalPrice" class="pr-6 pb-8 w-full lg:w-1/2" label="Service">
                         <option :value="null" />
-                        <option v-for="service in services" :key="service.id" :value="service.id">{{ service.name }}</option>             
+                        <option v-for="service in services" :key="service.id" :value="service.id">{{ service.name }} ( {{service.dimension}} )</option>             
                     </select-input>
 
                     <select-input v-model="form.supplier_id" :error="errors.supplier_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Supplier">
@@ -106,11 +106,7 @@
                   .get(this.route('expenses.service.single', this.form.service_id))
                   .then(
                     response => (
-                        this.converter(
-                            response.data.service.unit, 
-                            response.data.service.convert_to, 
-                            response.data.service.size,
-                        )
+                        this.form.size = response.data.service.size
                     ))
             },
             calculateDue: function () {
@@ -128,25 +124,24 @@
                 }
                 this.form.is_all_paid = Boolean(stat);
             },
-            converter: function( unit, convert, size ){
-                var cft, meter, feet, first, second, third;
-                const usingSplit = size.split('x');
+            // converter: function( unit, convert, size ){
+            //     var cft, meter, feet, first, second, third;
+            //     const usingSplit = size.split('x');
                 
-                first = parseFloat(usingSplit[0]);
-                second = parseFloat(usingSplit[1]);
-                third = parseFloat(usingSplit[2]);
+            //     first = parseFloat(usingSplit[0]);
+            //     second = parseFloat(usingSplit[1]);
+            //     third = parseFloat(usingSplit[2]);
                 
-                first = (first/ 100); // meter from cm
-                second = (second/ 100);
-                third = (third/ 100);
+            //     first = (first/ 100);
+            //     second = (second/ 100);
+            //     third = (third/ 100);
                 
-                meter = first * second * third;
+            //     meter = first * second * third;
                 
-                feet = meter*35.3147;
-                // feet = feet.toFixed(2);
-                feet = ((Math.round(feet * 100) / 100).toFixed(2))
-                this.form.size = feet
-            },
+            //     feet = meter*35.3147;
+            //     feet = ((Math.round(feet * 100) / 100).toFixed(2))
+            //     this.form.size = feet
+            // },
             updateNetAmout: function() {
                 var total = (this.form.unitprice * this.form.quantity * this.form.size)
                 total = total.toFixed(2);
@@ -159,7 +154,6 @@
                     onStart: () => this.sending = true,
                     onFinish: () => this.sending = false,
                 })
-
             },
         }
     }

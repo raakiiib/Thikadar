@@ -53,7 +53,6 @@ class SupplierController extends Controller
 
     public function edit(Supplier $supplier)
     {
-        // dd($supplier);
         return Inertia::render('Suppliers/Edit', [
             'supplier' => [
                 'id' => $supplier->id,
@@ -66,15 +65,6 @@ class SupplierController extends Controller
                 'country' => $supplier->country,
                 'postal_code' => $supplier->postal_code,
                 'deleted_at' => $supplier->deleted_at,
-                'expenses' => $supplier->expenses()->where('expense_type', 1)->get()->map->only([
-                    'id',
-                    'note',
-                    'net_amount',
-                    'paid_amount', 
-                    'due_amount',
-                    'created_at',
-                ]),
-                'contacts' => $supplier->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
             ],
         ]);
     }

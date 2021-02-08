@@ -82,10 +82,10 @@ Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])
 Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])
     ->name('suppliers.update')
     ->middleware('auth');
-Route::delete('suppliers/{supplier}', [uppliersController::class, 'destroy'])
+Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])
     ->name('suppliers.destroy')
     ->middleware('auth');
-Route::put('suppliers/{supplier}/restore', [suppliersController::class, 'restore'])
+Route::put('suppliers/{supplier}/restore', [SupplierController::class, 'restore'])
     ->name('suppliers.restore')
     ->middleware('auth');
 

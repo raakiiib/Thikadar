@@ -21,8 +21,9 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">Name</th>
-                    <th class="px-6 pt-6 pb-4">Job size</th>
-                    <th class="px-6 pt-6 pb-4">Measurement</th>
+                    <th class="px-6 pt-6 pb-4">Dimension</th>
+                    <th class="px-6 pt-6 pb-4">Block size</th>
+                    <th class="px-6 pt-6 pb-4">Unit</th>
                     <th class="px-6 pt-6 pb-4" colspan="2">Description</th>
                 </tr>
                 <tr v-for="service in services.data" :key="service.id" class="hover:bg-gray-400 focus-within:bg-gray-100">
@@ -34,12 +35,19 @@
                     </td>
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('services.edit', service.id)" tabindex="-1">
+                            {{ service.dimension }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('services.edit', service.id)" tabindex="-1">
                             {{ service.size }}
                         </inertia-link>
                     </td>
+
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('services.edit', service.id)" tabindex="-1">
-                            {{ service.convert_to }}
+                            {{ service.unit }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
