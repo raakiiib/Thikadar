@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="mb-8 font-bold text-3xl">
-      <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('services')">Services</inertia-link>
+      <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('services')">ব্লক</inertia-link>
       <span class="text-indigo-400 font-medium">/</span> Create
     </h1>
     <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
@@ -12,6 +12,9 @@
           <text-input v-model="form.dimension" @input="getActualSize" :error="errors.dimension" class="pr-6 pb-8 w-full lg:w-1/2" label="Dimension" placeholder="45x45x45" />
 
           <text-input v-model="form.size" :error="errors.size" class="pr-6 pb-8 w-full lg:w-1/2" label="Size" placeholder="2.14" />
+          
+          <text-input v-model="form.unit" disabled="true" :error="errors.unit" class="pr-6 pb-8 w-full lg:w-1/2" label="Unit" placeholder="CFT" />
+
 
           <text-input v-model="form.description" :error="errors.description" class="pr-6 pb-8 w-full lg:w-1/2" label="Description" placeholder="Brief Description" />
 
