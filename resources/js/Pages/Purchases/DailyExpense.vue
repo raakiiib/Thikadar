@@ -12,12 +12,12 @@
 
           <text-input type="date" value="28-12-2020" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="তারিখ" />
 
-          <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/2" label="পাওনাদার" tabindex="1">
+          <!-- <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/2" label="পাওনাদার" tabindex="1">
               <option :value="null" />
               <option v-for="expense in expenses.data" :key="expense.id" :value="expense.id">
                   {{ expense.name }}
               </option>
-          </select-input>
+          </select-input> -->
 
           <!-- <select-input v-model="form.vendor_id" :error="errors.vendor_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Receiver">
             <option :value="null" />
@@ -30,9 +30,9 @@
 
         <text-input disabled type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="বাকি টাকার পরিমান" tabindex="5" />
         
-        <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
+        <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
             <option :value="null" />
-            <option v-for="cost in costs.data" :key="cost.id" :value="cost.name">
+            <option v-for="cost in costs.data" :key="cost.id" :value="cost.id">
                 {{cost.name}}
             </option>
         </select-input>
@@ -70,7 +70,7 @@ export default {
 },
 props: {
     invoice_number: String,
-    expenses: Object,
+    // expenses: Object,
     suppliers: Array,
     errors: Object,
     costs: Object,
@@ -80,8 +80,8 @@ data() {
     return {
       sending: false,
       form: {
-        expense_type: Number(3), // Daily expense
-        product_id: null,
+        expense_type: Number(3),
+        // product_id: null,
         vendor_id: null,
         invoice_number: this.invoice_number,
         net_amount: null,
@@ -118,7 +118,7 @@ methods: {
       formData.append('created_at', this.form.created_at || '')
       formData.append('expense_type', this.form.expense_type || '')
       formData.append('product_id', this.form.product_id || '')
-      formData.append('vendor_id', this.form.vendor_id || '')
+      // formData.append('vendor_id', this.form.vendor_id || '')
       formData.append('net_amount', this.form.net_amount || '')
       formData.append('due_amount', this.form.due_amount || '')
       formData.append('pay_type', this.form.pay_type || '')
@@ -133,7 +133,7 @@ methods: {
 
     formData.append('photo_path', this.form.photo_path || '')
 
-    console.log(this.formData)
+    console.log(formData)
 
     this.$inertia.post(this.route('dailyexpense.store'), formData, {
         onStart: () => this.sending = true,

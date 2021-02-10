@@ -57,6 +57,11 @@ class Expense extends Model
         return $this->belongsTo(Supplier::class, 'vendor_id');
     }
 
+    public function cost_types()
+    {
+        return $this->belongsTo(CostType::class, 'product_id');
+    }
+
     // Payments
     public function payments()
     {

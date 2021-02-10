@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Models\Expense;
+use App\Models\CostType;
 use App\Models\Beneficiary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -30,7 +31,8 @@ class DailyExpensesController extends Controller
                         'invoice' => $item->invoice_number,
                         'name' => $item->name,
                         'exp_type_id' => $item->product_id,
-                        'type' => $item->beneficiary->name,
+                        // 'type' => $item->cost_types->name,
+                        'type0' => '',
                         'amount' => $item->net_amount,
                         'paid' => $item->paid_amount,
                         'due' => $item->due_amount,
@@ -70,13 +72,13 @@ class DailyExpensesController extends Controller
     public function store()
     {
         Request::validate([
-            'product_id' => ['required'],
-            'note' => ['max:300'],
             'invoice_number' => ['required', 'max:30'],
             'created_at' => ['required'],
             'net_amount' => ['required', 'max:10'],
             'paid_amount' => ['required', 'max:10'],
             'due_amount' => ['required', 'max:10'],
+            'product_id' => ['required'],
+            'note' => ['max:300'],
         ]);
 
 
@@ -87,14 +89,14 @@ class DailyExpensesController extends Controller
             // Validate, then create if valid
             $expense = Auth::user()->account->expenses()->create([
                 'expense_type' => 3, // type = 3
-                'vendor_id' => Request::get('vendor_id'),
-                'product_id' => Request::get('product_id'),
-                'note' => Request::get('note'),
                 'invoice_number' => Request::get('invoice_number'),
                 'created_at' => Request::get('created_at'),
                 'net_amount' => Request::get('net_amount'),
                 'paid_amount' => Request::get('paid_amount'),
                 'due_amount' => Request::get('due_amount'),
+                // 'vendor_id' => Request::get('vendor_id'),
+                'product_id' => Request::get('product_id'),
+                'note' => Request::get('note'),
                 'is_all_paid' => Request::get('is_all_paid') ,
                 'photo_path' => Request::file('photo_path') ? Request::file('photo_path')->store('expneses') : null,
             ]);
