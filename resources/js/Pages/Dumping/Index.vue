@@ -35,6 +35,7 @@
                     <th class="px-6 pt-6 pb-4">সাইজ</th>
                     <th class="px-6 pt-6 pb-4">প্রতিটির মূল্য</th>
                     <th class="px-6 pt-6 pb-4">মোট</th>
+                    <th class="px-6 pt-6 pb-4">পরিষোধিত</th>
                     <th class="px-6 pt-6 pb-4">বাকি</th>
                 </tr>
                 <tr
@@ -103,6 +104,16 @@
                             tabindex="-1"
                         >
                             &#x09F3; {{ service.total }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center"
+                            :href="route('service.edit', service.id)"
+                            tabindex="-1"
+                        >
+                            &#x09F3; {{ service.paid }}
                         </inertia-link>
                     </td>
 

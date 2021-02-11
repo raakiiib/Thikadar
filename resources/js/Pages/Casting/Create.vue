@@ -35,7 +35,7 @@
 
                     <text-input type="number" step="0.01" v-model="form.paid_amount" @input="calculateDue" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Paid amount"/>
 
-                    <text-input type="number" step="-0.01" v-model="form.due_amount" @input="calculateDue" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due amount"/>
+                    <text-input v-model="form.due_amount" @input="calculateDue" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="Due amount"/>
 
                     <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/2" label="খরচের ধরন">
                         <option v-for="cost in pay_types.data" :key="cost.id" :value="cost.name">
@@ -113,7 +113,10 @@
                 var total = this.form.net_amount
                 var paid = this.form.paid_amount
                 var due = total - paid
-                this.form.due_amount = String(due)
+
+                due = Math.round((due + Number.EPSILON) * 100) / 100
+
+                this.form.due_amount = Number(due)
                 this.updateDueStat(due)
                 console.log(paid)
             },

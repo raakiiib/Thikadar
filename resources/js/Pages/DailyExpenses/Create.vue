@@ -10,9 +10,14 @@
 
         <text-input type="date" value="28-12-2020" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" tabindex="1" label="তারিখ" />
 
-        <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/2" label="খরচের নাম" tabindex="2" />
+        <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/2" label="খরচের নাম" tabindex="3">
+            <option :value="null" />
+            <option v-for="product in products.data" :key="product.id" :value="product.id">
+                {{product.name}}
+            </option>
+        </select-input>
 
-        <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিষোধের ধরন" tabindex="3">
+        <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিষোধের ধরন" tabindex="3">
             <option :value="null" />
             <option v-for="cost in costs.data" :key="cost.id" :value="cost.name">
                 {{cost.name}}
@@ -24,6 +29,8 @@
         <text-input type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিষোধ" tabindex="5"/>
 
         <text-input disabled type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="বাকি টাকার পরিমান" tabindex="6" />
+
+        <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/2" label="খরচের নাম" tabindex="2" />
 
     </div>
     <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
@@ -56,6 +63,7 @@ props: {
     invoice_number: String,
     // expenses: Object,
     suppliers: Array,
+    products: Object,
     errors: Object,
     costs: Object,
 },
@@ -65,8 +73,8 @@ data() {
       sending: false,
       form: {
         expense_type: Number(3),
-        // product_id: null,
-        vendor_id: null,
+        product_id: null,
+        // vendor_id: null,
         invoice_number: this.invoice_number,
         net_amount: null,
         paid_amount: null,

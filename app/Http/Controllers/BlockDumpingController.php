@@ -29,6 +29,7 @@ class BlockDumpingController extends Controller
                         'quantity' => $service->quantity,
                         'unitprice' => $service->unitprice,
                         'total' => $service->net_amount,
+                        'paid' => $service->paid_amount,
                         'due' => $service->due_amount,
                         'size' => $service->size,
                         'unitprice' => $service->unit_price,

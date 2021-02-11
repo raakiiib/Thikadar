@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\Models\Expense;
 use App\Models\CostType;
+use App\Models\RawMaterial;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -29,7 +30,7 @@ class DailyExpensesController extends Controller
                         'created_at' => date_format($item->created_at, 'd-m-Y'),
                         'invoice' => $item->invoice_number,
                         'exp_type_id' => $item->product_id,
-                        // 'type' => $item->getCosts->name,
+                        'name' => $item->getMaterial->name,
                         'amount' => $item->net_amount,
                         'paid' => $item->paid_amount,
                         'due' => $item->due_amount,
@@ -52,16 +53,24 @@ class DailyExpensesController extends Controller
                 ->get()
                 ->map
                 ->only('id', 'name'),
-            'expenses' => Auth::user()->account->beneficiary()
+            'expenses' => Auth::user()->account
+                ->beneficiary()
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(50)
                 ->only('id', 'name', 'note', 'deleted_at'),
-            'costs' => Auth::user()->account->cost_types()
+            'costs' => Auth::user()->account
+                ->cost_types()
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(50)
-                ->only('id', 'name',)
+                ->only('id', 'name'),
+            'products' => Auth::user()->account
+                ->product()
+                ->orderBy('name')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate(50)
+                ->only('id', 'name'),
         ]);
     }
 
@@ -83,17 +92,16 @@ class DailyExpensesController extends Controller
 
         try {
             $expense = Auth::user()->account->expenses()->create([
-                'expense_type' => 3, // type = 3
-                // 'vendor_id' => Request::get('vendor_id'),
-                // 'product_id' => Request::get('product_id'),
-                'note' => Request::get('note'),
+                'expense_type' => 3,
+                'product_id' => Request::get('product_id'),
                 'invoice_number' => Request::get('invoice_number'),
                 'created_at' => Request::get('created_at'),
                 'net_amount' => Request::get('net_amount'),
                 'paid_amount' => Request::get('paid_amount'),
                 'due_amount' => Request::get('due_amount'),
+                'note' => Request::get('note'),
                 'is_all_paid' => Request::get('is_all_paid') ,
-                'photo_path' => Request::file('photo_path') ? Request::file('photo_path')->store('expneses') : null,
+                // 'photo_path' => Request::file('photo_path') ? Request::file('photo_path')->store('expneses') : null,
             ]);
         } 
         catch(ValidationException $e){
@@ -112,7 +120,7 @@ class DailyExpensesController extends Controller
             $newPayment = Auth::user()->account->payments()->create([
                 'expense_id' => $expense->id,
                 'net_amount' => Request::get('net_amount'),
-                'payment_type' => Request::get('product_id'),
+                'payment_type' => Request::get('pay_type'),
                 'paid_amount' => Request::get('paid_amount'),
                 'is_all_paid' => Request::get('is_all_paid'),
                 'note' => Request::get('note'),

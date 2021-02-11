@@ -28,10 +28,10 @@
         <div class="bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-
                     <th class="px-6 pt-6 pb-4">তারিখ</th>
                     <th class="px-6 pt-6 pb-4">খরচের নাম</th>
                     <th class="px-6 pt-6 pb-4">&#x09F3; মোট</th>
+                    <th class="px-6 pt-6 pb-4">&#x09F3; পরিষোধিত</th>
                     <th class="px-6 pt-6 pb-4">&#x09F3; বাকি</th>
                 </tr>
                 <tr
@@ -56,7 +56,7 @@
                             :href="route('dailyexpense.edit', expense.id)"
                             tabindex="-1"
                         >
-                            {{ expense.note }}
+                            {{ expense.name }}
                         </inertia-link>
                     </td>
                     
@@ -69,6 +69,17 @@
                             &#x09F3; {{ expense.amount }}
                         </inertia-link>
                     </td>
+
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center"
+                            :href="route('dailyexpense.edit', expense.id)"
+                            tabindex="-1"
+                        >
+                            &#x09F3; {{ expense.paid }}
+                        </inertia-link>
+                    </td>
+
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
