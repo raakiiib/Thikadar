@@ -53,10 +53,10 @@
                     <!-- <th class="px-6 pt-6 pb-4">সিরিয়াল</th> -->
                     <th class="px-6 pt-6 pb-4">পণ্য/ সেবা</th>
                     <th class="px-6 pt-6 pb-4">সাপ্লায়ার</th>
-                    <th class="px-6 pt-6 pb-4">&#35; পরিমান</th>
-                    <!-- <th class="px-6 pt-6 pb-4">&#x09F3; প্রতিটির দাম</th> -->
-                    <th class="px-6 pt-6 pb-4">&#x09F3; মোট </th>
-                    <th class="px-6 pt-6 pb-4">&#x09F3; বাকি </th>
+                    <th class="px-6 pt-6 pb-4"> পরিমান</th>
+                    <th class="px-6 pt-6 pb-4"> মোট </th>
+                    <th class="px-6 pt-6 pb-4"> পরিষোধিত</th>
+                    <th class="px-6 pt-6 pb-4"> বাকি </th>
                 </tr>
                 <tr
                     v-for="product in products.data"
@@ -104,7 +104,7 @@
                             :href="route('product.edit', product.id)"
                             tabindex="-1"
                         >
-                            &#x9f3;{{ product.unitprice }}X{{ product.quantity }}{{ product.unit }}
+                            {{ product.unitprice * product.quantity }} {{ product.unit }}
                         </inertia-link>
                     </td>
 
@@ -114,7 +114,7 @@
                             :href="route('product.edit', product.id)"
                             tabindex="-1"
                         >
-                            {{ product.total }}
+                            &#x09F3; {{ product.total }}
                         </inertia-link>
                     </td>
 
@@ -124,7 +124,17 @@
                             :href="route('product.edit', product.id)"
                             tabindex="-1"
                         >
-                            {{ product.due }}
+                            &#x09F3; {{ product.paid }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center"
+                            :href="route('product.edit', product.id)"
+                            tabindex="-1"
+                        >
+                            &#x09F3; {{ product.due }}
                         </inertia-link>
                     </td>
 

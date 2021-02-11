@@ -17,7 +17,7 @@ class ProductsController extends Controller
 
     public function index()
     {
-    	return Inertia::render('Expenses/ProductsIndex', [
+    	return Inertia::render('Products/Index', [
             'filters' => Request::all('search', 'trashed'),
             'products' => Auth::user()->account->expenses()
             	->where('expense_type', 1)
@@ -31,6 +31,7 @@ class ProductsController extends Controller
                         'quantity' => $product->quantity,
                         'unitprice' => $product->unit_price,
                         'total' => $product->net_amount,
+                        'paid' => $product->paid_amount,
                         'due' => $product->due_amount,
                         'is_all_paid' => $product->is_all_paid,
                         'product_id' => $product->product_id,
