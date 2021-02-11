@@ -155,7 +155,6 @@ export default {
     },
     props: {
         expenses: Object,
-        // materials: Object,
         filters: Object
     },
     data() {

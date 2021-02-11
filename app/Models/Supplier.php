@@ -8,6 +8,12 @@ class Supplier extends Model
 {
     use SoftDeletes;
 
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
+
     public function contacts()
     {
         return $this->hasMany(Contact::class);
@@ -23,10 +29,7 @@ class Supplier extends Model
         return $this->hasMany(Expense::class, 'vendor_id');
     }
 
-    public function expenses()
-    {
-        return $this->hasMany(Expense::class);
-    }
+    
 
     public function scopeFilter($query, array $filters)
     {

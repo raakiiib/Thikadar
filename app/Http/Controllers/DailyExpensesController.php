@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use DB;
 use App\Models\Expense;
 use App\Models\CostType;
-use App\Models\Beneficiary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -29,10 +28,8 @@ class DailyExpensesController extends Controller
                         'id' => $item->id,
                         'created_at' => date_format($item->created_at, 'd-m-Y'),
                         'invoice' => $item->invoice_number,
-                        'name' => $item->name,
                         'exp_type_id' => $item->product_id,
-                        // 'type' => $item->cost_types->name,
-                        'type0' => '',
+                        'type' => $item->getCosts->name,
                         'amount' => $item->net_amount,
                         'paid' => $item->paid_amount,
                         'due' => $item->due_amount,
@@ -72,31 +69,28 @@ class DailyExpensesController extends Controller
     public function store()
     {
         Request::validate([
+            'product_id' => ['required'],
+            'note' => ['max:300'],
             'invoice_number' => ['required', 'max:30'],
             'created_at' => ['required'],
             'net_amount' => ['required', 'max:10'],
             'paid_amount' => ['required', 'max:10'],
             'due_amount' => ['required', 'max:10'],
-            'product_id' => ['required'],
-            'note' => ['max:300'],
         ]);
-
-
-        // Start transaction!
+        
         DB::beginTransaction();
 
         try {
-            // Validate, then create if valid
             $expense = Auth::user()->account->expenses()->create([
                 'expense_type' => 3, // type = 3
+                'vendor_id' => Request::get('vendor_id'),
+                'product_id' => Request::get('product_id'),
+                'note' => Request::get('note'),
                 'invoice_number' => Request::get('invoice_number'),
                 'created_at' => Request::get('created_at'),
                 'net_amount' => Request::get('net_amount'),
                 'paid_amount' => Request::get('paid_amount'),
                 'due_amount' => Request::get('due_amount'),
-                // 'vendor_id' => Request::get('vendor_id'),
-                'product_id' => Request::get('product_id'),
-                'note' => Request::get('note'),
                 'is_all_paid' => Request::get('is_all_paid') ,
                 'photo_path' => Request::file('photo_path') ? Request::file('photo_path')->store('expneses') : null,
             ]);
@@ -148,7 +142,7 @@ class DailyExpensesController extends Controller
                 'invoice_number' => $expense->invoice_number,
                 'date' => date_format($expense->created_at, 'd-m-Y'),
                 'expense_type' => $expense->expense_type,
-                'name' => $expense->beneficiary->name,
+                'name' => $expense->getCosts->name,
                 // 'supplier' => $expense->getSupplier->name,
                 // 'payment_type' => $expense->
                 'is_all_paid' => $expense->is_all_paid,
@@ -235,7 +229,7 @@ class DailyExpensesController extends Controller
         return Redirect::back()->with('success', 'Entry restored.');
     }
 
-    public function show(Beneficiary $expense)
+    public function show(CostType $expense)
     {
         return Inertia::render('DailyExpenses/Single', [
             'type' => [

@@ -24,20 +24,20 @@
             <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">{{ supplier.name }}</option>
         </select-input> -->
 
+        <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/2" label="খরচের ধরন">
+            <option :value="null" />
+            <option v-for="cost in costs.data" :key="cost.id" :value="cost.id">
+                {{cost.name}}
+            </option>
+        </select-input>
+
         <text-input type="number" step="any" v-model="form.net_amount" @input="updateAmount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="মোট টাকার পরিমান" tabindex="3" />
 
         <text-input type="number" step="any" v-model="form.paid_amount" @input="updateAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিষোধ" tabindex="4"/>
 
         <text-input disabled type="number" step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="বাকি টাকার পরিমান" tabindex="5" />
         
-        <select-input v-model="form.product_id" :error="errors.product_id" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
-            <option :value="null" />
-            <option v-for="cost in costs.data" :key="cost.id" :value="cost.id">
-                {{cost.name}}
-            </option>
-        </select-input>
-        
-        <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="বর্ণনা" tabindex="2" />
+        <text-input v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-1/1" label="বর্ণনা" tabindex="2" />
 
         <!-- <file-input v-model="form.photo_path" :error="errors.photo_path" class="pr-6 pb-8 w-full lg:w-1/2" type="file" accept="image/*" label="Money receipt" tabindex="6" /> -->
 
