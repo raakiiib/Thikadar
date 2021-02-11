@@ -9,6 +9,7 @@ use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\DailyExpensesController;
 use App\Http\Controllers\ServiceExpensesController;
+use App\Http\Controllers\BlockDumpingController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\BeneficiaryController;
@@ -186,6 +187,22 @@ Route::get('purchases', [PurchasesController::class, 'index'])
     ->name('purchases')
     ->middleware('auth');
 
+// Block Dumping
+Route::get('expenses/dumping/', [BlockDumpingController::class, 'index'])
+    ->name('dumping.index')
+    ->middleware('auth');
+Route::get('expenses/dumping/create', [BlockDumpingController::class, 'create'])
+    ->name('dumping.create')
+    ->middleware('auth');
+Route::post('expenses/dumping', [BlockDumpingController::class, 'store'])
+    ->name('dumping.store')
+    ->middleware('auth');
+Route::get('expenses/dumping/{service}/show', [BlockDumpingController::class, 'show'])
+    ->name('dumping.single.show')
+    ->middleware('auth');
+Route::get('expenses/dumping/{vendor}/vendor', [BlockDumpingController::class, 'vendor'])
+    ->name('dumping.single.vendor')
+    ->middleware('auth');
 // Create Services Expense
 // Route::get('purchases/service', [PurchasesController::class, 'createServices'])
 //     ->name('purchase.service')

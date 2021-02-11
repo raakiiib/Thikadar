@@ -28,6 +28,13 @@
             </inertia-link>
         </div>
 
+        <div class="mb-4">
+            <inertia-link class="flex items-center group py-3" :href="route('dumping.index')">
+                    <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('expenses/dumping') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+                <div :class="isUrl('expenses/dumping') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">ব্লক ডাম্পিং </div>
+            </inertia-link>
+        </div>
+
         <!-- <div class="mb-4">
             <inertia-link class="flex items-center group py-3" :href="route('settings')">
                     <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('settings') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
