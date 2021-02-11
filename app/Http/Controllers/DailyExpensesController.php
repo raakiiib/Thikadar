@@ -15,7 +15,7 @@ class DailyExpensesController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Expenses/DailyExpIndex', [
+        return Inertia::render('DailyExpenses/Index', [
             'filters' => Request::all('search', 'trashed'),
             'expenses' => Auth::user()->account->expenses()
                 ->where('expense_type', 3)
@@ -29,7 +29,7 @@ class DailyExpensesController extends Controller
                         'created_at' => date_format($item->created_at, 'd-m-Y'),
                         'invoice' => $item->invoice_number,
                         'exp_type_id' => $item->product_id,
-                        'type' => $item->getCosts->name,
+                        // 'type' => $item->getCosts->name,
                         'amount' => $item->net_amount,
                         'paid' => $item->paid_amount,
                         'due' => $item->due_amount,
@@ -44,7 +44,7 @@ class DailyExpensesController extends Controller
 
     public function create()
     {
-        return Inertia::render('Purchases/DailyExpense', [
+        return Inertia::render('DailyExpenses/Create', [
             'invoice_number' => $this->_generateInvoice(),
             'suppliers' => Auth::user()->account
                 ->suppliers()
@@ -71,11 +71,12 @@ class DailyExpensesController extends Controller
         Request::validate([
             'product_id' => ['required'],
             'note' => ['max:300'],
-            'invoice_number' => ['required', 'max:30'],
+            // 'invoice_number' => ['required', 'max:30'],
             'created_at' => ['required'],
             'net_amount' => ['required', 'max:10'],
             'paid_amount' => ['required', 'max:10'],
             'due_amount' => ['required', 'max:10'],
+            'note' => ['required', 'max:1000'],
         ]);
         
         DB::beginTransaction();
@@ -83,8 +84,8 @@ class DailyExpensesController extends Controller
         try {
             $expense = Auth::user()->account->expenses()->create([
                 'expense_type' => 3, // type = 3
-                'vendor_id' => Request::get('vendor_id'),
-                'product_id' => Request::get('product_id'),
+                // 'vendor_id' => Request::get('vendor_id'),
+                // 'product_id' => Request::get('product_id'),
                 'note' => Request::get('note'),
                 'invoice_number' => Request::get('invoice_number'),
                 'created_at' => Request::get('created_at'),
@@ -111,12 +112,13 @@ class DailyExpensesController extends Controller
             $newPayment = Auth::user()->account->payments()->create([
                 'expense_id' => $expense->id,
                 'net_amount' => Request::get('net_amount'),
-                'payment_type' => Request::get('pay_type'),
+                'payment_type' => Request::get('product_id'),
                 'paid_amount' => Request::get('paid_amount'),
                 'is_all_paid' => Request::get('is_all_paid'),
                 'note' => Request::get('note'),
                 'created_at' => Request::get('created_at'),
             ]);
+
         } catch(ValidationException $e){
             // Rollback and then redirect
             // back to form with errors
@@ -135,16 +137,13 @@ class DailyExpensesController extends Controller
 
     public function edit(Expense $expense)
     {
-        
-        return Inertia::render('Expenses/Edit', [
+        return Inertia::render('DailyExpenses/Edit', [
             'expense' => [
                 'id' => $expense->id,
                 'invoice_number' => $expense->invoice_number,
                 'date' => date_format($expense->created_at, 'd-m-Y'),
                 'expense_type' => $expense->expense_type,
-                'name' => $expense->getCosts->name,
-                // 'supplier' => $expense->getSupplier->name,
-                // 'payment_type' => $expense->
+                // 'name' => $expense->getCosts->name,
                 'is_all_paid' => $expense->is_all_paid,
                 'net_amount' => $expense->net_amount,
                 'paid_amount' => $expense->paid_amount,
@@ -172,6 +171,7 @@ class DailyExpensesController extends Controller
     {
         // dd($expense);
         Request::validate([
+            'pay_type' => ['required'],
             'net_amount' => ['required', 'max:10'],
             'paid_amount' => ['required', 'max:10'],
             'due_amount' => ['required', 'max:10'],
@@ -217,7 +217,6 @@ class DailyExpensesController extends Controller
     public function destroy(Expense $expense)   
     {
         $expense->delete();
-
         return Redirect::route('expenses.dailyexpense')->with('success', 'Entry removed.');
         // return Redirect::back()->with('success', 'Entry removed.');
     }
@@ -229,23 +228,25 @@ class DailyExpensesController extends Controller
         return Redirect::back()->with('success', 'Entry restored.');
     }
 
-    public function show(CostType $expense)
+    public function show(Expense $expense)
     {
+
         return Inertia::render('DailyExpenses/Single', [
-            'type' => [
+            'expense' => [
                 'id' => $expense->id,
-                'name' => $expense->name,
-                'note' => $expense->note,
-                'deleted_at' => $expense->deleted_at,
-                'expenses' => $expense->expenses()->where('expense_type', 3)->get()->map->only([
-                    'id',
-                    'invoice_number',
-                    'net_amount',
-                    'paid_amount', 
-                    'due_amount',
-                    'note', 
-                    'created_at',
-                ]),
+                'name' => $expense->note,
+                'total' => $expense->net_amount,
+                'costs' => Auth::user()->account->cost_types()
+                    ->orderBy('name')
+                    ->filter(Request::only('search', 'trashed'))
+                    ->paginate(50)
+                    ->only(
+                        'id', 
+                        'created_at', 
+                        'net_amount', 
+                        'paid_amount',
+                        'payment_type'
+                    )
             ],
         ]);
     }

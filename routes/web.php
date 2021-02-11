@@ -241,6 +241,9 @@ Route::post('expenses/regular', [DailyExpensesController::class, 'store'])
 Route::get('expenses/regular/{expense}/edit', [DailyExpensesController::class, 'edit'])
     ->name('dailyexpense.edit')
     ->middleware('auth');
+// Route::get('expenses/regular/{expense}/show', [DailyExpensesController::class, 'show_single'])
+//     ->name('dailyexpense.edit')
+//     ->middleware('auth');
 // Update
 Route::put('expenses/regular/{expense}', [DailyExpensesController::class, 'update'])
     ->name('expenses.update')

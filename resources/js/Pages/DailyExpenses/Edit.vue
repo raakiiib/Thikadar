@@ -1,58 +1,53 @@
 <template>
     <div>
-        <h1 class="mb-8 font-bold text-3xl">
-            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.dailyexpense')">&#8678; দৈনন্দিন খরচ</inertia-link>
-            <span class="text-indigo-400 font-medium">/</span>
-            {{expense.note}}
-        </h1>
-        <trashed-message v-if="expense.deleted_at" class="mb-6" @restore="restore">
-            This entry has been deleted.
-        </trashed-message>
-        <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
-            <form @submit.prevent="submit">
-                <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
+        <div  v-if="!expense.is_all_paid">
+            <h1 class="mb-8 font-bold text-3xl">
+                <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.dailyexpense')">দৈনন্দিন খরচ</inertia-link>
+                <span class="text-indigo-400 font-medium">/</span>
+                {{expense.note}}
+            </h1>
+            <trashed-message v-if="expense.deleted_at" class="mb-6" @restore="restore">
+                This entry has been deleted.
+            </trashed-message>
+            <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
+                <form @submit.prevent="submit">
+                    <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
 
-                    <text-input disabled v-model="form.invoice_number" :error="errors.invoice_number" class="pr-6 pb-8 w-full lg:w-1/2" label="সিরিয়াল" />
+                        <text-input type="date" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="তারিখ" tabindex="1" />
 
-                    <text-input type="date" v-model="form.created_at" :error="errors.created_at" class="pr-6 pb-8 w-full lg:w-1/2" label="তারিখ" tabindex="1" />
+                        <select-input v-if="!expense.is_all_paid" v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিষোধের ধরন">
+                            <option v-for="cost in costs.data" :key="cost.id" :value="cost.name">
+                                {{cost.name}}
+                            </option>
+                        </select-input>
 
-                    <text-input disabled v-model="form.expense_name" :error="errors.expense_name" class="pr-6 pb-8 w-full lg:w-1/2" label="খরচ" />
+                        <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="মোট টাকার পরিমান" />
 
-                    <!-- <text-input disabled v-model="form.supplier" :error="errors.supplier" class="pr-6 pb-8 w-full lg:w-1/2" label="গ্রহীতা" /> -->
+                        <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="বাকি টাকার পরিমান" />
 
-                    <text-input disabled type="number" step="any" v-model="form.net_amount" :error="errors.net_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="মোট টাকার পরিমান" />
+                        <text-input  v-if="!expense.is_all_paid" type="number" step="any" v-model="form.paid_amount"  @input="updateDueAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিষোধ" tabindex="2" />
 
-                    <text-input type="number" disabled step="any" v-model="form.due_amount" :error="errors.due_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="বাকি টাকার পরিমান" />
+                    </div>
+                    <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center content-center">
+                        <button v-if="!expense.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">
+                            <icon name="trash" class="block w-6 h-6 fill-red-600"/> 
+                        </button>
 
-                    <text-input  v-if="!expense.is_all_paid" type="number" :min=1 :max='expense.due_amount' step="any" v-model="form.paid_amount"  @input="updateDueAmount" :error="errors.paid_amount" class="pr-6 pb-8 w-full lg:w-1/2" label="পরিষোধ" tabindex="2" />
-
-                    <select-input v-model="form.pay_type" :error="errors.pay_type" class="pr-6 pb-8 w-full lg:w-1/4" label="খরচের ধরন">
-                        <option v-for="cost in costs.data" :key="cost.id" :value="cost.name">
-                            {{cost.name}}
-                        </option>
-                    </select-input>
-
-                    <text-input v-if="!expense.is_all_paid" v-model="form.note" :error="errors.note" class="pr-6 pb-8 w-full lg:w-3/4" label="বর্ণনা" tabindex="3" />
-
-                </div>
-                <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center content-center">
-                    <button v-if="!expense.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">
-                        <icon name="trash" class="block w-6 h-6 fill-red-600"/> 
-                    </button>
-
-                    <loading-button :loading="sending" v-if="!expense.is_all_paid" class="btn-indigo ml-auto" type="submit">হালনাগাদ</loading-button>
-                </div>
-            </form>
+                        <loading-button :loading="sending" v-if="!expense.is_all_paid" class="btn-indigo ml-auto" type="submit">হালনাগাদ</loading-button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <!-- Showing payments -->
-        <h2 class="mt-12 font-bold text-2xl">Payments</h2>
+        <h2 class="mt-6 font-bold text-2xl"> 
+            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.dailyexpense')">{{expense.note}}</inertia-link> এর সকল হিসাব
+        </h2>
         <div class="mt-6 bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">তারিখ</th>
-                    <th class="px-6 pt-6 pb-4">বর্ণনা</th>
-                    <th class="px-6 pt-6 pb-4">খরচের ধরন</th>
+                    <th class="px-6 pt-6 pb-4">খরচের খাত</th>
                     <th class="px-6 pt-6 pb-4" colspan="2">পরিষোধিত টাকার পরিমান</th>
                 </tr>
                 <tr v-for="payment in expense.payments" :key="payment.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -64,17 +59,12 @@
                     </td>
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
-                            {{ payment.note }}
-                        </inertia-link>
-                    </td>
-                    <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
                             {{ payment.payment_type }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
-                            {{ payment.paid_amount }}
+                            &#x09F3; {{ payment.paid_amount }}
                         </inertia-link>
                     </td>
                     <td class="border-t w-px">
@@ -84,7 +74,7 @@
                     </td>
                 </tr>
                 <tr v-if="expense.payments.length === 0">
-                    <td class="border-t px-6 py-4" colspan="4">No contacts found.</td>
+                    <td class="border-t px-6 py-4" colspan="4">No expenses found.</td>
                 </tr>
             </table>
         </div>
@@ -123,7 +113,6 @@ export default {
             form: {
                 expense_id: this.expense.id,
                 expense_name: this.expense.name,
-                // supplier: this.expense.supplier,
                 invoice_number: this.expense.invoice_number,
                 pay_type: null,
                 created_at: new Date().toISOString().slice(0,10),

@@ -16,7 +16,7 @@
                     <th class="px-6 pt-6 pb-4">পরিষোধিত টাকা</th>
                     <th class="px-6 pt-6 pb-4" colspan="2">বাকি টাকা</th>
                 </tr>
-                <tr v-for="exp in type.expenses" :key="exp.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                <tr v-for="exp in expenses.data" :key="exp.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
 
                     <!-- {{ exp.net_amount }} -->
                     <td class="border-t">
@@ -27,7 +27,7 @@
                     </td>
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('dailyexpense.edit', exp.id)" tabindex="-1">
-                            {{ exp.note }}
+                            {{ exp.payment_type }}
                         </inertia-link>
                     </td>
 <!--                     <td class="border-t">
@@ -113,6 +113,7 @@ export default {
     props: {
         errors: Object,
         type: Object,
+        expenses: Object,
     },
     remember: 'form',
     data() {
