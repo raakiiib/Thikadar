@@ -50,31 +50,12 @@
                         </inertia-link>
                     </td>
 
-                    <!-- <td class="border-t">
-                        <inertia-link
-                            class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', service.id)"
-                        >
-                            <img
-                                v-if="service.photo_path"
-                                class="block w-5 h-5 rounded-full mr-2 -my-2"
-                                :src="service.photo_path"
-                            />
-                            {{ service.invoice }}
-                            <icon
-                                v-if="service.deleted_at"
-                                name="trash"
-                                class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2"
-                            />
-                        </inertia-link>
-                    </td> -->
-
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500 text-indigo-500"
                             :href="route('single.service.show', service.service_id)"
                         >
-                            {{ service.service }}
+                            {{ service.service }} ( {{service.dimension}} )
                         </inertia-link>
                     </td>
                     <td class="border-t">
@@ -92,7 +73,7 @@
                             :href="route('service.edit', service.id)"
                             tabindex="-1"
                         >
-                            {{ service.quantity }}
+                            {{ service.quantity }} পিস
                         </inertia-link>
                     </td>
                     <td class="border-t">
@@ -101,7 +82,7 @@
                             :href="route('service.edit', service.id)"
                             tabindex="-1"
                         >
-                            {{ service.size }}
+                            {{ service.size }} CFT
                         </inertia-link>
                     </td>
                     <td class="border-t">
@@ -110,17 +91,7 @@
                             :href="route('service.edit', service.id)"
                             tabindex="-1"
                         >
-                            {{ service.unitprice }}
-                        </inertia-link>
-                    </td>
-
-                    <td class="border-t">
-                        <inertia-link
-                            class="px-6 py-4 flex items-center"
-                            :href="route('service.edit', service.id)"
-                            tabindex="-1"
-                        >
-                            {{ service.total }}
+                            &#x09F3; {{ service.unitprice }}
                         </inertia-link>
                     </td>
 
@@ -130,7 +101,17 @@
                             :href="route('service.edit', service.id)"
                             tabindex="-1"
                         >
-                            {{ service.due }}
+                            &#x09F3; {{ service.total }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center"
+                            :href="route('service.edit', service.id)"
+                            tabindex="-1"
+                        >
+                            &#x09F3; {{ service.due }}
                         </inertia-link>
                     </td>
 

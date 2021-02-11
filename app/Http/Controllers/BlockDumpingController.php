@@ -26,7 +26,6 @@ class BlockDumpingController extends Controller
                 ->transform(function ($service){
                     return [
                         'id' => $service->id,
-                        // 'invoice' => $service->invoice_number,
                         'quantity' => $service->quantity,
                         'unitprice' => $service->unitprice,
                         'total' => $service->net_amount,
@@ -270,7 +269,7 @@ class BlockDumpingController extends Controller
                         'id',
                         'invoice_number',
                         'net_amount',
-                        'paid_amount', 
+                        'paid_amount',
                         'due_amount',
                         'quantity',
                         'size',

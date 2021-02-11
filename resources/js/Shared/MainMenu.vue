@@ -23,8 +23,8 @@
 
         <div class="mb-4">
             <inertia-link class="flex items-center group py-3" :href="route('expenses.services')">
-                    <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('expenses/services') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
-                <div :class="isUrl('expenses/services') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">ব্লক কাস্টিং </div>
+                    <icon name="office" class="w-4 h-4 mr-2" :class="isUrl('expenses/casting') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+                <div :class="isUrl('expenses/casting') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">ব্লক কাস্টিং </div>
             </inertia-link>
         </div>
 

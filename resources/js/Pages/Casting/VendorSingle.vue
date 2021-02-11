@@ -8,65 +8,70 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">তারিখ</th>
-                    <!-- <th class="px-6 pt-6 pb-4">বর্ণনা</th> -->
+                    <th class="px-6 pt-6 pb-4">পরিমান</th>
                     <th class="px-6 pt-6 pb-4">মোট টাকা</th>
                     <th class="px-6 pt-6 pb-4">পরিষোধিত টাকা</th>
                     <th class="px-6 pt-6 pb-4" colspan="2">বাকি টাকা</th>
                 </tr>
-                <tr v-for="product in products.expenses" :key="product.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                <tr v-for="product in vendor.expenses" :key="product.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('', product.id)">
                             {{ product.created_at | formatDate }}
                             <icon v-if="product.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
                         </inertia-link>
                     </td>
-                    <!-- <td class="border-t">
-                        <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
-                            {{ product.note }}
-                        </inertia-link>
-                    </td> -->
-
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
-                            {{ product.net_amount }}
+                            {{ product.quantity * product.size }} সিএফটি
                         </inertia-link>
                     </td>
 
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
-                            {{ product.paid_amount }}
+                            &#x09F3; {{ product.net_amount }}
                         </inertia-link>
                     </td>
 
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
-                            {{ product.due_amount }}
+                            &#x09F3; {{ product.paid_amount }}
+                        </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
+                            &#x09F3; {{ product.due_amount }}
                         </inertia-link>
                     </td>
                 </tr>
                 <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td class="border-t">
+                    <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
                             মোট
                         </span>
-                    </td>
-                    <td class="border-t">
+                    </th>
+                    <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
-                            {{ totalNetAmnt() }}
+                            {{ totalQuantity() }} সিএফটি
                         </span>
-                    </td>
-                    <td class="border-t">
+                    </th>
+                    <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
-                            {{ totalPaidAmnt() }}
+                            &#x09F3; {{ totalNetAmnt() }}
                         </span>
-                    </td>
-                    <td class="border-t">
+                    </th>
+                    <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
-                            {{ totalDueAmnt() }}
+                            &#x09F3; {{ totalPaidAmnt() }}
                         </span>
-                    </td>
+                    </th>
+                    <th class="border-t">
+                        <span class="px-6 py-4 flex items-center">
+                            &#x09F3; {{ totalDueAmnt() }}
+                        </span>
+                    </th>
                 </tr>
-                <tr v-if="products.expenses.length === 0">
+                <tr v-if="vendor.expenses.length === 0">
                     <td class="border-t px-6 py-4" colspan="4">No entry found.</td>
                 </tr>
             </table>
@@ -96,23 +101,31 @@ export default {
     },
     props: {
         errors: Object,
-        products: Object,
+        vendor: Object,
     },
     remember: 'form',
     data() {
         return {
             sending: false,
             form: {
-                name: this.products.name,
-                note: this.products.note,
+                name: this.vendor.name,
+                note: this.vendor.note,
             },
         }
     },
     methods: {
+        totalQuantity: function(){
+
+            let total = [];
+            Object.entries(this.vendor.expenses).forEach(([key, val]) => {
+                total.push(val.quantity * val.size) // the value of the current key.
+            });
+            return total.reduce(function(total, num){ return total + num }, 0);
+        },
         totalNetAmnt: function(){
 
             let total = [];
-            Object.entries(this.products.expenses).forEach(([key, val]) => {
+            Object.entries(this.vendor.expenses).forEach(([key, val]) => {
                 total.push(val.net_amount) // the value of the current key.
             });
             return total.reduce(function(total, num){ return total + num }, 0);
@@ -120,7 +133,7 @@ export default {
         totalPaidAmnt: function(){
 
             let total = [];
-            Object.entries(this.products.expenses).forEach(([key, val]) => {
+            Object.entries(this.vendor.expenses).forEach(([key, val]) => {
                 total.push(val.paid_amount) // the value of the current key.
             });
             return total.reduce(function(total, num){ return total + num }, 0);
@@ -128,7 +141,7 @@ export default {
         totalDueAmnt: function(){
 
             let total = [];
-            Object.entries(this.products.expenses).forEach(([key, val]) => {
+            Object.entries(this.vendor.expenses).forEach(([key, val]) => {
                 total.push(val.due_amount) // the value of the current key.
             });
             return total.reduce(function(total, num){ return total + num }, 0);
@@ -141,19 +154,19 @@ export default {
         },
         submit() {
             console.log(this.form)
-            this.$inertia.put(this.route('exptypes.update', this.products.id), this.form, {
+            this.$inertia.put(this.route('exptypes.update', this.vendor.id), this.form, {
                 onStart: () => this.sending = true,
                 onFinish: () => this.sending = false,
             })
         },
         destroy() {
             if (confirm('Are you sure you want to delete this type?')) {
-                this.$inertia.delete(this.route('exptypes.destroy', this.products.id))
+                this.$inertia.delete(this.route('exptypes.destroy', this.vendor.id))
             }
         },
         restore() {
             if (confirm('Are you sure you want to restore this type?')) {
-                this.$inertia.put(this.route('exptypes.restore', this.products.id))
+                this.$inertia.put(this.route('exptypes.restore', this.vendor.id))
             }
         },
     },

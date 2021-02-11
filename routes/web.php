@@ -342,19 +342,19 @@ Route::put('services/{service}/restore', [ServicesController::class, 'restore'])
     ->middleware('auth');
 
 // SERVICE_EXPENSE INDEX
-Route::get('expenses/services', [ServiceExpensesController::class, 'index'])
+Route::get('expenses/casting', [ServiceExpensesController::class, 'index'])
     ->name('expenses.services')
     ->middleware('auth');
-Route::get('expenses/service/{service}/edit', [ServiceExpensesController::class, 'edit'])
+Route::get('expenses/casting/{service}/edit', [ServiceExpensesController::class, 'edit'])
     ->name('service.edit')
     ->middleware('auth');
-Route::put('expenses/service/{service}', [ServiceExpensesController::class, 'update'])
+Route::put('expenses/casting/{service}', [ServiceExpensesController::class, 'update'])
     ->name('service.update')
     ->middleware('auth');
-Route::get('expenses/service/{service}/show', [ServiceExpensesController::class, 'show_service'])
+Route::get('expenses/casting/{service}/show', [ServiceExpensesController::class, 'show'])
     ->name('single.service.show')
     ->middleware('auth');
-Route::get('expenses/supplier/{vendor}/show', [ServiceExpensesController::class, 'show_vendor'])
+Route::get('expenses/casting/{vendor}/vendor', [ServiceExpensesController::class, 'vendor'])
     ->name('single.supplier.show')
     ->middleware('auth');
 // Beneficiary

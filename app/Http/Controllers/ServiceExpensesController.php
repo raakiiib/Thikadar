@@ -39,11 +39,12 @@ class ServiceExpensesController extends Controller
                         'supplier_id' => $service->vendor_id,
                         'supplier' => $service->getSupplier->name,
                         'service' => $service->getService->name,
+                        'dimension' => $service->getService->dimension,
                         'created_at' => date_format( $service->created_at, 'd-m-Y'),
                     ];                    
                 });
 
-        return Inertia::render('Expenses/ServicesIndex', [
+        return Inertia::render('Casting/Index', [
             'filters' => Request::all('search', 'trashed'),
             'services' => $data,
         ]);
@@ -51,7 +52,7 @@ class ServiceExpensesController extends Controller
 
     public function create()
     {
-        return Inertia::render('Purchases/Service', [
+        return Inertia::render('Casting/Create', [
             'suppliers' => Auth::user()->account
                 ->suppliers()
                 ->orderBy('name')
@@ -78,7 +79,6 @@ class ServiceExpensesController extends Controller
 
         Request::validate([
             'created_at' => ['required'],
-            // 'invoice_number' => ['required', 'max:30'],
             'service_id' => ['required'],
             'supplier_id' => ['required'],
             'unitprice' => ['required', 'max:10'],
@@ -146,7 +146,7 @@ class ServiceExpensesController extends Controller
 
     public function edit(Expense $service)
     {
-        return Inertia::render('Expenses/ServiceExpensesEdit', [
+        return Inertia::render('Casting/Edit', [
             'expense' => [
                 'id' => $service->id,
                 'invoice_number' => $service->invoice_number,
@@ -223,12 +223,13 @@ class ServiceExpensesController extends Controller
         
     }
 
-    public function show_service(Service $service)
+    public function show(Service $service)
     {
-        $data = Inertia::render('Services/ExpenseSingleService', [
+        $data = Inertia::render('Casting/BlockSingle', [
             'products' => [
                 'id' => $service->id,
                 'name' => $service->name,
+                'dimension' => $service->dimension,
                 'note' => $service->note,
                 'deleted_at' => $service->deleted_at,
                 'expenses' => $service->service_expenses()->where('expense_type', 2)->get()->map->only([
@@ -236,6 +237,8 @@ class ServiceExpensesController extends Controller
                     'invoice_number',
                     'net_amount',
                     'paid_amount', 
+                    'size',
+                    'quantity',
                     'due_amount',
                     'note', 
                     'created_at',
@@ -247,9 +250,9 @@ class ServiceExpensesController extends Controller
     }
 
 
-    public function show_vendor(Supplier $vendor)
+    public function vendor(Supplier $vendor)
     {
-        $data = Inertia::render('Services/ExpenseSingleVendor', [
+        $data = Inertia::render('Casting/VendorSingle', [
             'vendor' => [
                 'id' => $vendor->id,
                 'name' => $vendor->name,
@@ -260,6 +263,8 @@ class ServiceExpensesController extends Controller
                     'invoice_number',
                     'net_amount',
                     'paid_amount', 
+                    'size',
+                    'quantity',
                     'due_amount',
                     'note', 
                     'created_at',
