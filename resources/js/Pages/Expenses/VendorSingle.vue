@@ -8,7 +8,7 @@
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">তারিখ</th>
-                    <th class="px-6 pt-6 pb-4">বর্ণনা</th>
+                    <!-- <th class="px-6 pt-6 pb-4">বর্ণনা</th> -->
                     <th class="px-6 pt-6 pb-4">মোট টাকা</th>
                     <th class="px-6 pt-6 pb-4">পরিষোধিত টাকা</th>
                     <th class="px-6 pt-6 pb-4" colspan="2">বাকি টাকা</th>
@@ -20,11 +20,11 @@
                             <icon v-if="product.deleted_at" name="trash" class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2" />
                         </inertia-link>
                     </td>
-                    <td class="border-t">
+                    <!-- <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
                             {{ product.note }}
                         </inertia-link>
-                    </td>
+                    </td> -->
 
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route('', product.id)" tabindex="-1">
@@ -45,7 +45,7 @@
                     </td>
                 </tr>
                 <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td>&nbsp;</td>
+                    <!-- <td>&nbsp;</td> -->
                     <td class="border-t">
                         <span class="px-6 py-4 flex items-center">
                             মোট

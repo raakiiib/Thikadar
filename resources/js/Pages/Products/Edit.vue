@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="mb-8 font-bold text-3xl">
-            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.products')">&#8678; পণ্য</inertia-link>
+            <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.products')">পণ্য</inertia-link>
             <span class="text-indigo-400 font-medium">/</span>
             {{expense.product_name}} {{expense.product_type}}
         </h1>
@@ -67,7 +67,7 @@
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">তারিখ</th>
                     <th class="px-6 pt-6 pb-4">খরচের ধরন</th>
-                    <th class="px-6 pt-6 pb-4">বর্ণনা</th>
+                    <!-- <th class="px-6 pt-6 pb-4">বর্ণনা</th> -->
                     <th class="px-6 pt-6 pb-4" colspan="2">পরিষোধিত টাকার পরিমান</th>
                 </tr>
                 <tr v-for="payment in expense.payments" :key="payment.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -82,11 +82,11 @@
                             {{ payment.payment_type }}
                         </inertia-link>
                     </td>
-                    <td class="border-t">
+<!--                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
                             {{ payment.note }}
                         </inertia-link>
-                    </td>
+                    </td> -->
                     <td class="border-t">
                         <inertia-link class="px-6 py-4 flex items-center" :href="route()" tabindex="-1">
                             {{ payment.paid_amount }}

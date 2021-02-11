@@ -154,6 +154,7 @@ class ProductsController extends Controller
                     'net_amount',
                     'paid_amount', 
                     'due_amount',
+                    'payment_type',
                     'note', 
                     'created_at',
                 ]),
