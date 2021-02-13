@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div  v-if="!expense.is_all_paid">
+        <div>
             <h1 class="mb-8 font-bold text-3xl">
                 <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('expenses.dailyexpense')">দৈনন্দিন খরচ</inertia-link>
                 <span class="text-indigo-400 font-medium">/</span>
