@@ -11,5 +11,9 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard/Index');
     }
 
+    public function demo()
+    {
+        echo json_encode(['success' => 'message']);
+    }
     
 }
