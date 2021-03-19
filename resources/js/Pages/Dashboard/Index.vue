@@ -2,10 +2,12 @@
     <div>
         <div>
             <h1 class="mb-8 font-bold text-3xl">Dashboard</h1>
+            <div class="mb-8 flex grid grid-cols-2 gap-5 ">
+                <DailyExpense></DailyExpense>
+                <BuyProduct></BuyProduct>
+                <BlockChart></BlockChart>
+            </div>
 
-            <DailyExpense></DailyExpense>
-            <BuyProduct></BuyProduct>
-            <Chart></Chart>
             <div class="mb-8 flex grid grid-cols-3 gap-3 ">
                 <inertia-link
                     class="bg-indigo-900 text-indigo-300 flex items-center justify-between md:justify-center"
@@ -56,7 +58,7 @@
 
 <script>
 import Layout from "@/Shared/Layout";
-import Chart from "./../../Components/Chart";
+import BlockChart from "./../../Components/BlockChart";
 import DailyExpense from "./../../Components/DailyExpense";
 import BuyProduct from "./../../Components/BuyProduct";
 
@@ -64,7 +66,7 @@ export default {
     metaInfo: { title: "Dashboard" },
     layout: Layout,
     components: {
-        Chart,
+        BlockChart,
         DailyExpense,
         BuyProduct
     }
