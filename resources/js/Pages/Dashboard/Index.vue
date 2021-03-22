@@ -2,8 +2,19 @@
     <div>
         <div>
             <h1 class="mb-8 font-bold text-3xl">Dashboard</h1>
+
+            <div class=" float-right">
+                <select
+                    class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
+                    @change="changeChart($event)"
+                >
+                    <option value="7">7Days Record</option>
+                </select>
+            </div>
+
             <div class="mb-8 flex grid grid-cols-2 gap-5 ">
-                <DailyExpense></DailyExpense>
+                <DailyExpense v-bind:expenses="expenses"> </DailyExpense>
+
                 <BuyProduct></BuyProduct>
                 <BlockChart></BlockChart>
             </div>
@@ -65,6 +76,23 @@ import BuyProduct from "./../../Components/BuyProduct";
 export default {
     metaInfo: { title: "Dashboard" },
     layout: Layout,
+    props: {
+        expenses7: Object
+    },
+    data() {
+        return {
+            expenses: this.expenses7
+        };
+    },
+    methods: {
+        changeChart: function(event) {
+            this.expenses = [];
+
+            if (event.target.value == "7") {
+                this.expenses = this.expenses7;
+            }
+        }
+    },
     components: {
         BlockChart,
         DailyExpense,

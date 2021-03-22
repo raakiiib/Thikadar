@@ -1,6 +1,6 @@
 <template>
     <div class="chart">
-        <bar-chart :chartdata="datacollection" :options="options"></bar-chart>
+        <bar-chart :chartdata="datacollection" :options="options"> </bar-chart>
     </div>
 </template>
 
@@ -12,25 +12,29 @@ export default {
     components: {
         BarChart
     },
+    props: {
+        expenses: Object
+    },
     data() {
+        let chart = {};
+        this.expenses.map(expense => {
+            if (chart[expense.created_at]) {
+                chart[expense.created_at] += expense.paid;
+            } else {
+                chart[expense.created_at] = expense.paid;
+            }
+        });
+        console.log(chart, Object.keys(chart), Object.values(chart));
         return {
             datacollection: {
-                labels: [
-                    "1/3/2021",
-                    "2/3/2021",
-                    "3/3/2021",
-                    "4/3/2021",
-                    "5/3/2021",
-                    "6/3/2021",
-                    "7/3/2021"
-                ],
+                labels: Object.keys(chart),
                 datasets: [
                     {
                         label: "দৈনন্দিন খরচ",
                         backgroundColor:
                             "#" +
                             ((Math.random() * 0xffffff) << 0).toString(16),
-                        data: [4000, 2000, 450, 7000, 634, 7780, 900]
+                        data: Object.values(chart)
                     }
                 ]
             },
