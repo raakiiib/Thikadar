@@ -30,7 +30,7 @@ export default {
                         backgroundColor:
                             "#" +
                             ((Math.random() * 0xffffff) << 0).toString(16),
-                        data: [2000, 4000, 5450, 700, 634, 780, 7900]
+                        data: [2000, 4000, 5450, 700, 634, 780, 17900]
                     }
                 ]
             },
