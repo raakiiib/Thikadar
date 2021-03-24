@@ -8,13 +8,14 @@
                     class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
                     @change="changeChart($event)"
                 >
-                    <option name="7" value="7">7Days Record</option>
-                    <option name="30" value="30">30Days Record</option>
+                    <option value="7">7Days Record</option>
+                    <option value="30">30Days Record</option>
                 </select>
             </div>
 
             <div class="mb-8 flex grid grid-cols-2 gap-5 ">
-                <DailyExpense v-bind:expenses="expenses"> </DailyExpense>
+                <DailyExpense v-bind:expenses="expenses" v-if="showChart">
+                </DailyExpense>
 
                 <BuyProduct></BuyProduct>
                 <BlockChart></BlockChart>
@@ -84,16 +85,22 @@ export default {
     data() {
         return {
             expenses: this.expenses7,
-            visibility: true
+            showChart: true
         };
     },
     methods: {
-        changeChart: function(event) {
-            if (event.target.value == "7") {
-                this.expenses = this.expenses7;
-            } else if (event.target.value == "30") {
-                this.expenses = this.expenses30;
-            }
+        changeChart: function($event) {
+            console.log($event.target.value);
+            this.showChart = false;
+            setTimeout(() => {
+                if ($event.target.value == "7") {
+                    this.expenses = this.expenses7;
+                } else if ($event.target.value == "30") {
+                    console.log($event.target.value);
+                    this.expenses = this.expenses30;
+                }
+                this.showChart = true;
+            }, 10);
         }
     },
     components: {
