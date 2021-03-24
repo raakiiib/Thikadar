@@ -13,7 +13,7 @@ export default {
         BarChart
     },
     props: {
-        expenses: Object
+        expenses: ""
     },
     data() {
         let chart = {};
@@ -24,7 +24,7 @@ export default {
                 chart[expense.created_at] = expense.paid;
             }
         });
-        console.log(chart, Object.keys(chart), Object.values(chart));
+
         return {
             datacollection: {
                 labels: Object.keys(chart),

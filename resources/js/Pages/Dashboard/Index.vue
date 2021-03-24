@@ -8,7 +8,8 @@
                     class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
                     @change="changeChart($event)"
                 >
-                    <option value="7">7Days Record</option>
+                    <option name="7" value="7">7Days Record</option>
+                    <option name="30" value="30">30Days Record</option>
                 </select>
             </div>
 
@@ -77,19 +78,21 @@ export default {
     metaInfo: { title: "Dashboard" },
     layout: Layout,
     props: {
-        expenses7: Object
+        expenses7: "",
+        expenses30: ""
     },
     data() {
         return {
-            expenses: this.expenses7
+            expenses: this.expenses7,
+            visibility: true
         };
     },
     methods: {
         changeChart: function(event) {
-            this.expenses = [];
-
             if (event.target.value == "7") {
                 this.expenses = this.expenses7;
+            } else if (event.target.value == "30") {
+                this.expenses = this.expenses30;
             }
         }
     },

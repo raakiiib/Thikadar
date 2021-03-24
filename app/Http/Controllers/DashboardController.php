@@ -8,26 +8,37 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+
+    public function putData($item){
+
+
+      
+        return Expense::latest( 'created_at')->take($item)->get()
+        ->transform( function ( $expense ) {
+
+                return [
+                
+                    'created_at' => date_format($expense->created_at, 'd-m-Y'),
+                    'paid' => $expense->paid_amount,
+         
+                ];
+        });
+        
+    }
     public function index()
     {
-        Auth::user()->account->expenses();
-        $items= Expense::latest( 'created_at')->take(7)->get()
-        ->transform( function ( $item ) {
-
-            return [
+        ;
+            return Inertia::render('Dashboard/Index', [
+                "expenses7"=>$this->putData(7),
+                "expenses30"=>$this->putData(30),
+             
                 
-                'created_at' => date_format($item->created_at, 'd-m-Y'),
-                'paid' => $item->paid_amount,
-                
-            ];
-            });
+            ]);
 
-
-        return Inertia::render('Dashboard/Index', [
-            "expenses7"=>$items,
-            
-        ]);
+        
     }
+
+    
 
     public function demo()
     {
