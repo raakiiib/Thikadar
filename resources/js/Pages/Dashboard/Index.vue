@@ -16,12 +16,13 @@
             <div class="mb-8 flex grid grid-cols-1 gap-5 ">
                 <DailyExpense v-bind:expenses="expenses" v-if="showChart">
                 </DailyExpense>
-
+                <BlockChart></BlockChart>
                 <BuyProduct
                     v-bind:expensesProduct="expensesProduct"
                     v-if="showChart"
                 ></BuyProduct>
-                <BlockChart></BlockChart>
+
+                <BlockDumpingChart></BlockDumpingChart>
             </div>
         </div>
     </div>
@@ -32,6 +33,7 @@ import Layout from "@/Shared/Layout";
 import BlockChart from "./../../Components/BlockChart";
 import DailyExpense from "./../../Components/DailyExpense";
 import BuyProduct from "./../../Components/BuyProduct";
+import BlockDumpingChart from "./../../Components/BlokDumpingChart";
 
 export default {
     metaInfo: { title: "Dashboard" },
@@ -69,7 +71,8 @@ export default {
     components: {
         BlockChart,
         DailyExpense,
-        BuyProduct
+        BuyProduct,
+        BlockDumpingChart
     }
 };
 </script>
