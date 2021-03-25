@@ -16,7 +16,7 @@
             <div class="mb-8 flex grid grid-cols-1 gap-5 ">
                 <DailyExpense v-bind:expenses="expenses" v-if="showChart">
                 </DailyExpense>
-                <BlockChart></BlockChart>
+                <BlockChart v-bind:block="block" v-if="showChart"></BlockChart>
                 <BuyProduct
                     v-bind:expensesProduct="expensesProduct"
                     v-if="showChart"
@@ -47,13 +47,16 @@ export default {
         expenses7Product: "",
         expenses30Product: "",
         blockDumping7: "",
-        blockDumping30: ""
+        blockDumping30: "",
+        block7: "",
+        block30: ""
     },
     data() {
         return {
             expenses: this.expenses7,
             expensesProduct: this.expenses7Product,
             blockDumping: this.blockDumping7,
+            block: this.block7,
             showChart: true
         };
     },
@@ -65,10 +68,14 @@ export default {
                 if ($event.target.value == "7") {
                     this.expenses = this.expenses7;
                     this.expensesProduct = this.expenses7Product;
+                    this.block = this.block7;
+                    this.blockDumping = this.blockDumping7;
                 } else if ($event.target.value == "30") {
                     console.log($event.target.value);
                     this.expenses = this.expenses30;
                     this.expensesProduct = this.expenses30Product;
+                    this.block = this.block30;
+                    this.blockDumping = this.blockDumping30;
                 }
                 this.showChart = true;
             }, 10);

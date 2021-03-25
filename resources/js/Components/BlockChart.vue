@@ -12,25 +12,29 @@ export default {
     components: {
         LineChart
     },
+    props: {
+        block: ""
+    },
     data() {
+        let chart = {};
+        this.block.map(expense => {
+            if (chart[expense.created_at]) {
+                chart[expense.created_at] += expense.paid;
+            } else {
+                chart[expense.created_at] = expense.paid;
+            }
+        });
+
         return {
             datacollection: {
-                labels: [
-                    "1/3/2021",
-                    "2/3/2021",
-                    "3/3/2021",
-                    "4/3/2021",
-                    "5/3/2021",
-                    "6/3/2021",
-                    "7/3/2021"
-                ],
+                labels: Object.keys(chart),
                 datasets: [
                     {
-                        label: "ব্লক কাস্টিং ",
+                        label: " ব্লক কাস্টিং",
                         backgroundColor:
                             "#" +
                             ((Math.random() * 0xffffff) << 0).toString(16),
-                        data: [5400, 200, 9450, 7800, 6340, 780, 10900]
+                        data: Object.values(chart)
                     }
                 ]
             },

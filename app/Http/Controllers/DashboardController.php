@@ -62,7 +62,7 @@ class DashboardController extends Controller
     }
     public function putDataBlock($item){
       
-        return Expense::latest( 'created_at')->where('expense_type', 4)->
+        return Expense::latest( 'created_at')->where('expense_type', 2)->
         take($item)->get()
         ->transform( function ( $expense ) {
 
