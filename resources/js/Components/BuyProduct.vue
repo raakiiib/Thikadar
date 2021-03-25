@@ -12,25 +12,29 @@ export default {
     components: {
         BarChart
     },
+    props: {
+        expensesProduct: ""
+    },
     data() {
+        let chart = {};
+        this.expensesProduct.map(expense => {
+            if (chart[expense.created_at]) {
+                chart[expense.created_at] += expense.paid;
+            } else {
+                chart[expense.created_at] = expense.paid;
+            }
+        });
+
         return {
             datacollection: {
-                labels: [
-                    "1/3/2021",
-                    "2/3/2021",
-                    "3/3/2021",
-                    "4/3/2021",
-                    "5/3/2021",
-                    "6/3/2021",
-                    "7/3/2021"
-                ],
+                labels: Object.keys(chart),
                 datasets: [
                     {
                         label: "পণ্য খরচ",
                         backgroundColor:
                             "#" +
                             ((Math.random() * 0xffffff) << 0).toString(16),
-                        data: [2000, 4000, 5450, 700, 634, 780, 17900]
+                        data: Object.values(chart)
                     }
                 ]
             },

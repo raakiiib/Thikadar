@@ -13,58 +13,16 @@
                 </select>
             </div>
 
-            <div class="mb-8 flex grid grid-cols-2 gap-5 ">
+            <div class="mb-8 flex grid grid-cols-1 gap-5 ">
                 <DailyExpense v-bind:expenses="expenses" v-if="showChart">
                 </DailyExpense>
 
-                <BuyProduct></BuyProduct>
+                <BuyProduct
+                    v-bind:expensesProduct="expensesProduct"
+                    v-if="showChart"
+                ></BuyProduct>
                 <BlockChart></BlockChart>
             </div>
-
-            <div class="mb-8 flex grid grid-cols-3 gap-3 ">
-                <inertia-link
-                    class="bg-indigo-900 text-indigo-300 flex items-center justify-between md:justify-center"
-                    :href="route('suppliers')"
-                >
-                    <div class="thumbnail ">
-                        <div class="icon">
-                            <i class="fa fa-home"></i>
-                        </div>
-                        <div class="caption">
-                            <h1>ADD NEW PURCHASE</h1>
-                        </div>
-                    </div>
-                </inertia-link>
-
-                <inertia-link
-                    class="bg-purple-900 text-indigo-300 flex items-center justify-between md:justify-center"
-                    :href="route('suppliers')"
-                >
-                    <div class="thumbnail ">
-                        <div class="caption">
-                            <h1>PAY SUPPLIER</h1>
-                        </div>
-                    </div>
-                </inertia-link>
-
-                <inertia-link
-                    class="bg-indigo-900 text-indigo-300 flex items-center justify-between md:justify-center h-64"
-                    :href="route('suppliers')"
-                >
-                    <div class="thumbnail ">
-                        <div class="icon">
-                            <i class="fa fa-home"></i>
-                        </div>
-                        <div class="caption">
-                            <h1>PAY STAFFS</h1>
-                        </div>
-                    </div>
-                </inertia-link>
-            </div>
-            <p class="leading-normal">
-                👆 These links are intended to be broken to illustrate how error
-                handling works with Inertia.js.
-            </p>
         </div>
     </div>
 </template>
@@ -80,11 +38,14 @@ export default {
     layout: Layout,
     props: {
         expenses7: "",
-        expenses30: ""
+        expenses30: "",
+        expenses7Product: "",
+        expenses30Product: ""
     },
     data() {
         return {
             expenses: this.expenses7,
+            expensesProduct: this.expenses7Product,
             showChart: true
         };
     },
@@ -95,9 +56,11 @@ export default {
             setTimeout(() => {
                 if ($event.target.value == "7") {
                     this.expenses = this.expenses7;
+                    this.expensesProduct = this.expenses7Product;
                 } else if ($event.target.value == "30") {
                     console.log($event.target.value);
                     this.expenses = this.expenses30;
+                    this.expensesProduct = this.expenses30Product;
                 }
                 this.showChart = true;
             }, 10);

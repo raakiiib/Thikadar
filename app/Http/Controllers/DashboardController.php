@@ -25,12 +25,32 @@ class DashboardController extends Controller
         });
         
     }
+
+    public function putDataProduct($item){
+
+
+      
+        return Expense::latest( 'created_at')->where('expense_type', 1)->
+        take($item)->get()
+        ->transform( function ( $expense ) {
+
+                return [
+                
+                    'created_at' => date_format($expense->created_at, 'd-m-Y'),
+                    'paid' => $expense->paid_amount,
+         
+                ];
+        });
+        
+    }
     public function index()
     {
         ;
             return Inertia::render('Dashboard/Index', [
                 "expenses7"=>$this->putData(7),
                 "expenses30"=>$this->putData(30),
+                "expenses7Product"=>$this->putDataProduct(7),
+                "expenses30Product"=>$this->putDataProduct(30),
              
                 
             ]);
