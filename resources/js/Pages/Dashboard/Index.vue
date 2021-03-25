@@ -22,7 +22,10 @@
                     v-if="showChart"
                 ></BuyProduct>
 
-                <BlockDumpingChart></BlockDumpingChart>
+                <BlockDumpingChart
+                    v-bind:blockDumping="blockDumping"
+                    v-if="showChart"
+                ></BlockDumpingChart>
             </div>
         </div>
     </div>
@@ -42,12 +45,15 @@ export default {
         expenses7: "",
         expenses30: "",
         expenses7Product: "",
-        expenses30Product: ""
+        expenses30Product: "",
+        blockDumping7: "",
+        blockDumping30: ""
     },
     data() {
         return {
             expenses: this.expenses7,
             expensesProduct: this.expenses7Product,
+            blockDumping: this.blockDumping7,
             showChart: true
         };
     },
