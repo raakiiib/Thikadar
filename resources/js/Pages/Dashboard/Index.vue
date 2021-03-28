@@ -2,8 +2,21 @@
     <div>
         <div>
             <h1 class="mb-8 font-bold text-3xl">Dashboard</h1>
+            <!-- date-picker -->
 
             <div class=" float-right">
+                <div class="card">
+                    <div class="card-header">CALENDER</div>
+                    <div class="card-body">
+                        <Datepicker
+                            v-model="date"
+                            format="yyyy-MM-dd"
+                            :inline="true"
+                        ></Datepicker>
+                    </div>
+                </div>
+
+                <!-- dropdownfor data  -->
                 <select
                     class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
                     @change="changeChart($event)"
@@ -37,6 +50,7 @@ import BlockChart from "./../../Components/BlockChart";
 import DailyExpense from "./../../Components/DailyExpense";
 import BuyProduct from "./../../Components/BuyProduct";
 import BlockDumpingChart from "./../../Components/BlokDumpingChart";
+import Datepicker from "vuejs-datepicker";
 
 export default {
     metaInfo: { title: "Dashboard" },
@@ -57,7 +71,8 @@ export default {
             expensesProduct: this.expenses7Product,
             blockDumping: this.blockDumping7,
             block: this.block7,
-            showChart: true
+            showChart: true,
+            date: new Date().toISOString().substr(0, 10) // 05/09/2019
         };
     },
     methods: {
@@ -85,7 +100,8 @@ export default {
         BlockChart,
         DailyExpense,
         BuyProduct,
-        BlockDumpingChart
+        BlockDumpingChart,
+        Datepicker
     }
 };
 </script>
