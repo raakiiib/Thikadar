@@ -2,11 +2,16 @@
     <div>
         <div>
             <h1 class="mb-8 font-bold text-3xl">Dashboard</h1>
+
+            <!-- v-calendar -->
+
+            <Calendar is-expanded show-weeknumbers :attributes="attributes" />
+
             <!-- date-picker -->
 
             <div class=" float-right">
                 <div class="card">
-                    <div class="card-header">CALENDER</div>
+                    <div class="card-header">CALENDAR</div>
                     <div class="card-body">
                         <Datepicker
                             v-model="date"
@@ -46,13 +51,17 @@
 
 <script>
 import Layout from "@/Shared/Layout";
+import Vue from "vue";
 import BlockChart from "./../../Components/BlockChart";
 import DailyExpense from "./../../Components/DailyExpense";
 import BuyProduct from "./../../Components/BuyProduct";
 import BlockDumpingChart from "./../../Components/BlokDumpingChart";
 import Datepicker from "vuejs-datepicker";
+import Calendar from "v-calendar/lib/components/calendar.umd";
+Vue.component("calendar", Calendar);
 
 export default {
+    name: "",
     metaInfo: { title: "Dashboard" },
     layout: Layout,
     props: {
@@ -72,9 +81,27 @@ export default {
             blockDumping: this.blockDumping7,
             block: this.block7,
             showChart: true,
-            date: new Date().toISOString().substr(0, 10) // 05/09/2019
+            date: new Date().toISOString().substr(0, 10), // 05/09/2019
+
+            attributes: [
+                {
+                    // Attribute type definitions
+                    highlight: true,
+
+                    bar: true,
+                    content: "red",
+                    popover: {},
+
+                    customData: {
+                        // data will go here
+                    },
+
+                    dates: new Date()
+                }
+            ]
         };
     },
+
     methods: {
         changeChart: function($event) {
             console.log($event.target.value);
@@ -96,12 +123,14 @@ export default {
             }, 10);
         }
     },
+
     components: {
         BlockChart,
         DailyExpense,
         BuyProduct,
         BlockDumpingChart,
-        Datepicker
+        Datepicker,
+        Calendar
     }
 };
 </script>
