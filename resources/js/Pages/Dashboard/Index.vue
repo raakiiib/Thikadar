@@ -7,20 +7,7 @@
 
             <Calendar is-expanded show-weeknumbers :attributes="attributes" />
 
-            <!-- date-picker -->
-
-            <div class=" float-right">
-                <div class="card">
-                    <div class="card-header">CALENDAR</div>
-                    <div class="card-body">
-                        <Datepicker
-                            v-model="date"
-                            format="yyyy-MM-dd"
-                            :inline="true"
-                        ></Datepicker>
-                    </div>
-                </div>
-
+            <div>
                 <!-- dropdownfor data  -->
                 <select
                     class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
@@ -56,7 +43,6 @@ import BlockChart from "./../../Components/BlockChart";
 import DailyExpense from "./../../Components/DailyExpense";
 import BuyProduct from "./../../Components/BuyProduct";
 import BlockDumpingChart from "./../../Components/BlokDumpingChart";
-import Datepicker from "vuejs-datepicker";
 import Calendar from "v-calendar/lib/components/calendar.umd";
 Vue.component("calendar", Calendar);
 
@@ -81,7 +67,6 @@ export default {
             blockDumping: this.blockDumping7,
             block: this.block7,
             showChart: true,
-            date: new Date().toISOString().substr(0, 10), // 05/09/2019
 
             attributes: [
                 {
@@ -129,7 +114,6 @@ export default {
         DailyExpense,
         BuyProduct,
         BlockDumpingChart,
-        Datepicker,
         Calendar
     }
 };
