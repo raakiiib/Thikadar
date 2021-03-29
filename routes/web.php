@@ -22,6 +22,8 @@ use App\Http\Controllers\VehiclesController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GoBagController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -203,6 +205,16 @@ Route::get('expenses/dumping/{service}/show', [BlockDumpingController::class, 's
 Route::get('expenses/dumping/{vendor}/vendor', [BlockDumpingController::class, 'vendor'])
     ->name('dumping.single.vendor')
     ->middleware('auth');
+
+// GO Bag
+Route::get('expenses/gobag/', [GoBagController::class, 'index'])
+    ->name('gobag.index') 
+    ->middleware('auth');
+Route::get('expenses/gobag/create', [GoBagController::class, 'create'])
+    ->name('gobag.create')
+    ->middleware('auth');
+    
+
 // Create Services Expense
 // Route::get('purchases/service', [PurchasesController::class, 'createServices'])
 //     ->name('purchase.service')
