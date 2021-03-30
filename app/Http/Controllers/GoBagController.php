@@ -29,7 +29,10 @@ return Inertia::render('GoBag/Index', [
      */
     public function create()
     {
-        //
+        return Inertia::render('GoBag/Create', [
+   
+    
+            ]);
     }
 
     /**
