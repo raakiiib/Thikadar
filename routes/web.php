@@ -213,7 +213,13 @@ Route::get('expenses/gobag/', [GoBagController::class, 'index'])
 Route::get('expenses/gobag/create', [GoBagController::class, 'create'])
     ->name('gobag.create')
     ->middleware('auth');
+Route::post('expenses/gobag', [GoBagController::class, 'store'])
+    ->name('gobag.store');
     
+//     // GO BAG SERVICES
+// Route::get('expenses/details', [GoBagServicesController::class, 'index'])
+//     ->name('expenses.gobag')
+//     ->middleware('auth');
 
 // Create Services Expense
 // Route::get('purchases/service', [PurchasesController::class, 'createServices'])

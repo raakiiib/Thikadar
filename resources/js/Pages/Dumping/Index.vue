@@ -1,8 +1,7 @@
 <template>
     <div class="">
-
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">ব্লক ডাম্পিং </h1>
+            <h1 class="font-bold text-3xl">ব্লক ডাম্পিং</h1>
             <inertia-link class="btn-indigo" :href="route('dumping.create')">
                 <span>নতুন ব্লক ডাম্পিং</span>
                 <span class="hidden md:inline"> যোগ করুন</span>
@@ -27,7 +26,6 @@
         <div class="bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-
                     <th class="px-6 pt-6 pb-4">তারিখ</th>
                     <th class="px-6 pt-6 pb-4">পণ্য/ সেবা</th>
                     <th class="px-6 pt-6 pb-4">সাপ্লায়ার</th>
@@ -51,11 +49,13 @@
                             {{ service.created_at }}
                         </inertia-link>
                     </td>
-                    
+
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500 text-indigo-500"
-                            :href="route('dumping.single.show', service.service_id)"
+                            :href="
+                                route('dumping.single.show', service.service_id)
+                            "
                         >
                             {{ service.product }} ( {{ service.product_size }} )
                         </inertia-link>
@@ -63,7 +63,12 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500 text-indigo-500"
-                            :href="route('dumping.single.vendor', service.supplier_id)"
+                            :href="
+                                route(
+                                    'dumping.single.vendor',
+                                    service.supplier_id
+                                )
+                            "
                             tabindex="-1"
                         >
                             {{ service.supplier }}
