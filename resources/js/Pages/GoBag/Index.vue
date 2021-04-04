@@ -42,7 +42,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', service.id)"
+                            :href="route('gobag.edit', service.id)"
                         >
                             {{ service.created_at }}
                         </inertia-link>
@@ -60,7 +60,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             {{ service.quantity }} পিস
@@ -69,7 +69,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             {{ service.size }}
@@ -78,7 +78,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             &#x09F3; {{ service.unitprice }}
@@ -88,7 +88,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             &#x09F3; {{ service.total }}
@@ -98,7 +98,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             &#x09F3; {{ service.paid }}
@@ -108,7 +108,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             &#x09F3; {{ service.due }}
@@ -118,7 +118,7 @@
                     <td class="border-t w-px">
                         <inertia-link
                             class="px-4 flex items-center"
-                            :href="route('', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             <icon
@@ -142,7 +142,6 @@ import Pagination from "@/Shared/Pagination";
 import pickBy from "lodash/pickBy";
 import SearchFilter from "@/Shared/SearchFilter";
 import throttle from "lodash/throttle";
-
 export default {
     metaInfo: { title: "GO BAG" },
     layout: Layout,

@@ -139,7 +139,6 @@ import Layout from "@/Shared/Layout";
 import LoadingButton from "@/Shared/LoadingButton";
 import SelectInput from "@/Shared/SelectInput";
 import TextInput from "@/Shared/TextInput";
-
 export default {
     metaInfo: { title: "নতুন go bag যোগ করুন" },
     layout: Layout,

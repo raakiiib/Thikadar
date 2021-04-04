@@ -214,7 +214,20 @@ Route::get('expenses/gobag/create', [GoBagController::class, 'create'])
     ->name('gobag.create')
     ->middleware('auth');
 Route::post('expenses/gobag', [GoBagController::class, 'store'])
-    ->name('gobag.store');
+    ->name('gobag.store')
+    ->middleware('auth');;
+Route::get('expenses/gobag/{service}/edit', [GoBagController::class, 'edit'])
+    ->name('gobag.edit')
+    ->middleware('auth');
+Route::put('expenses/gobag/{expense}', [GoBagController::class, 'update'])
+    ->name('gobag.update')
+    ->middleware('auth');
+Route::delete('expenses/gobag/{expense}', [GoBagController::class, 'destroy'])
+    ->name('gobag.destroy')
+    ->middleware('auth');
+Route::put('expenses/gobag/{expenses}/restore', [GoBagController::class, 'restore'])
+    ->name('gobag.restore')
+    ->middleware('auth');
     
 //     // GO BAG SERVICES
 // Route::get('expenses/details', [GoBagServicesController::class, 'index'])

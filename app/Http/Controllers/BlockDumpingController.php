@@ -24,6 +24,7 @@ class BlockDumpingController extends Controller
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(25)
                 ->transform(function ($service){
+                   //print_r($service);
                     return [
                         'id' => $service->id,
                         'quantity' => $service->quantity,

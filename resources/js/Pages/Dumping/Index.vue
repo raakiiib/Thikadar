@@ -164,7 +164,6 @@ import Pagination from "@/Shared/Pagination";
 import pickBy from "lodash/pickBy";
 import SearchFilter from "@/Shared/SearchFilter";
 import throttle from "lodash/throttle";
-
 export default {
     metaInfo: { title: "সেবা সমূহ" },
     layout: Layout,

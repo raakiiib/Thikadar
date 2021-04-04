@@ -136,44 +136,105 @@ class GoBagController extends Controller
     public function show($id)
     {
         //
+        return $id;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    
+    public function edit(Expense $service)
     {
-        //
+        return Inertia::render('GoBag/Edit', [
+            'expense' => [
+                'id' => $service->id,
+                'invoice_number' => $service->invoice_number,
+                'quantity' => $service->quantity,
+                'unit_price' => $service->unit_price,
+                'net_amount' => $service->net_amount,
+                'date' => $service->created_at,
+                'expense_type' => $service->expense_type,
+                'paid_amount' => $service->paid_amount,
+                'due_amount' => $service->due_amount,
+                'deleted_at' => $service->deleted_at,
+                'supplier' => $service->getSupplier->name,
+                'is_all_paid' => $service->is_all_paid,
+                'note'=>$service->note,
+                'created_at' => date_format( $service->created_at, 'd-m-Y'),
+                'payments' => $service->payments()->get()->map->only([
+                    'id', 
+                    'paid_amount',
+                    'payment_type',
+                    'note', 
+                    'created_at',
+                ]),
+            ],
+            'pay_types' => Auth::user()->account->cost_types()
+                ->orderBy('name')
+                ->filter(Request::only('search', 'trashed'))
+                ->paginate(50)
+                ->only('id', 'name'),
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    
+    public function update(Expense $expense)
     {
-        //
+        Request::validate([
+            'net_amount' => ['required', 'max:10'],
+            'paid_amount' => ['required', 'max:10'],
+            'due_amount' => ['required', 'max:10'],
+        ]);
+
+        DB::beginTransaction();
+
+        // Add new payment
+        try {
+            $expense->update([
+                'paid_amount' => Request::get('total_paid'),
+                'due_amount' => Request::get('due_amount'),
+                'is_all_paid' => Request::get('is_all_paid') ,
+            ]);
+
+            $payment = Auth::user()->account->payments()->create([
+                'expense_id' => Request::get('expense_id'), // type = 5
+                'net_amount' => Request::get('net_amount'),
+                'payment_type' => Request::get('pay_type'),
+                'paid_amount' => Request::get('paid_amount'),
+                'note' => Request::get('note'),
+                'created_at' => Request::get('created_at'),
+                'is_all_paid' => Request::get('is_all_paid') ,
+            ]);
+        } 
+        catch(ValidationException $e){
+            DB::rollback();
+            return Redirect::route('gobag.index')
+                ->withErrors( $e->getErrors() )
+                ->withInput();
+        }
+        catch(\Exception $e){
+            DB::rollback();
+            throw $e;
+        }
+        DB::commit();
+       
+        return Redirect::route('gobag.index')->with('success', 'বাকি পরিষোধ হয়েছে.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    
+    public function destroy(Expense $expense)
     {
-        //
+        $expense->delete();
+        return Redirect::route('gobag.index')->with('success', 'Entry removed.');
+    }
+    public function restore(Expense $expense)
+    {
+        $expense->restore();
+        return Redirect::back()->with('success', 'Entry restored.');
     }
     protected function _generateInvoice()
     {
         $invoiceNumber = date('ymdhi');
+      
         return $invoiceNumber;
     }
+
+   
 }
