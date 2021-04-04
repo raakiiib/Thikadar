@@ -133,10 +133,35 @@ class GoBagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($service)
     {
-        //
-        return $id;
+        $data = Auth::user()->account->expenses()
+        ->where('vendor_id',$service)
+        ->where('expense_type', )
+        ->orderBy('created_at', 'DESC')
+        ->paginate(25)
+        ->transform(function ($service){
+            return [
+                'id' => $service->id,
+                'quantity' => $service->quantity,
+                'unitprice' => $service->unitprice,
+                'total' => $service->net_amount,
+                'paid' => $service->paid_amount,
+                'due' => $service->due_amount,
+                'size' => $service->size,
+                'unitprice' => $service->unit_price,
+                'deleted_at' => $service>deleted_at,
+                'supplier_id' => $service->vendor_id,
+                'supplier' => $service->getSupplier->name,
+                'created_at' => date_format( $service->created_at, 'd-m-Y'),
+            ];
+        });
+        
+        return Inertia::render('GoBag/VendorEdit', [
+            
+            'services' => $data,
+            ]);
+    
     }
 
     

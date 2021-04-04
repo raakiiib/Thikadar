@@ -228,6 +228,9 @@ Route::delete('expenses/gobag/{expense}', [GoBagController::class, 'destroy'])
 Route::put('expenses/gobag/{expenses}/restore', [GoBagController::class, 'restore'])
     ->name('gobag.restore')
     ->middleware('auth');
+Route::get('expenses/gobag/{service}/show', [GoBagController::class, 'show'])
+    ->name('gobag.vendor')
+    ->middleware('auth');
     
 //     // GO BAG SERVICES
 // Route::get('expenses/details', [GoBagServicesController::class, 'index'])

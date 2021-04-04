@@ -51,7 +51,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500 text-indigo-500"
-                            :href="route('', service.supplier_id)"
+                            :href="route('gobag.vendor', service.supplier_id)"
                             tabindex="-1"
                         >
                             {{ service.supplier }}
