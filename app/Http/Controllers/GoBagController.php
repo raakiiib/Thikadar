@@ -150,7 +150,6 @@ class GoBagController extends Controller
                 'due' => $service->due_amount,
                 'size' => $service->size,
                 'unitprice' => $service->unit_price,
-               
                 'supplier_id' => $service->vendor_id,
                 'supplier' => $service->getSupplier->name,
                 'created_at' => date_format( $service->created_at, 'd-m-Y'),

@@ -2,7 +2,13 @@
     <div>
         <div>
             <h1 class="mb-8 font-bold text-3xl">Dashboard</h1>
-
+            <!-- donut chart -->
+            <vc-donut
+                class='mb-8 font-bold text-3xl"'
+                :sections="sections"
+                :thickness="80"
+            >
+            </vc-donut>
             <!-- v-calendar -->
 
             <Calendar is-expanded show-weeknumbers :attributes="attributes" />
@@ -67,7 +73,13 @@ export default {
             blockDumping: this.blockDumping7,
             block: this.block7,
             showChart: true,
-
+            sections: [
+                { value: 25 },
+                { value: 25 },
+                { value: 20 },
+                { value: 5 },
+                { value: 25 }
+            ],
             attributes: [
                 {
                     // Attribute type definitions
