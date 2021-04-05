@@ -4,10 +4,7 @@
             <inertia-link
                 class="text-indigo-400 hover:text-indigo-600"
                 :href="route('gobag.index')"
-            >
-                <h1 v-for="service in services.data" :key="service.id">
-                    {{ service.supplier }}
-                </h1>
+                >{{ getName() }}
 
                 /</inertia-link
             >
@@ -98,22 +95,25 @@
                     </th>
                     <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
-                            পিস
+                            {{ totalQuantity() }} পিস
                         </span>
                     </th>
                     <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
                             &#x09F3;
+                            {{ totalNetAmnt() }}
                         </span>
                     </th>
                     <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
                             &#x09F3;
+                            {{ totalPaidAmnt() }}
                         </span>
                     </th>
                     <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
                             &#x09F3;
+                            {{ totalDueAmnt() }}
                         </span>
                     </th>
                 </tr>
@@ -132,7 +132,6 @@ import TrashedMessage from "@/Shared/TrashedMessage";
 import SearchFilter from "@/Shared/SearchFilter";
 
 export default {
-    metaInfo() {},
     layout: Layout,
     components: {
         Icon,
@@ -145,9 +144,56 @@ export default {
     props: {
         services: Object
     },
+
     data() {
-        console.log(this.services);
-        return this.services;
+        return {};
+    },
+    methods: {
+        totalQuantity: function() {
+            let total = [];
+            Object.entries(this.services.data).forEach(([key, val]) => {
+                total.push(val.quantity);
+            });
+            return total.reduce(function(total, val) {
+                return total + val;
+            }, 0);
+        },
+        totalNetAmnt: function() {
+            let total = [];
+            Object.entries(this.services.data).forEach(([key, val]) => {
+                total.push(val.total);
+            });
+            return total.reduce(function(total, val) {
+                return total + val;
+            }, 0);
+        },
+        totalPaidAmnt: function() {
+            let total = [];
+            Object.entries(this.services.data).forEach(([key, val]) => {
+                total.push(val.paid);
+            });
+            return total.reduce(function(total, num) {
+                return total + num;
+            }, 0);
+        },
+        totalDueAmnt: function() {
+            let total = [];
+            Object.entries(this.services.data).forEach(([key, val]) => {
+                total.push(val.due);
+            });
+            return total.reduce(function(total, num) {
+                return total + num;
+            }, 0);
+        },
+        getName: function() {
+            let name = [];
+            Object.entries(this.services.data).forEach(([key, val]) => {
+                name.push(val.supplier);
+            });
+            return name.reduce(function(name, num) {
+                return num;
+            }, 0);
+        }
     }
 };
 </script>
