@@ -137,7 +137,7 @@ class GoBagController extends Controller
     {
         $data = Auth::user()->account->expenses()
         ->where('vendor_id',$service)
-        ->where('expense_type', )
+        ->where('expense_type', 5)
         ->orderBy('created_at', 'DESC')
         ->paginate(25)
         ->transform(function ($service){
@@ -150,7 +150,7 @@ class GoBagController extends Controller
                 'due' => $service->due_amount,
                 'size' => $service->size,
                 'unitprice' => $service->unit_price,
-                'deleted_at' => $service>deleted_at,
+               
                 'supplier_id' => $service->vendor_id,
                 'supplier' => $service->getSupplier->name,
                 'created_at' => date_format( $service->created_at, 'd-m-Y'),

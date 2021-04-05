@@ -4,7 +4,12 @@
             <inertia-link
                 class="text-indigo-400 hover:text-indigo-600"
                 :href="route('gobag.index')"
-                >GoBag/</inertia-link
+            >
+                <h1 v-for="service in services.data" :key="service.id">
+                    {{ service.supplier }}
+                </h1>
+
+                /</inertia-link
             >
             এর সকল হিসাব
         </h2>
@@ -19,12 +24,17 @@
                     <th class="px-6 pt-6 pb-4" colspan="2">বাকি</th>
                 </tr>
 
-                <tr>
+                <tr
+                    v-for="service in services.data"
+                    :key="service.id"
+                    class="hover:bg-gray-400 focus-within:bg-gray-100"
+                >
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('')"
+                            :href="route('gobag.edit', service.id)"
                         >
+                            {{ service.created_at }}
                         </inertia-link>
                     </td>
 
@@ -34,6 +44,7 @@
                             :href="route('')"
                             tabindex="-1"
                         >
+                            {{ service.quantity }}
                             পিস
                         </inertia-link>
                     </td>
@@ -45,6 +56,7 @@
                             tabindex="-1"
                         >
                             &#x09F3;
+                            {{ service.total }}
                         </inertia-link>
                     </td>
 
@@ -55,6 +67,7 @@
                             tabindex="-1"
                         >
                             &#x09F3;
+                            {{ service.paid }}
                         </inertia-link>
                     </td>
 
@@ -65,7 +78,16 @@
                             tabindex="-1"
                         >
                             &#x09F3;
+                            {{ service.due }}
                         </inertia-link>
+                    </td>
+
+                    <td
+                        v-if="service.length === 0"
+                        class="border-t px-6 py-4"
+                        colspan="4"
+                    >
+                        No entry found.
                     </td>
                 </tr>
                 <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -95,11 +117,6 @@
                         </span>
                     </th>
                 </tr>
-                <tr>
-                    <td class="border-t px-6 py-4" colspan="4">
-                        No entry found.
-                    </td>
-                </tr>
             </table>
         </div>
     </div>
@@ -127,6 +144,10 @@ export default {
     },
     props: {
         services: Object
+    },
+    data() {
+        console.log(this.services);
+        return this.services;
     }
 };
 </script>
