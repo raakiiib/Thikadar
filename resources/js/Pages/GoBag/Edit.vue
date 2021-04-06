@@ -4,7 +4,7 @@
             <inertia-link
                 class="text-indigo-400 hover:text-indigo-600"
                 :href="route('gobag.index')"
-                >&#8678; GO BAG</inertia-link
+                >&#8678; জি ও ব্যাগ</inertia-link
             >
             <span class="text-indigo-400 font-medium">/</span>
             {{ expense.id }}
@@ -173,8 +173,8 @@
                                 v-if="payment.deleted_at"
                                 name="trash"
                                 class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2"
-                            /> </inertia-link
-                        >vc
+                            />
+                        </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link

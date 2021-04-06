@@ -4,7 +4,7 @@
             <inertia-link
                 class="text-indigo-400 hover:text-indigo-600"
                 :href="route('gobag.index')"
-                >GO BAG</inertia-link
+                >জি ও ব্যাগ</inertia-link
             >
             <span class="text-indigo-400 font-medium">/</span> নতুন
             <br />
@@ -140,7 +140,7 @@ import LoadingButton from "@/Shared/LoadingButton";
 import SelectInput from "@/Shared/SelectInput";
 import TextInput from "@/Shared/TextInput";
 export default {
-    metaInfo: { title: "নতুন go bag যোগ করুন" },
+    metaInfo: { title: "নতুন জি ও ব্যাগ যোগ করুন" },
     layout: Layout,
     components: {
         LoadingButton,

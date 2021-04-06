@@ -1,9 +1,9 @@
 <template>
     <div class="">
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">GO BAG</h1>
+            <h1 class="font-bold text-3xl">জি ও ব্যাগ</h1>
             <inertia-link class="btn-indigo" :href="route('gobag.create')">
-                <span>নতুন GO BAG </span>
+                <span>নতুন জি ও ব্যাগ </span>
                 <span class="hidden md:inline"> যোগ করুন</span>
             </inertia-link>
         </div>
@@ -143,7 +143,7 @@ import pickBy from "lodash/pickBy";
 import SearchFilter from "@/Shared/SearchFilter";
 import throttle from "lodash/throttle";
 export default {
-    metaInfo: { title: "GO BAG" },
+    metaInfo: { title: "জি ও ব্যাগ" },
     layout: Layout,
     components: {
         Icon,

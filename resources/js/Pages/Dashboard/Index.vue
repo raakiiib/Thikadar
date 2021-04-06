@@ -6,7 +6,7 @@
             <vc-donut
                 class='mb-8 font-bold text-3xl"'
                 :sections="sections"
-                :thickness="80"
+                :thickness="65"
             >
             </vc-donut>
             <!-- v-calendar -->
@@ -74,11 +74,11 @@ export default {
             block: this.block7,
             showChart: true,
             sections: [
-                { value: 25 },
-                { value: 25 },
-                { value: 20 },
-                { value: 5 },
-                { value: 25 }
+                { label: "red", value: 25 },
+                { label: "blue", value: 30 },
+                { label: "yellow", value: 5 },
+                { label: "orange", value: 30 },
+                { label: "sky", value: 10 }
             ],
             attributes: [
                 {
@@ -100,8 +100,15 @@ export default {
     },
 
     methods: {
+        handleSectionClick(section, event) {
+            console.log(`${section.label} clicked.`);
+        },
+        handleSectionMouseover(section, event) {
+            console.log(`${section.label} mouseover.`);
+        },
         changeChart: function($event) {
             console.log($event.target.value);
+
             this.showChart = false;
             setTimeout(() => {
                 if ($event.target.value == "7") {

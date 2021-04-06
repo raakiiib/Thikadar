@@ -150,7 +150,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    GO BAG
+                    জি ও ব্যাগ
                 </div>
             </inertia-link>
         </div>
