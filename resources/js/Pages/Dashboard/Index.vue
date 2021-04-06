@@ -11,7 +11,12 @@
             </vc-donut>
             <!-- v-calendar -->
 
-            <Calendar is-expanded show-weeknumbers :attributes="attributes" />
+            <Calendar
+                class="calendar"
+                is-expanded
+                show-weeknumbers
+                :attributes="attributes"
+            ></Calendar>
 
             <!-- <div> -->
             <!-- dropdownfor data  -->
@@ -86,18 +91,27 @@ export default {
                 { label: "orange", value: 30 },
                 { label: "sky", value: 10 }
             ],
+
             attributes: [
                 {
                     // Attribute type definitions
                     highlight: true,
 
-                    bar: true,
                     content: "red",
                     popover: {},
-
+                    // bar: true,
                     customData: {
                         // data will go here
                     },
+
+                    highlight: {
+                        color: "orange",
+                        fillMode: "solid"
+                    },
+                    // isdark: {
+                    //     color: "orange",
+                    //     fillMode: "outline"
+                    // },
 
                     dates: new Date()
                 }
@@ -144,3 +158,10 @@ export default {
     }
 };
 </script>
+<style>
+.calendar {
+    color: #1e1b3a;
+    /* background-color: linear-gradient(#ff5050, #ff66b3); */
+    background-image: linear-gradient(to bottom right, #b59e8f, #64598f);
+}
+</style>
