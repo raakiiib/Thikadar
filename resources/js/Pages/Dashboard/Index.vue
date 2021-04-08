@@ -7,8 +7,13 @@
                 class='mb-8 font-bold text-3xl"'
                 :sections="sections"
                 :thickness="65"
+                :size="300"
+                background="pink"
+                text=""
+                @section-click="handleSectionClick"
             >
             </vc-donut>
+
             <!-- v-calendar -->
 
             <Calendar
@@ -74,7 +79,8 @@ export default {
         blockDumping30: "",
         block7: "",
         block30: "",
-        gobagexpenses30: ""
+        gobagexpenses30: "",
+        donutChartalData: ""
     },
     data() {
         return {
@@ -84,13 +90,16 @@ export default {
             blockDumping: this.blockDumping30,
             block: this.block30,
             showChart: true,
-            sections: [
-                { label: "red", value: 25 },
-                { label: "blue", value: 30 },
-                { label: "yellow", value: 5 },
-                { label: "orange", value: 30 },
-                { label: "sky", value: 10 }
-            ],
+            sections: this.donutChartalData,
+            // sections: [
+            //     { label: "BLOCK CASTING", value: 25 },
+            //     { label: "BLOCK DUMPING", value: 30 },
+            //     { label: "GO BAG", value: 5 },
+            //     { label: "DAILY EXPENSES", value: 30 },
+            //     { label: "MATARIAL COST", value: 10 }
+            //     // label: ["red", "blue", "yelooww", "orange", "sky"],
+            //     // value: [25, 30, 5, 30, 10]
+            // ],
 
             attributes: [
                 {
@@ -122,10 +131,15 @@ export default {
     methods: {
         handleSectionClick(section, event) {
             console.log(`${section.label} clicked.`);
+            console.log(`${section.value} clicked.`);
         },
         handleSectionMouseover(section, event) {
             console.log(`${section.label} mouseover.`);
+        },
+        calculatePercantage() {
+            $paid = getalldata.paid;
         }
+        //CHANGING FOR 7 DAYS TO 30 DAYS
         // changeChart: function($event) {
         //     console.log($event.target.value);
 
@@ -160,7 +174,7 @@ export default {
 </script>
 <style>
 .calendar {
-    color: #1e1b3a;
+    color: #fafafa;
     /* background-color: linear-gradient(#ff5050, #ff66b3); */
     background-image: linear-gradient(to bottom right, #b59e8f, #64598f);
 }

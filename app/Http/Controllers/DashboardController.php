@@ -90,6 +90,69 @@ class DashboardController extends Controller
         });
         
     }
+    public function getAllExpense(){
+        $item =30;
+        
+        $data=Expense::latest( 'created_at')->
+        take($item)->get()
+        ->transform( function ( $expense ) {
+
+            return [
+            
+                'created_at' => date_format($expense->created_at, 'd-m-Y'),
+                  'paid'=> $expense->paid_amount,
+                  'expense_type'=>$expense->expense_type,
+                
+     
+                 ];
+                });
+                             $total = 0;
+                             $expenseType = [];
+                 foreach($data as $d) {
+                    if(isset($expenseType[$d['expense_type']])) {
+                        $expenseType[$d['expense_type']]+=$d['paid'];
+                    } else {
+                        $expenseType[$d['expense_type']]=$d['paid'];
+                    }
+                    $total+=$d['paid'];
+                 }
+
+                 $graphData = [];
+                 $i = 0;
+                 foreach($expenseType as $k=>$v) {
+                     if($k ==1)
+                     {
+                         $k="PRODUCT BUY";
+                     }
+                     else if ($k==2)
+                     {
+                        $k="BLOCK CASTING";
+                     }else if ($k==3)
+                     {
+                        $k="DAILY COST";
+                     }else if($k==4)
+                     {
+                        $k="BLOCK DUMPING";
+                     }else if($k==5 )
+                      {
+                        $k="GO BAG";
+                     }
+                    $percent = $v*100/$total;
+                    $graphData[$i]=[
+                       
+                        'label' => $k." (".round($percent,2)."%".")",
+                        'value' => $percent,
+                        'total' => $v
+
+                    ];
+                    $i++;
+                   
+                 }
+
+                        return $graphData; 
+
+        
+    }
     public function index()
     {
         ;
@@ -103,6 +166,7 @@ class DashboardController extends Controller
                 "block7"=>$this->putDataBlock(7),
                 "block30"=>$this->putDataBlock(30),
                 "gobagexpenses30"=>$this->putDataGoBag(30),
+                'donutChartalData'=>$this->getAllExpense(),
 
              
                 

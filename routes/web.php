@@ -207,6 +207,8 @@ Route::get('expenses/dumping/{vendor}/vendor', [BlockDumpingController::class, '
     ->middleware('auth');
 
 // GO Bag
+Route::get('/data', [DashboardController::class, 'getAllExpense'])
+    ->name('expense.data') ;
 Route::get('expenses/gobag/', [GoBagController::class, 'index'])
     ->name('gobag.index') 
     ->middleware('auth');
