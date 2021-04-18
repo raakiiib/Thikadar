@@ -4,119 +4,143 @@
             <inertia-link
                 class="text-indigo-400 hover:text-indigo-600"
                 :href="route('gobag.index')"
-                >জি ও ব্যাগ</inertia-link
-            >
-            <span class="text-indigo-400 font-medium">/</span> নতুন
+                >{{ languageTranslation.getLanguage("bn").gobag }}
+            </inertia-link>
+            <span class="text-indigo-400 font-medium">/</span>
+            {{ languageTranslation.getLanguage("bn").new }}
             <br />
         </h1>
         <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
             <form @submit.prevent="submit">
                 <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-                    <text-input
-                        type="date"
-                        value="28-12-2020"
-                        v-model="form.created_at"
-                        :error="errors.created_at"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Date"
-                    />
+                    <label for="date" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").date }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            id="date"
+                            type="date"
+                            value="28-12-2020"
+                            v-model="form.created_at"
+                            :error="errors.created_at"
+                        />
+                    </label>
+                    <label for="supplier" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").supplier }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
 
-                    <select-input
-                        v-model="form.vendor_id"
-                        :error="errors.vendor_id"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Supplier"
-                    >
-                        <option :value="null" />
-                        <option
-                            v-for="supplier in suppliers"
-                            :key="supplier.id"
-                            :value="supplier.id"
-                            >{{ supplier.name }}</option
+                        <select-input
+                            id="supplier"
+                            v-model="form.vendor_id"
+                            :error="errors.vendor_id"
                         >
-                    </select-input>
-
-                    <text-input
-                        type="number"
-                        step="0.01"
-                        v-model="form.quantity"
-                        @input="updateNetAmout"
-                        :error="errors.quantity"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Quantity"
-                    />
-
-                    <text-input
-                        type="number"
-                        step="any"
-                        v-model="form.size"
-                        @input="updateNetAmout"
-                        :error="errors.size"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Size"
-                    />
-
-                    <text-input
-                        type="number"
-                        step="0.01"
-                        v-model="form.unitprice"
-                        @input="updateNetAmout"
-                        :error="errors.unitprice"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Rate"
-                    />
-
-                    <text-input
-                        type="number"
-                        step="0.01"
-                        v-model="form.net_amount"
-                        :error="errors.net_amount"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Total"
-                    />
-
-                    <text-input
-                        type="number"
-                        step="0.01"
-                        v-model="form.paid_amount"
-                        @input="calculateDue"
-                        :error="errors.paid_amount"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Paid"
-                    />
-
-                    <text-input
-                        type="number"
-                        step="-0.01"
-                        v-model="form.due_amount"
-                        @input="calculateDue"
-                        :error="errors.due_amount"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Due"
-                    />
-
-                    <select-input
-                        v-model="form.pay_type"
-                        :error="errors.pay_type"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="খরচের ধরন"
-                    >
-                        <option
-                            v-for="cost in pay_types.data"
-                            :key="cost.id"
-                            :value="cost.name"
+                            <option :value="null" />
+                            <option
+                                v-for="supplier in suppliers"
+                                :key="supplier.id"
+                                :value="supplier.id"
+                                >{{ supplier.name }}</option
+                            >
+                        </select-input>
+                    </label>
+                    <label for="quantity" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").quantity }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            type="number"
+                            step="0.01"
+                            v-model="form.quantity"
+                            @input="updateNetAmout"
+                            :error="errors.quantity"
+                            id="quantity"
+                        />
+                    </label>
+                    <label for="size" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").size }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            type="number"
+                            step="any"
+                            v-model="form.size"
+                            @input="updateNetAmout"
+                            :error="errors.size"
+                            id="size"
+                        />
+                    </label>
+                    <label for="rate" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").rate }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            type="number"
+                            step="0.01"
+                            v-model="form.unitprice"
+                            @input="updateNetAmout"
+                            :error="errors.unitprice"
+                            id="rate"
+                        />
+                    </label>
+                    <label for="total" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").total }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            type="number"
+                            step="0.01"
+                            v-model="form.net_amount"
+                            :error="errors.net_amount"
+                            id="total"
+                        />
+                    </label>
+                    <label for="paid" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").paid }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            type="number"
+                            step="0.01"
+                            v-model="form.paid_amount"
+                            @input="calculateDue"
+                            :error="errors.paid_amount"
+                            id="paid"
+                        />
+                    </label>
+                    <label for="due" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").due }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            type="number"
+                            step="-0.01"
+                            v-model="form.due_amount"
+                            @input="calculateDue"
+                            :error="errors.due_amount"
+                            id="due"
+                        />
+                    </label>
+                    <label for="expensetype" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").expensetype }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <select-input
+                            v-model="form.pay_type"
+                            :error="errors.pay_type"
+                            id="expensetype"
                         >
-                            {{ cost.name }}
-                        </option>
-                    </select-input>
+                            <option
+                                v-for="cost in pay_types.data"
+                                :key="cost.id"
+                                :value="cost.name"
+                            >
+                                {{ cost.name }}
+                            </option>
+                        </select-input>
+                    </label>
+                    <label for="note" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").note }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
 
-                    <text-input
-                        type="text"
-                        v-model="form.note"
-                        :error="errors.note"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Note"
-                    />
+                        <text-input
+                            type="text"
+                            v-model="form.note"
+                            :error="errors.note"
+                            id="note"
+                        />
+                    </label>
                 </div>
                 <div
                     class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center"
@@ -126,7 +150,9 @@
                         class="btn-indigo"
                         type="submit"
                     >
-                        যোগ করুন</loading-button
+                        {{
+                            languageTranslation.getLanguage("bn").add
+                        }}</loading-button
                     >
                 </div>
             </form>
@@ -139,8 +165,9 @@ import Layout from "@/Shared/Layout";
 import LoadingButton from "@/Shared/LoadingButton";
 import SelectInput from "@/Shared/SelectInput";
 import TextInput from "@/Shared/TextInput";
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation";
 export default {
-    metaInfo: { title: "নতুন জি ও ব্যাগ যোগ করুন" },
+    metaInfo: { title: languageTranslation.getLanguage("bn").newgobag },
     layout: Layout,
     components: {
         LoadingButton,
@@ -203,6 +230,9 @@ export default {
                 onFinish: () => (this.sending = false)
             });
         }
+    },
+    created() {
+        this.languageTranslation = languageTranslation;
     }
 };
 </script>

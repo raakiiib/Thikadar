@@ -4,135 +4,154 @@
             <inertia-link
                 class="text-indigo-400 hover:text-indigo-600"
                 :href="route('dumping.index')"
-                >ব্লক ডাম্পিং</inertia-link
-            >
-            <span class="text-indigo-400 font-medium">/</span> নতুন
+                >{{ languageTranslation.getLanguage("bn").blockdumping }}
+            </inertia-link>
+
+            <span class="text-indigo-400 font-medium">/</span>
+            {{ languageTranslation.getLanguage("bn").new }}
             <br />
         </h1>
         <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
             <form @submit.prevent="submit">
                 <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-                    <text-input
-                        type="date"
-                        value="28-12-2020"
-                        v-model="form.created_at"
-                        :error="errors.created_at"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Date"
-                    />
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="date"
+                        >{{ languageTranslation.getLanguage("bn").date }}
+                        <text-input
+                            type="date"
+                            id="date"
+                            value="28-12-2020"
+                            v-model="form.created_at"
+                            :error="errors.created_at"
+                        />
+                    </label>
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="service"
+                        >{{ languageTranslation.getLanguage("bn").service }}
 
-                    <select-input
-                        v-model="form.product_id"
-                        :error="errors.product_id"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Service"
-                    >
-                        <option :value="null" />
-                        <option
-                            v-for="service in services"
-                            :key="service.id"
-                            :value="service.id"
-                            >{{ service.name }} (
-                            {{ service.dimension }} )</option
+                        <select-input
+                            id="service"
+                            v-model="form.product_id"
+                            :error="errors.product_id"
                         >
-                    </select-input>
-
-                    <select-input
-                        v-model="form.vendor_id"
-                        :error="errors.vendor_id"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Supplier"
-                    >
-                        <option :value="null" />
-                        <option
-                            v-for="supplier in suppliers"
-                            :key="supplier.id"
-                            :value="supplier.id"
-                            >{{ supplier.name }}</option
+                            <option :value="null" />
+                            <option
+                                v-for="service in services"
+                                :key="service.id"
+                                :value="service.id"
+                                >{{ service.name }} (
+                                {{ service.dimension }} )</option
+                            >
+                        </select-input>
+                    </label>
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="supplier">
+                        {{ languageTranslation.getLanguage("bn").supplier }}
+                        <select-input
+                            id="supplier"
+                            v-model="form.vendor_id"
+                            :error="errors.vendor_id"
                         >
-                    </select-input>
+                            <option :value="null" />
+                            <option
+                                v-for="supplier in suppliers"
+                                :key="supplier.id"
+                                :value="supplier.id"
+                                >{{ supplier.name }}</option
+                            >
+                        </select-input>
+                    </label>
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="quantity">
+                        {{ languageTranslation.getLanguage("bn").quantity }}
+                        <text-input
+                            id="quantity"
+                            type="number"
+                            step="0.01"
+                            v-model="form.quantity"
+                            @input="updateNetAmout"
+                            :error="errors.quantity"
+                        />
+                    </label>
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="size">
+                        {{ languageTranslation.getLanguage("bn").size }}
 
-                    <text-input
-                        type="number"
-                        step="0.01"
-                        v-model="form.quantity"
-                        @input="updateNetAmout"
-                        :error="errors.quantity"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Quantity"
-                    />
+                        <text-input
+                            id="size"
+                            type="number"
+                            step="any"
+                            v-model="form.size"
+                            @input="updateNetAmout"
+                            :error="errors.size"
+                        />
+                    </label>
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="rate">
+                        {{ languageTranslation.getLanguage("bn").rate }}
+                        <text-input
+                            id="rate"
+                            type="number"
+                            step="0.01"
+                            v-model="form.unitprice"
+                            @input="updateNetAmout"
+                            :error="errors.unitprice"
+                        />
+                    </label>
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="total">
+                        {{ languageTranslation.getLanguage("bn").total }}
 
-                    <text-input
-                        type="number"
-                        step="any"
-                        v-model="form.size"
-                        @input="updateNetAmout"
-                        :error="errors.size"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Size"
-                    />
+                        <text-input
+                            id="total"
+                            type="number"
+                            step="0.01"
+                            v-model="form.net_amount"
+                            :error="errors.net_amount"
+                        />
+                    </label>
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="paid">
+                        {{ languageTranslation.getLanguage("bn").paid }}
 
-                    <text-input
-                        type="number"
-                        step="0.01"
-                        v-model="form.unitprice"
-                        @input="updateNetAmout"
-                        :error="errors.unitprice"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Rate"
-                    />
+                        <text-input
+                            id="paid"
+                            type="number"
+                            step="0.01"
+                            v-model="form.paid_amount"
+                            @input="calculateDue"
+                            :error="errors.paid_amount"
+                        />
+                    </label>
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="due">
+                        {{ languageTranslation.getLanguage("bn").due }}
+                        <text-input
+                            id="due"
+                            type="number"
+                            step="-0.01"
+                            v-model="form.due_amount"
+                            @input="calculateDue"
+                            :error="errors.due_amount"
+                        />
+                    </label>
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="expensetype">
+                        {{ languageTranslation.getLanguage("bn").expensetype }}
 
-                    <text-input
-                        type="number"
-                        step="0.01"
-                        v-model="form.net_amount"
-                        :error="errors.net_amount"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Total"
-                    />
-
-                    <text-input
-                        type="number"
-                        step="0.01"
-                        v-model="form.paid_amount"
-                        @input="calculateDue"
-                        :error="errors.paid_amount"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Paid"
-                    />
-
-                    <text-input
-                        type="number"
-                        step="-0.01"
-                        v-model="form.due_amount"
-                        @input="calculateDue"
-                        :error="errors.due_amount"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Due"
-                    />
-
-                    <select-input
-                        v-model="form.pay_type"
-                        :error="errors.pay_type"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="খরচের ধরন"
-                    >
-                        <option
-                            v-for="cost in pay_types.data"
-                            :key="cost.id"
-                            :value="cost.name"
+                        <select-input
+                            id="expensetype"
+                            v-model="form.pay_type"
+                            :error="errors.pay_type"
                         >
-                            {{ cost.name }}
-                        </option>
-                    </select-input>
-
-                    <text-input
-                        type="text"
-                        v-model="form.note"
-                        :error="errors.note"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="Note"
-                    />
+                            <option
+                                v-for="cost in pay_types.data"
+                                :key="cost.id"
+                                :value="cost.name"
+                            >
+                                {{ cost.name }}
+                            </option>
+                        </select-input>
+                    </label>
+                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="note">
+                        {{ languageTranslation.getLanguage("bn").note }}*
+                        <text-input
+                            id="note"
+                            type="text"
+                            v-model="form.note"
+                            :error="errors.note"
+                        />
+                    </label>
                 </div>
                 <div
                     class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center"
@@ -142,7 +161,9 @@
                         class="btn-indigo"
                         type="submit"
                     >
-                        যোগ করুন</loading-button
+                        {{
+                            languageTranslation.getLanguage("bn").add
+                        }}</loading-button
                     >
                 </div>
             </form>
@@ -157,9 +178,10 @@ import SelectInput from "@/Shared/SelectInput";
 import TextInput from "@/Shared/TextInput";
 import FileInput from "@/Shared/FileInput";
 import axios from "axios";
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation.js";
 
 export default {
-    metaInfo: { title: "নতুন সেবা যোগ করুন" },
+    metaInfo: { title: languageTranslation.getLanguage("bn").titlesheba },
     layout: Layout,
     components: {
         LoadingButton,
@@ -178,6 +200,7 @@ export default {
         return {
             sending: false,
             service_data: null,
+            title: {},
             form: {
                 product_id: null,
                 vendor_id: null,
@@ -233,6 +256,9 @@ export default {
                 onFinish: () => (this.sending = false)
             });
         }
+    },
+    created() {
+        this.languageTranslation = languageTranslation;
     }
 };
 </script>

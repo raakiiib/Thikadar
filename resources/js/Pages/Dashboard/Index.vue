@@ -1,15 +1,17 @@
 <template>
     <div>
         <div>
-            <h1 class="mb-8 font-bold text-3xl">Dashboard</h1>
+            <h1 class="mb-8 font-bold text-3xl">
+                {{ languageTranslation.getLanguage("bn").dashbord }}
+            </h1>
             <!-- donut chart -->
             <vc-donut
                 class='mb-8 font-bold text-3xl"'
                 :sections="sections"
                 :thickness="65"
                 :size="300"
-                background="pink"
-                text=""
+                background="white"
+                text=" "
                 @section-click="handleSectionClick"
             >
             </vc-donut>
@@ -64,6 +66,7 @@ import BuyProduct from "./../../Components/BuyProduct";
 import BlockDumpingChart from "./../../Components/BlokDumpingChart";
 import GoBagChart from "./../../Components/GoBagChart";
 import Calendar from "v-calendar/lib/components/calendar.umd";
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation";
 Vue.component("calendar", Calendar);
 
 export default {
@@ -160,6 +163,9 @@ export default {
         //         this.showChart = true;
         //     }, 10);
         // }
+    },
+    created() {
+        this.languageTranslation = languageTranslation;
     },
 
     components: {

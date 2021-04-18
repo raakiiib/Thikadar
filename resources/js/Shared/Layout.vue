@@ -14,7 +14,11 @@
                             <!-- <logo class="fill-white" width="120" height="28" /> -->
                             <!-- <img src="images/elite-logo.png" alt=""> -->
                             <!-- <elitelogo class="fill-white" width="320" height="28" /> -->
-                            <h1 class="text-white">Elite construction</h1>
+                            <h1 class="text-white">
+                                {{
+                                    languageTranslation.getLanguage("bn").elite
+                                }}
+                            </h1>
                         </inertia-link>
                         <dropdown class="md:hidden" placement="bottom-end">
                             <svg
@@ -110,6 +114,7 @@ import Icon from "@/Shared/Icon";
 import Logo from "@/Shared/Logo";
 import Elitelogo from "@/Shared/Elitelogo";
 import MainMenu from "@/Shared/MainMenu";
+import { LanguageTranslation as languageTranslation } from "./../Language/LanguageTranslation";
 export default {
     components: {
         Dropdown,
@@ -132,6 +137,10 @@ export default {
         hideDropdownMenus() {
             this.showUserMenu = false;
         }
+    },
+    created() {
+        console.log("created");
+        this.languageTranslation = languageTranslation;
     }
 };
 </script>

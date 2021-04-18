@@ -21,7 +21,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    ড্যাশবোর্ড
+                    {{ languageTranslation.getLanguage("bn").dashbord }}
                 </div>
             </inertia-link>
         </div>
@@ -47,7 +47,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    দৈনন্দিন খরচ
+                    {{ languageTranslation.getLanguage("bn").dailyexpense }}
                 </div>
             </inertia-link>
         </div>
@@ -73,7 +73,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    পণ্য ক্রয়
+                    {{ languageTranslation.getLanguage("bn").buyproduct }}
                 </div>
             </inertia-link>
         </div>
@@ -99,7 +99,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    ব্লক কাস্টিং
+                    {{ languageTranslation.getLanguage("bn").blockcasting }}
                 </div>
             </inertia-link>
         </div>
@@ -125,7 +125,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    ব্লক ডাম্পিং
+                    {{ languageTranslation.getLanguage("bn").blockdumping }}
                 </div>
             </inertia-link>
         </div>
@@ -150,7 +150,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    জি ও ব্যাগ
+                    {{ languageTranslation.getLanguage("bn").gobag }}
                 </div>
             </inertia-link>
         </div>
@@ -203,7 +203,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    সাপ্লায়ার
+                    {{ languageTranslation.getLanguage("bn").supplier }}
                 </div>
             </inertia-link>
         </div>
@@ -229,7 +229,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    পাওনাদার
+                    {{ languageTranslation.getLanguage("bn").creditors }}
                 </div>
             </inertia-link>
         </div>
@@ -255,7 +255,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    খরচের ধরন
+                    {{ languageTranslation.getLanguage("bn").expensetype }}
                 </div>
             </inertia-link>
         </div>
@@ -281,7 +281,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    স্টাফস
+                    {{ languageTranslation.getLanguage("bn").staffs }}
                 </div>
             </inertia-link>
         </div>
@@ -307,7 +307,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    মালামাল
+                    {{ languageTranslation.getLanguage("bn").material }}
                 </div>
             </inertia-link>
         </div>
@@ -333,7 +333,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    ব্লক
+                    {{ languageTranslation.getLanguage("bn").block }}
                 </div>
             </inertia-link>
         </div>
@@ -359,7 +359,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    গাড়ি-ঘোড়া
+                    {{ languageTranslation.getLanguage("bn").vehicles }}
                 </div>
             </inertia-link>
         </div>
@@ -385,7 +385,7 @@
                             : 'text-indigo-300 group-hover:text-white'
                     "
                 >
-                    যোগাযোগ
+                    {{ languageTranslation.getLanguage("bn").contact }}
                 </div>
             </inertia-link>
         </div>
@@ -395,6 +395,7 @@
 <script>
 import Icon from "@/Shared/Icon";
 import Dropdown from "@/Shared/Dropdown";
+import { LanguageTranslation as languageTranslation } from "./../Language/LanguageTranslation";
 export default {
     components: {
         Icon,
@@ -417,6 +418,10 @@ export default {
 
             return urls.filter(url => this.url.startsWith(url)).length;
         }
+    },
+    created() {
+        console.log("created");
+        this.languageTranslation = languageTranslation;
     }
 };
 </script>

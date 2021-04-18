@@ -1,10 +1,17 @@
 <template>
     <div class="">
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">ব্লক ডাম্পিং</h1>
+            <h1 class="font-bold text-3xl">
+                {{ languageTranslation.getLanguage("bn").blockdumping }}
+            </h1>
             <inertia-link class="btn-indigo" :href="route('dumping.create')">
-                <span>নতুন ব্লক ডাম্পিং</span>
-                <span class="hidden md:inline"> যোগ করুন</span>
+                <span
+                    >{{ languageTranslation.getLanguage("bn").new
+                    }}{{ languageTranslation.getLanguage("bn").space
+                    }}{{ languageTranslation.getLanguage("bn").blockdumping
+                    }}{{ languageTranslation.getLanguage("bn").space
+                    }}{{ languageTranslation.getLanguage("bn").add }}</span
+                >
             </inertia-link>
         </div>
 
@@ -26,15 +33,33 @@
         <div class="bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4">তারিখ</th>
-                    <th class="px-6 pt-6 pb-4">পণ্য/ সেবা</th>
-                    <th class="px-6 pt-6 pb-4">সাপ্লায়ার</th>
-                    <th class="px-6 pt-6 pb-4">পরিমান</th>
-                    <th class="px-6 pt-6 pb-4">সাইজ</th>
-                    <th class="px-6 pt-6 pb-4">প্রতিটির মূল্য</th>
-                    <th class="px-6 pt-6 pb-4">মোট</th>
-                    <th class="px-6 pt-6 pb-4">পরিষোধিত</th>
-                    <th class="px-6 pt-6 pb-4">বাকি</th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").date }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").ponnosheba }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").supplier }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").quantity }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").size }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").price }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").total }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").paid }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").due }}
+                    </th>
                 </tr>
                 <tr
                     v-for="service in services.data"
@@ -80,7 +105,8 @@
                             :href="route('service.edit', service.id)"
                             tabindex="-1"
                         >
-                            {{ service.quantity }} পিস
+                            {{ service.quantity }}
+                            {{ languageTranslation.getLanguage("bn").piece }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
@@ -164,8 +190,9 @@ import Pagination from "@/Shared/Pagination";
 import pickBy from "lodash/pickBy";
 import SearchFilter from "@/Shared/SearchFilter";
 import throttle from "lodash/throttle";
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation.js";
 export default {
-    metaInfo: { title: "সেবা সমূহ" },
+    metaInfo: { title: languageTranslation.getLanguage("bn").sheba },
     layout: Layout,
     components: {
         Icon,
@@ -204,6 +231,9 @@ export default {
         reset() {
             this.form = mapValues(this.form, () => null);
         }
+    },
+    created() {
+        this.languageTranslation = languageTranslation;
     }
 };
 </script>

@@ -8,17 +8,27 @@
 
                 /</inertia-link
             >
-            এর সকল হিসাব
+            {{ languageTranslation.getLanguage("bn").all }}
         </h2>
 
         <div class="mt-6 bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4">তারিখ</th>
-                    <th class="px-6 pt-6 pb-4">পরিমান</th>
-                    <th class="px-6 pt-6 pb-4">মোট</th>
-                    <th class="px-6 pt-6 pb-4">পরিষোধিত</th>
-                    <th class="px-6 pt-6 pb-4" colspan="2">বাকি</th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").date }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").quantity }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").total }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").paid }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4" colspan="2">
+                        {{ languageTranslation.getLanguage("bn").due }}
+                    </th>
                 </tr>
 
                 <tr
@@ -42,7 +52,7 @@
                             tabindex="-1"
                         >
                             {{ service.quantity }}
-                            পিস
+                            {{ languageTranslation.getLanguage("bn").piece }}
                         </inertia-link>
                     </td>
 
@@ -90,12 +100,13 @@
                 <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
-                            মোট
+                            {{ languageTranslation.getLanguage("bn").total }}
                         </span>
                     </th>
                     <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
-                            {{ totalQuantity() }} পিস
+                            {{ totalQuantity()
+                            }}{{ languageTranslation.getLanguage("bn").piece }}
                         </span>
                     </th>
                     <th class="border-t">
@@ -130,6 +141,7 @@ import SelectInput from "@/Shared/SelectInput";
 import TextInput from "@/Shared/TextInput";
 import TrashedMessage from "@/Shared/TrashedMessage";
 import SearchFilter from "@/Shared/SearchFilter";
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation";
 
 export default {
     layout: Layout,
@@ -194,6 +206,9 @@ export default {
                 return num;
             }, 0);
         }
+    },
+    created() {
+        this.languageTranslation = languageTranslation;
     }
 };
 </script>

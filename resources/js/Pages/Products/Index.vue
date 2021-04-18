@@ -1,6 +1,5 @@
 <template>
     <div class="">
-
         <!-- <div class="p-1 mr-1 mb-4 flex flex-wrap">
             <button class="p-1 w-full lg:w-1/3">
                 <inertia-link class="block p-3 text-blue-600 bg-gray-300 border-2 border-blue-200"  :href="route('expenses.dailyexpense')">
@@ -20,11 +19,17 @@
         </div> -->
 
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">পণ্য</h1>
+            <h1 class="font-bold text-3xl">
+                {{ languageTranslation.getLanguage("bn").ponno }}
+            </h1>
 
             <inertia-link class="btn-indigo" :href="route('purchase.product')">
-                <span>নতুন</span>
-                <span class="hidden md:inline">পণ্য যোগ</span>
+                <span> {{ languageTranslation.getLanguage("bn").new }} </span>
+                <span class="hidden md:inline">
+                    {{ languageTranslation.getLanguage("bn").ponno }}
+                    {{ languageTranslation.getLanguage("bn").space }}
+                    {{ languageTranslation.getLanguage("bn").add }}
+                </span>
             </inertia-link>
         </div>
 
@@ -43,20 +48,31 @@
             </search-filter>
         </div>
 
-
-
         <div class="bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-
-                    <th class="px-6 pt-6 pb-4">তারিখ</th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").date }}
+                    </th>
                     <!-- <th class="px-6 pt-6 pb-4">সিরিয়াল</th> -->
-                    <th class="px-6 pt-6 pb-4">পণ্য/ সেবা</th>
-                    <th class="px-6 pt-6 pb-4">সাপ্লায়ার</th>
-                    <th class="px-6 pt-6 pb-4"> পরিমান</th>
-                    <th class="px-6 pt-6 pb-4"> মোট </th>
-                    <th class="px-6 pt-6 pb-4"> পরিষোধিত</th>
-                    <th class="px-6 pt-6 pb-4"> বাকি </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").ponnosheba }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").supplier }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").quantity }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").total }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").paid }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").due }}
+                    </th>
                 </tr>
                 <tr
                     v-for="product in products.data"
@@ -68,14 +84,19 @@
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
                             :href="route('product.edit', product.id)"
                         >
-                        {{ product.created_at }}
+                            {{ product.created_at }}
                         </inertia-link>
                     </td>
 
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center text-indigo-600 focus:text-indigo-500"
-                            :href="route('single.products.show', product.product_id)"
+                            :href="
+                                route(
+                                    'single.products.show',
+                                    product.product_id
+                                )
+                            "
                         >
                             <strong>{{ product.material }}</strong>
                         </inertia-link>
@@ -83,7 +104,9 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center text-blue-600 focus:text-blue-500"
-                            :href="route('vendor.expense.show', product.vendor_id)"
+                            :href="
+                                route('vendor.expense.show', product.vendor_id)
+                            "
                             tabindex="-1"
                         >
                             <strong>{{ product.supplier }}</strong>
@@ -104,7 +127,8 @@
                             :href="route('product.edit', product.id)"
                             tabindex="-1"
                         >
-                            {{ product.unitprice * product.quantity }} {{ product.unit }}
+                            {{ product.unitprice * product.quantity }}
+                            {{ product.unit }}
                         </inertia-link>
                     </td>
 
@@ -170,6 +194,7 @@ import Pagination from "@/Shared/Pagination";
 import pickBy from "lodash/pickBy";
 import SearchFilter from "@/Shared/SearchFilter";
 import throttle from "lodash/throttle";
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation";
 
 export default {
     metaInfo: { title: "products" },
@@ -182,10 +207,8 @@ export default {
     props: {
         products: Object,
         filters: Object
-
     },
     data() {
-        
         return {
             isPaid: Boolean(this.products.data.is_all_paid),
             form: {
@@ -212,8 +235,11 @@ export default {
     },
     methods: {
         reset() {
-            this.form = mapValues(this.form, () => null)
-        },
+            this.form = mapValues(this.form, () => null);
+        }
+    },
+    created() {
+        this.languageTranslation = languageTranslation;
     }
 };
 </script>

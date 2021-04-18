@@ -4,8 +4,8 @@
             <inertia-link
                 class="text-indigo-400 hover:text-indigo-600"
                 :href="route('gobag.index')"
-                >&#8678; জি ও ব্যাগ</inertia-link
-            >
+                >&#8678;{{ languageTranslation.getLanguage("bn").gobag }}
+            </inertia-link>
             <span class="text-indigo-400 font-medium">/</span>
             {{ expense.id }}
         </h1>
@@ -19,108 +19,134 @@
         <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
             <form @submit.prevent="submit">
                 <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-                    <text-input
-                        disabled
-                        v-model="form.invoice_number"
-                        :error="errors.invoice_number"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="সিরিয়াল"
-                    />
+                    <label for="serial" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").serial }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
 
-                    <text-input
-                        type="date"
-                        v-model="form.created_at"
-                        :error="errors.created_at"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="তারিখ"
-                        tabindex="1"
-                    />
+                        <text-input
+                            disabled
+                            id="serial"
+                            v-model="form.invoice_number"
+                            :error="errors.invoice_number"
+                        />
+                    </label>
+                    <label for="date" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").date }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            type="date"
+                            id="date"
+                            v-model="form.created_at"
+                            :error="errors.created_at"
+                            tabindex="1"
+                        />
+                    </label>
+                    <label for="supplier" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").supplier }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            disabled
+                            id="supplier"
+                            v-model="form.supplier"
+                            :error="errors.supplier"
+                        />
+                    </label>
+                    <label for="price" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").price }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            disabled
+                            id="price"
+                            type="number"
+                            step="any"
+                            v-model="form.unit_price"
+                            :error="errors.unit_price"
+                        />
+                    </label>
+                    <label for="quantity" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").quantity }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            disabled
+                            type="number"
+                            step="any"
+                            v-model="form.quantity"
+                            :error="errors.quantity"
+                            id="quantity"
+                        />
+                    </label>
+                    <label for="totalmoney" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").total }}
+                        {{ languageTranslation.getLanguage("bn").totalmoney }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            disabled
+                            id="totalmoney"
+                            type="number"
+                            step="any"
+                            v-model="form.net_amount"
+                            :error="errors.net_amount"
+                        />
+                    </label>
+                    <label for="duetotal" class="pr-6 pb-8 w-full lg:w-1/3">
+                        {{ languageTranslation.getLanguage("bn").due }}
+                        {{ languageTranslation.getLanguage("bn").totalmoney }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+                        <text-input
+                            id="duetotal"
+                            type="number"
+                            disabled
+                            step="any"
+                            v-model="form.due_amount"
+                            :error="errors.due_amount"
+                        />
+                    </label>
+                    <label for="paid" class="pr-6 pb-8 w-full lg:w-1/3">
+                        {{ languageTranslation.getLanguage("bn").paid }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
 
-                    <text-input
-                        disabled
-                        v-model="form.supplier"
-                        :error="errors.supplier"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="সাপ্লায়ার"
-                    />
+                        <text-input
+                            id="paid"
+                            v-if="!expense.is_all_paid"
+                            type="number"
+                            :min="1"
+                            :max="expense.due_amount"
+                            step="any"
+                            v-model="form.paid_amount"
+                            @input="updateDueAmount"
+                            :error="errors.paid_amount"
+                            tabindex="2"
+                        />
+                    </label>
+                    <label for="expensetype" class="pr-6 pb-8 w-full lg:w-1/3">
+                        {{ languageTranslation.getLanguage("bn").expensetype }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
 
-                    <text-input
-                        disabled
-                        type="number"
-                        step="any"
-                        v-model="form.unit_price"
-                        :error="errors.unit_price"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="প্রতিটির দাম"
-                    />
-
-                    <text-input
-                        disabled
-                        type="number"
-                        step="any"
-                        v-model="form.quantity"
-                        :error="errors.quantity"
-                        class="pr-6 pb-8 w-full lg:w-1/2"
-                        label="পরিমান"
-                    />
-
-                    <text-input
-                        disabled
-                        type="number"
-                        step="any"
-                        v-model="form.net_amount"
-                        :error="errors.net_amount"
-                        class="pr-6 pb-8 w-full lg:w-1/3"
-                        label="মোট টাকার পরিমান"
-                    />
-
-                    <text-input
-                        type="number"
-                        disabled
-                        step="any"
-                        v-model="form.due_amount"
-                        :error="errors.due_amount"
-                        class="pr-6 pb-8 w-full lg:w-1/3"
-                        label="বাকি টাকার পরিমান"
-                    />
-
-                    <text-input
-                        v-if="!expense.is_all_paid"
-                        type="number"
-                        :min="1"
-                        :max="expense.due_amount"
-                        step="any"
-                        v-model="form.paid_amount"
-                        @input="updateDueAmount"
-                        :error="errors.paid_amount"
-                        class="pr-6 pb-8 w-full lg:w-1/3"
-                        label="পরিষোধ"
-                        tabindex="2"
-                    />
-
-                    <select-input
-                        v-model="form.pay_type"
-                        :error="errors.pay_type"
-                        class="pr-6 pb-8 w-full lg:w-1/4"
-                        label="খরচের ধরন"
-                    >
-                        <option
-                            v-for="cost in pay_types.data"
-                            :key="cost.id"
-                            :value="cost.name"
+                        <select-input
+                            v-model="form.pay_type"
+                            :error="errors.pay_type"
+                            id="expensetype"
                         >
-                            {{ cost.name }}
-                        </option>
-                    </select-input>
+                            <option
+                                v-for="cost in pay_types.data"
+                                :key="cost.id"
+                                :value="cost.name"
+                            >
+                                {{ cost.name }}
+                            </option>
+                        </select-input>
+                    </label>
+                    <label for="details" class="pr-6 pb-8 w-full lg:w-3/4">
+                        {{ languageTranslation.getLanguage("bn").details }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
 
-                    <text-input
-                        v-if="!expense.is_all_paid"
-                        v-model="form.note"
-                        :error="errors.note"
-                        class="pr-6 pb-8 w-full lg:w-3/4"
-                        label="বর্ণনা"
-                        tabindex="3"
-                    />
+                        <text-input
+                            v-if="!expense.is_all_paid"
+                            v-model="form.note"
+                            :error="errors.note"
+                            tabindex="3"
+                        />
+                    </label>
                 </div>
                 <div
                     class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center content-center"
@@ -140,7 +166,9 @@
                         v-if="!expense.is_all_paid"
                         class="btn-indigo ml-auto"
                         type="submit"
-                        >হালনাগাদ</loading-button
+                        >{{
+                            languageTranslation.getLanguage("bn").edit
+                        }}</loading-button
                     >
                 </div>
             </form>
@@ -151,11 +179,18 @@
         <div class="mt-6 bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4">তারিখ</th>
-                    <th class="px-6 pt-6 pb-4">খরচের ধরন</th>
-                    <th class="px-6 pt-6 pb-4">বর্ণনা</th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").date }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").expensetype }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").details }}
+                    </th>
                     <th class="px-6 pt-6 pb-4" colspan="2">
-                        পরিষোধিত টাকার পরিমান
+                        {{ languageTranslation.getLanguage("bn").paid }}
+                        {{ languageTranslation.getLanguage("bn").totalmoney }}
                     </th>
                 </tr>
                 <tr
@@ -233,6 +268,7 @@ import LoadingButton from "@/Shared/LoadingButton";
 import SelectInput from "@/Shared/SelectInput";
 import TextInput from "@/Shared/TextInput";
 import TrashedMessage from "@/Shared/TrashedMessage";
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation";
 
 export default {
     metaInfo() {
@@ -316,6 +352,9 @@ export default {
                 this.$inertia.put(this.route("gobag.restore", this.expense.id));
             }
         }
+    },
+    created() {
+        this.languageTranslation = languageTranslation;
     }
 };
 </script>
