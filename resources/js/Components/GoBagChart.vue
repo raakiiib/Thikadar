@@ -1,6 +1,6 @@
 <template>
     <div class="chart">
-        <bar-chart :chartdata="datacollection" :options="options"></bar-chart>
+        <bar-chart :chartdata="datacollection" :options="options"> </bar-chart>
     </div>
 </template>
 
@@ -13,11 +13,11 @@ export default {
         BarChart
     },
     props: {
-        expensesProduct: ""
+        gobagexpenses: ""
     },
     data() {
         let chart = {};
-        this.expensesProduct.map(expense => {
+        this.gobagexpenses.map(expense => {
             if (chart[expense.created_at]) {
                 chart[expense.created_at] += expense.paid;
             } else {
@@ -30,7 +30,7 @@ export default {
                 labels: Object.keys(chart),
                 datasets: [
                     {
-                        label: "পণ্য খরচ",
+                        label: "জি ও ব্যাগ",
                         backgroundColor:
                             "#" +
                             ((Math.random() * 0xffffff) << 0).toString(16),

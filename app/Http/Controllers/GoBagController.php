@@ -1,85 +1,71 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 use DB;
+use Request;
 use App\Models\Expense;
 use App\Models\Supplier;
-use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
-
-class BlockDumpingController extends Controller
+class GoBagController extends Controller
 {
-
     public function index()
     {
         $data = Auth::user()->account->expenses()
-                ->where('expense_type', 4)
-                ->orderBy('created_at', 'DESC')
-                ->filter(Request::only('search', 'trashed'))
-                ->paginate(25)
-                ->transform(function ($service){
-                   //print_r($service);
-                    return [
-                        'id' => $service->id,
-                        'quantity' => $service->quantity,
-                        'unitprice' => $service->unitprice,
-                        'total' => $service->net_amount,
-                        'paid' => $service->paid_amount,
-                        'due' => $service->due_amount,
-                        'size' => $service->size,
-                        'unitprice' => $service->unit_price,
-                        'deleted_at' => $service->deleted_at,
-                        'service_id' => $service->product_id,
-                        'supplier_id' => $service->vendor_id,
-                        'supplier' => $service->getSupplier->name,
-                        'product' => $service->getService->name,
-                        'product_size' => $service->getService->dimension,
-                        'created_at' => date_format( $service->created_at, 'd-m-Y'),
-                    ];                    
-                });
-
-        return Inertia::render('Dumping/Index', [
+        ->where('expense_type', 5)
+        ->orderBy('created_at', 'DESC')
+        ->filter(Request::only('search', 'trashed'))
+        ->paginate(25)
+        ->transform(function ($service){
+            return [
+                'id' => $service->id,
+                'quantity' => $service->quantity,
+                'unitprice' => $service->unitprice,
+                'total' => $service->net_amount,
+                'paid' => $service->paid_amount,
+                'due' => $service->due_amount,
+                'size' => $service->size,
+                'unitprice' => $service->unit_price,
+                'deleted_at' => $service->deleted_at,
+                'supplier_id' => $service->vendor_id,
+                'supplier' => $service->getSupplier->name,
+                'created_at' => date_format( $service->created_at, 'd-m-Y'),
+            ];                    
+        });
+        
+        return Inertia::render('GoBag/Index', [
             'filters' => Request::all('search', 'trashed'),
             'services' => $data,
-        ]);
+    
+]);
     }
 
+    
     public function create()
     {
-        return Inertia::render('Dumping/Create', [
+        return Inertia::render('GoBag/Create', [
             'suppliers' => Auth::user()->account
                 ->suppliers()
                 ->orderBy('name')
                 ->get()
                 ->map
                 ->only('id', 'name'),
-            'services' => Auth::user()->account
-                ->services()
-                ->orderBy('id')
-                ->get()
-                ->map
-                ->only('id', 'name', 'dimension', 'size', 'unit'),
             'pay_types' => Auth::user()->account->cost_types()
                 ->orderBy('name')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(50)
                 ->only('id', 'name'),
             'invoice_number' => $this->_generateInvoice(),
+            
         ]);
     }
 
-    public function store()
+    public function store(Request $request)
     {
-
         Request::validate([
             'created_at' => ['required'],
-            'product_id' => ['required'],
             'vendor_id' => ['required'],
             'unitprice' => ['required', 'max:10'],
             'quantity' => ['required', 'max:10'],
@@ -97,7 +83,6 @@ class BlockDumpingController extends Controller
                 'created_at'        => Request::get('created_at'),
                 'expense_type'      => Request::get('expense_type'),
                 'vendor_id'         => Request::get('vendor_id'),
-                'product_id'        => Request::get('product_id'),
                 'quantity'          => Request::get('quantity'),
                 'unit_price'        => Request::get('unitprice'),
                 'size'              => Request::get('size'),
@@ -110,7 +95,7 @@ class BlockDumpingController extends Controller
         } 
         catch(ValidationException $e){
             DB::rollback();
-            return Redirect::route('expenses.service')
+            return Redirect::route('gobag.index')
                 ->withErrors( $e->getErrors() )
                 ->withInput();
         } catch(\Exception $e)
@@ -118,7 +103,6 @@ class BlockDumpingController extends Controller
             DB::rollback();
             throw $e;
         }
-
         try {
             $newPayment = Auth::user()->account->payments()->create([
                 'expense_id' => $expense->id,
@@ -131,7 +115,7 @@ class BlockDumpingController extends Controller
             ]);
         } catch(ValidationException $e){
             DB::rollback();
-            return Redirect::route('expenses.service')
+            return Redirect::route('gobag.index')
                 ->withErrors( $e->getErrors() )
                 ->withInput();
         } catch(\Exception $e){
@@ -140,13 +124,49 @@ class BlockDumpingController extends Controller
         }
         DB::commit();
 
-        return Redirect::route('dumping.index')->with('success', 'ব্লক কাস্টিং যোগ হয়েছে.');
+        return Redirect::route('gobag.index')->with('success', 'go bag যোগ হয়েছে.');
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($service)
+    {
+        $data = Auth::user()->account->expenses()
+        ->where('vendor_id',$service)
+        ->where('expense_type', 5)
+        ->orderBy('created_at', 'DESC')
+        ->paginate(25)
+        ->transform(function ($service){
+            return [
+                'id' => $service->id,
+                'quantity' => $service->quantity,
+                'unitprice' => $service->unitprice,
+                'total' => $service->net_amount,
+                'paid' => $service->paid_amount,
+                'due' => $service->due_amount,
+                'size' => $service->size,
+                'unitprice' => $service->unit_price,
+                'supplier_id' => $service->vendor_id,
+                'supplier' => $service->getSupplier->name,
+                'created_at' => date_format( $service->created_at, 'd-m-Y'),
+            ];
+        });
+        
+        return Inertia::render('GoBag/VendorEdit', [
+            
+            'services' => $data,
+            ]);
+    
+    }
 
+    
     public function edit(Expense $service)
     {
-        return Inertia::render('Expenses/ServiceExpensesEdit', [
+        return Inertia::render('GoBag/Edit', [
             'expense' => [
                 'id' => $service->id,
                 'invoice_number' => $service->invoice_number,
@@ -158,9 +178,9 @@ class BlockDumpingController extends Controller
                 'paid_amount' => $service->paid_amount,
                 'due_amount' => $service->due_amount,
                 'deleted_at' => $service->deleted_at,
-                'service' => $service->getService->name,
                 'supplier' => $service->getSupplier->name,
                 'is_all_paid' => $service->is_all_paid,
+                'note'=>$service->note,
                 'created_at' => date_format( $service->created_at, 'd-m-Y'),
                 'payments' => $service->payments()->get()->map->only([
                     'id', 
@@ -178,8 +198,8 @@ class BlockDumpingController extends Controller
         ]);
     }
 
-
-    public function update(Expense $service)
+    
+    public function update(Expense $expense)
     {
         Request::validate([
             'net_amount' => ['required', 'max:10'],
@@ -191,14 +211,14 @@ class BlockDumpingController extends Controller
 
         // Add new payment
         try {
-            $service->update([
+            $expense->update([
                 'paid_amount' => Request::get('total_paid'),
                 'due_amount' => Request::get('due_amount'),
                 'is_all_paid' => Request::get('is_all_paid') ,
             ]);
 
             $payment = Auth::user()->account->payments()->create([
-                'expense_id' => Request::get('expense_id'),
+                'expense_id' => Request::get('expense_id'), // type = 5
                 'net_amount' => Request::get('net_amount'),
                 'payment_type' => Request::get('pay_type'),
                 'paid_amount' => Request::get('paid_amount'),
@@ -209,7 +229,7 @@ class BlockDumpingController extends Controller
         } 
         catch(ValidationException $e){
             DB::rollback();
-            return Redirect::route('expenses.dailyexpense')
+            return Redirect::route('gobag.index')
                 ->withErrors( $e->getErrors() )
                 ->withInput();
         }
@@ -218,84 +238,27 @@ class BlockDumpingController extends Controller
             throw $e;
         }
         DB::commit();
-        // return Redirect::back()->with('success', 'ব্লক কাস্টিং হালনাগাদ হয়েছে');
-        return Redirect::route('expenses.services')->with('success', 'ব্লক কাস্টিং হালনাগাদ হয়েছে.');
-        
+       
+        return Redirect::route('gobag.index')->with('success', 'বাকি পরিষোধ হয়েছে.');
     }
 
-    public function show(Service $service)
+    
+    public function destroy(Expense $expense)
     {
-        $data = Inertia::render('Dumping/BlockSingle', [
-            'products' => [
-                'id' => $service->id,
-                'name' => $service->name,
-                'note' => $service->note,
-                'deleted_at' => $service->deleted_at,
-                'dimension' => $service->dimension,
-                'expenses' => $service->service_expenses()
-                    ->where('expense_type', 4)
-                    ->get()
-                    ->map
-                    ->only([
-                        'id',
-                        'invoice_number',
-                        'net_amount',
-                        'paid_amount', 
-                        'due_amount',
-                        'quantity',
-                        'size',
-                        'note', 
-                        'created_at',
-                    ]),
-            ],
-        ]);
-
-        return $data;
+        $expense->delete();
+        return Redirect::route('gobag.index')->with('success', 'Entry removed.');
     }
-
-
-    public function vendor(Supplier $vendor)
+    public function restore(Expense $expense)
     {
-        $data = Inertia::render('Dumping/VendorSingle', [
-            'vendor' => [
-                'id' => $vendor->id,
-                'name' => $vendor->name,
-                'phone' => $vendor->phone,
-                'deleted_at' => $vendor->deleted_at,
-                'expenses' => $vendor->vendor_expenses()
-                    ->where('expense_type', 4)
-                    ->get()
-                    ->map
-                    // ->groupBy('created_at')
-                    ->only([
-                        'id',
-                        'invoice_number',
-                        'net_amount',
-                        'paid_amount',
-                        'due_amount',
-                        'quantity',
-                        'size',
-                        'note', 
-                        'created_at',
-                    ]),
-            ],
-        ]);
-
-        return $data;
+        $expense->restore();
+        return Redirect::back()->with('success', 'Entry restored.');
     }
-
-    public function get_service_single(Service $service)
-    {
-        $data = [
-            'service' => $service,
-        ];
-        return $data;
-    }
-
-
     protected function _generateInvoice()
     {
         $invoiceNumber = date('ymdhi');
+      
         return $invoiceNumber;
     }
+
+   
 }

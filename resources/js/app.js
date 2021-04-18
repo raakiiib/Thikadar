@@ -4,7 +4,10 @@ import PortalVue from "portal-vue";
 import { InertiaApp } from "@inertiajs/inertia-vue";
 import { InertiaProgress } from "@inertiajs/progress/src";
 import moment from "moment";
+import Donut from "vue-css-donut-chart";
+import "vue-css-donut-chart/dist/vcdonut.css";
 
+Vue.use(Donut);
 Vue.config.productionTip = false;
 Vue.mixin({ methods: { route: window.route } });
 Vue.use(InertiaApp);

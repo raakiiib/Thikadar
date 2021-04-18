@@ -3,10 +3,9 @@
         <h1 class="mb-8 font-bold text-3xl">
             <inertia-link
                 class="text-indigo-400 hover:text-indigo-600"
-                :href="route('dumping.index')"
-                >{{ languageTranslation.getLanguage("bn").blockdumping }}
+                :href="route('gobag.index')"
+                >{{ languageTranslation.getLanguage("bn").gobag }}
             </inertia-link>
-
             <span class="text-indigo-400 font-medium">/</span>
             {{ languageTranslation.getLanguage("bn").new }}
             <br />
@@ -14,36 +13,21 @@
         <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
             <form @submit.prevent="submit">
                 <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="date"
-                        >{{ languageTranslation.getLanguage("bn").date }}
+                    <label for="date" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").date }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
-                            type="date"
                             id="date"
+                            type="date"
                             value="28-12-2020"
                             v-model="form.created_at"
                             :error="errors.created_at"
                         />
                     </label>
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="service"
-                        >{{ languageTranslation.getLanguage("bn").service }}
-
-                        <select-input
-                            id="service"
-                            v-model="form.product_id"
-                            :error="errors.product_id"
-                        >
-                            <option :value="null" />
-                            <option
-                                v-for="service in services"
-                                :key="service.id"
-                                :value="service.id"
-                                >{{ service.name }} (
-                                {{ service.dimension }} )</option
-                            >
-                        </select-input>
-                    </label>
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="supplier">
+                    <label for="supplier" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").supplier }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+
                         <select-input
                             id="supplier"
                             v-model="form.vendor_id"
@@ -58,81 +42,84 @@
                             >
                         </select-input>
                     </label>
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="quantity">
+                    <label for="quantity" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").quantity }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
-                            id="quantity"
                             type="number"
                             step="0.01"
                             v-model="form.quantity"
                             @input="updateNetAmout"
                             :error="errors.quantity"
+                            id="quantity"
                         />
                     </label>
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="size">
+                    <label for="size" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").size }}
-
+                        {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
-                            id="size"
                             type="number"
                             step="any"
                             v-model="form.size"
                             @input="updateNetAmout"
                             :error="errors.size"
+                            id="size"
                         />
                     </label>
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="rate">
+                    <label for="rate" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").rate }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
-                            id="rate"
                             type="number"
                             step="0.01"
                             v-model="form.unitprice"
                             @input="updateNetAmout"
                             :error="errors.unitprice"
+                            id="rate"
                         />
                     </label>
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="total">
+                    <label for="total" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").total }}
-
+                        {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
-                            id="total"
                             type="number"
                             step="0.01"
                             v-model="form.net_amount"
                             :error="errors.net_amount"
+                            id="total"
                         />
                     </label>
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="paid">
+                    <label for="paid" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").paid }}
-
+                        {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
-                            id="paid"
                             type="number"
                             step="0.01"
                             v-model="form.paid_amount"
                             @input="calculateDue"
                             :error="errors.paid_amount"
+                            id="paid"
                         />
                     </label>
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="due">
+                    <label for="due" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").due }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
-                            id="due"
                             type="number"
                             step="-0.01"
                             v-model="form.due_amount"
                             @input="calculateDue"
                             :error="errors.due_amount"
+                            id="due"
                         />
                     </label>
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="expensetype">
+                    <label for="expensetype" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").expensetype }}
-
+                        {{ languageTranslation.getLanguage("bn").ext }}
                         <select-input
-                            id="expensetype"
                             v-model="form.pay_type"
                             :error="errors.pay_type"
+                            id="expensetype"
                         >
                             <option
                                 v-for="cost in pay_types.data"
@@ -143,13 +130,15 @@
                             </option>
                         </select-input>
                     </label>
-                    <label class="pr-6 pb-8 w-full lg:w-1/2" for="note">
-                        {{ languageTranslation.getLanguage("bn").note }}*
+                    <label for="note" class="pr-6 pb-8 w-full lg:w-1/2">
+                        {{ languageTranslation.getLanguage("bn").note }}
+                        {{ languageTranslation.getLanguage("bn").ext }}
+
                         <text-input
-                            id="note"
                             type="text"
                             v-model="form.note"
                             :error="errors.note"
+                            id="note"
                         />
                     </label>
                 </div>
@@ -176,12 +165,9 @@ import Layout from "@/Shared/Layout";
 import LoadingButton from "@/Shared/LoadingButton";
 import SelectInput from "@/Shared/SelectInput";
 import TextInput from "@/Shared/TextInput";
-import FileInput from "@/Shared/FileInput";
-import axios from "axios";
-import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation.js";
-
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation";
 export default {
-    metaInfo: { title: languageTranslation.getLanguage("bn").titlesheba },
+    metaInfo: { title: languageTranslation.getLanguage("bn").newgobag },
     layout: Layout,
     components: {
         LoadingButton,
@@ -190,7 +176,6 @@ export default {
     },
     props: {
         suppliers: Array,
-        services: Array,
         invoice_number: String,
         errors: Object,
         pay_types: Object
@@ -200,12 +185,11 @@ export default {
         return {
             sending: false,
             service_data: null,
-            title: {},
             form: {
-                product_id: null,
                 vendor_id: null,
                 // invoice_number: this.invoice_number,
-                expense_type: 4,
+                expense_type: 5,
+                invoice_number: this.invoice_number,
                 quantity: null,
                 unitprice: null,
                 size: null,
@@ -214,20 +198,10 @@ export default {
                 due_amount: null,
                 is_all_paid: false,
                 created_at: new Date().toISOString().slice(0, 10)
-            },
-            service: Array
+            }
         };
     },
     methods: {
-        // calculateTotalPrice: function() {
-        //     this.updateNetAmout();
-        //     axios
-        //       .get(this.route('expenses.service.single', this.form.product_id))
-        //       .then(
-        //         response => (
-        //             this.form.size = response.data.service.size
-        //         ))
-        // },
         calculateDue: function() {
             var total = this.form.net_amount;
             var paid = this.form.paid_amount;
@@ -251,7 +225,7 @@ export default {
         },
         submit() {
             console.log(this.form);
-            this.$inertia.post(this.route("dumping.store"), this.form, {
+            this.$inertia.post(this.route("gobag.store"), this.form, {
                 onStart: () => (this.sending = true),
                 onFinish: () => (this.sending = false)
             });

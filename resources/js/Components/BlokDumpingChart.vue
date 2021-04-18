@@ -1,23 +1,23 @@
 <template>
     <div class="chart">
-        <bar-chart :chartdata="datacollection" :options="options"></bar-chart>
+        <line-chart :chartdata="datacollection" :options="options"></line-chart>
     </div>
 </template>
 
 <script>
-import BarChart from "./BarChart.js";
+import LineChart from "./LineChart.js";
 
 export default {
-    name: "Chart",
+    name: "blockChart",
     components: {
-        BarChart
+        LineChart
     },
     props: {
-        expensesProduct: ""
+        blockDumping: ""
     },
     data() {
         let chart = {};
-        this.expensesProduct.map(expense => {
+        this.blockDumping.map(expense => {
             if (chart[expense.created_at]) {
                 chart[expense.created_at] += expense.paid;
             } else {
@@ -30,7 +30,7 @@ export default {
                 labels: Object.keys(chart),
                 datasets: [
                     {
-                        label: "পণ্য খরচ",
+                        label: "ব্লক ডাম্পিং",
                         backgroundColor:
                             "#" +
                             ((Math.random() * 0xffffff) << 0).toString(16),

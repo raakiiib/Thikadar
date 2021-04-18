@@ -1,74 +1,187 @@
 <template>
     <div>
         <div>
-            <h1 class="mb-8 font-bold text-3xl">Dashboard</h1>
-            <div class="mb-8 flex grid grid-cols-2 gap-5 ">
-                <DailyExpense></DailyExpense>
-                <BuyProduct></BuyProduct>
-                <BlockChart></BlockChart>
+            <h1 class="mb-8 font-bold text-3xl">
+                {{ languageTranslation.getLanguage("bn").dashbord }}
+            </h1>
+            <!-- donut chart -->
+            <vc-donut
+                class='mb-8 font-bold text-3xl"'
+                :sections="sections"
+                :thickness="65"
+                :size="300"
+                background="white"
+                text=" "
+                @section-click="handleSectionClick"
+            >
+            </vc-donut>
+
+            <!-- v-calendar -->
+
+            <Calendar
+                class="calendar"
+                is-expanded
+                show-weeknumbers
+                :attributes="attributes"
+            ></Calendar>
+
+            <!-- <div> -->
+            <!-- dropdownfor data  -->
+            <!-- <select
+                    class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
+                    @change="changeChart($event)"
+                >
+                    <option value="7">7Days Record</option>
+                    <option value="30">30Days Record</option>
+                </select>
+            </div> -->
+
+            <div class="mb-8 flex grid grid-cols-1 gap-5 ">
+                <DailyExpense v-bind:expenses="expenses" v-if="showChart">
+                </DailyExpense>
+
+                <BlockChart v-bind:block="block" v-if="showChart"></BlockChart>
+
+                <BuyProduct
+                    v-bind:expensesProduct="expensesProduct"
+                    v-if="showChart"
+                ></BuyProduct>
+
+                <BlockDumpingChart
+                    v-bind:blockDumping="blockDumping"
+                    v-if="showChart"
+                ></BlockDumpingChart>
+                <GoBagChart v-bind:gobagexpenses="gobagexpenses"> </GoBagChart>
             </div>
-
-            <div class="mb-8 flex grid grid-cols-3 gap-3 ">
-                <inertia-link
-                    class="bg-indigo-900 text-indigo-300 flex items-center justify-between md:justify-center"
-                    :href="route('suppliers')"
-                >
-                    <div class="thumbnail ">
-                        <div class="icon">
-                            <i class="fa fa-home"></i>
-                        </div>
-                        <div class="caption">
-                            <h1>ADD NEW PURCHASE</h1>
-                        </div>
-                    </div>
-                </inertia-link>
-
-                <inertia-link
-                    class="bg-purple-900 text-indigo-300 flex items-center justify-between md:justify-center"
-                    :href="route('suppliers')"
-                >
-                    <div class="thumbnail ">
-                        <div class="caption">
-                            <h1>PAY SUPPLIER</h1>
-                        </div>
-                    </div>
-                </inertia-link>
-
-                <inertia-link
-                    class="bg-indigo-900 text-indigo-300 flex items-center justify-between md:justify-center h-64"
-                    :href="route('suppliers')"
-                >
-                    <div class="thumbnail ">
-                        <div class="icon">
-                            <i class="fa fa-home"></i>
-                        </div>
-                        <div class="caption">
-                            <h1>PAY STAFFS</h1>
-                        </div>
-                    </div>
-                </inertia-link>
-            </div>
-            <p class="leading-normal">
-                👆 These links are intended to be broken to illustrate how error
-                handling works with Inertia.js.
-            </p>
         </div>
     </div>
 </template>
 
 <script>
 import Layout from "@/Shared/Layout";
+import Vue from "vue";
 import BlockChart from "./../../Components/BlockChart";
 import DailyExpense from "./../../Components/DailyExpense";
 import BuyProduct from "./../../Components/BuyProduct";
+import BlockDumpingChart from "./../../Components/BlokDumpingChart";
+import GoBagChart from "./../../Components/GoBagChart";
+import Calendar from "v-calendar/lib/components/calendar.umd";
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation";
+Vue.component("calendar", Calendar);
 
 export default {
+    name: "",
     metaInfo: { title: "Dashboard" },
     layout: Layout,
+    props: {
+        expenses7: "",
+        expenses30: "",
+        expenses7Product: "",
+        expenses30Product: "",
+        blockDumping7: "",
+        blockDumping30: "",
+        block7: "",
+        block30: "",
+        gobagexpenses30: "",
+        donutChartalData: ""
+    },
+    data() {
+        return {
+            expenses: this.expenses30,
+            gobagexpenses: this.gobagexpenses30,
+            expensesProduct: this.expenses30Product,
+            blockDumping: this.blockDumping30,
+            block: this.block30,
+            showChart: true,
+            sections: this.donutChartalData,
+            // sections: [
+            //     { label: "BLOCK CASTING", value: 25 },
+            //     { label: "BLOCK DUMPING", value: 30 },
+            //     { label: "GO BAG", value: 5 },
+            //     { label: "DAILY EXPENSES", value: 30 },
+            //     { label: "MATARIAL COST", value: 10 }
+            //     // label: ["red", "blue", "yelooww", "orange", "sky"],
+            //     // value: [25, 30, 5, 30, 10]
+            // ],
+
+            attributes: [
+                {
+                    // Attribute type definitions
+                    highlight: true,
+
+                    content: "red",
+                    popover: {},
+                    // bar: true,
+                    customData: {
+                        // data will go here
+                    },
+
+                    highlight: {
+                        color: "orange",
+                        fillMode: "solid"
+                    },
+                    // isdark: {
+                    //     color: "orange",
+                    //     fillMode: "outline"
+                    // },
+
+                    dates: new Date()
+                }
+            ]
+        };
+    },
+
+    methods: {
+        handleSectionClick(section, event) {
+            console.log(`${section.label} clicked.`);
+            console.log(`${section.value} clicked.`);
+        },
+        handleSectionMouseover(section, event) {
+            console.log(`${section.label} mouseover.`);
+        },
+        calculatePercantage() {
+            $paid = getalldata.paid;
+        }
+        //CHANGING FOR 7 DAYS TO 30 DAYS
+        // changeChart: function($event) {
+        //     console.log($event.target.value);
+
+        //     this.showChart = false;
+        //     setTimeout(() => {
+        //         if ($event.target.value == "7") {
+        //             this.expenses = this.expenses7;
+        //             this.expensesProduct = this.expenses7Product;
+        //             this.block = this.block7;
+        //             this.blockDumping = this.blockDumping7;
+        //         } else if ($event.target.value == "30") {
+        //             console.log($event.target.value);
+        //             this.expenses = this.expenses30;
+        //             this.expensesProduct = this.expenses30Product;
+        //             this.block = this.block30;
+        //             this.blockDumping = this.blockDumping30;
+        //         }
+        //         this.showChart = true;
+        //     }, 10);
+        // }
+    },
+    created() {
+        this.languageTranslation = languageTranslation;
+    },
+
     components: {
         BlockChart,
         DailyExpense,
-        BuyProduct
+        BuyProduct,
+        BlockDumpingChart,
+        Calendar,
+        GoBagChart
     }
 };
 </script>
+<style>
+.calendar {
+    color: #fafafa;
+    /* background-color: linear-gradient(#ff5050, #ff66b3); */
+    background-image: linear-gradient(to bottom right, #b59e8f, #64598f);
+}
+</style>

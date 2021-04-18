@@ -1,10 +1,18 @@
 <template>
     <div class="">
         <div class="mb-8 flex justify-between items-center">
-            <h1 class="font-bold text-3xl">ব্লক কাস্টিং </h1>
+            <h1 class="font-bold text-3xl">
+                {{ languageTranslation.getLanguage("bn").blockcasting }}
+            </h1>
             <inertia-link class="btn-indigo" :href="route('expenses.service')">
-                <span>নতুন ব্লক কাস্টিং</span>
-                <span class="hidden md:inline"> যোগ করুন</span>
+                <span>
+                    {{ languageTranslation.getLanguage("bn").new }}
+                    {{ languageTranslation.getLanguage("bn").space }}
+                    {{ languageTranslation.getLanguage("bn").blockcasting }}
+                </span>
+                <span class="hidden md:inline">
+                    {{ languageTranslation.getLanguage("bn").add }}
+                </span>
             </inertia-link>
         </div>
 
@@ -26,16 +34,34 @@
         <div class="bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
-
-                    <th class="px-6 pt-6 pb-4">তারিখ</th>
-                    <th class="px-6 pt-6 pb-4">পণ্য/ সেবা</th>
-                    <th class="px-6 pt-6 pb-4">সাপ্লায়ার</th>
-                    <th class="px-6 pt-6 pb-4">পরিমান</th>
-                    <th class="px-6 pt-6 pb-4">সাইজ</th>
-                    <th class="px-6 pt-6 pb-4">একক মূল্য</th>
-                    <th class="px-6 pt-6 pb-4">মোট</th>
-                    <th class="px-6 pt-6 pb-4">পরিষোধিত</th>
-                    <th class="px-6 pt-6 pb-4">বাকি</th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").date }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").ponnosheba }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").supplier }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").quantity }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").size }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").single }}
+                        {{ languageTranslation.getLanguage("bn").mullo }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").total }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").paid }}
+                    </th>
+                    <th class="px-6 pt-6 pb-4">
+                        {{ languageTranslation.getLanguage("bn").due }}
+                    </th>
                 </tr>
                 <tr
                     v-for="service in services.data"
@@ -54,15 +80,22 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500 text-indigo-500"
-                            :href="route('single.service.show', service.service_id)"
+                            :href="
+                                route('single.service.show', service.service_id)
+                            "
                         >
-                            {{ service.service }} ( {{service.dimension}} )
+                            {{ service.service }} ( {{ service.dimension }} )
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500 text-indigo-500"
-                            :href="route('single.supplier.show', service.supplier_id)"
+                            :href="
+                                route(
+                                    'single.supplier.show',
+                                    service.supplier_id
+                                )
+                            "
                             tabindex="-1"
                         >
                             {{ service.supplier }}
@@ -74,7 +107,8 @@
                             :href="route('service.edit', service.id)"
                             tabindex="-1"
                         >
-                            {{ service.quantity }} পিস
+                            {{ service.quantity }}
+                            {{ languageTranslation.getLanguage("bn").piece }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
@@ -158,9 +192,9 @@ import Pagination from "@/Shared/Pagination";
 import pickBy from "lodash/pickBy";
 import SearchFilter from "@/Shared/SearchFilter";
 import throttle from "lodash/throttle";
-
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation";
 export default {
-    metaInfo: { title: "সেবা সমূহ" },
+    metaInfo: { title: languageTranslation.getLanguage("bn").sheba },
     layout: Layout,
     components: {
         Icon,
@@ -199,6 +233,9 @@ export default {
         reset() {
             this.form = mapValues(this.form, () => null);
         }
+    },
+    created() {
+        this.languageTranslation = languageTranslation;
     }
 };
 </script>

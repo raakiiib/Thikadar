@@ -2,19 +2,19 @@
     <div class="">
         <div class="mb-8 flex justify-between items-center">
             <h1 class="font-bold text-3xl">
-                {{ languageTranslation.getLanguage("bn").blockdumping }}
+                {{ languageTranslation.getLanguage("bn").gobag }}
             </h1>
-            <inertia-link class="btn-indigo" :href="route('dumping.create')">
+            <inertia-link class="btn-indigo" :href="route('gobag.create')">
                 <span
-                    >{{ languageTranslation.getLanguage("bn").new
-                    }}{{ languageTranslation.getLanguage("bn").space
-                    }}{{ languageTranslation.getLanguage("bn").blockdumping
-                    }}{{ languageTranslation.getLanguage("bn").space
-                    }}{{ languageTranslation.getLanguage("bn").add }}</span
-                >
+                    >{{ languageTranslation.getLanguage("bn").new }}
+                    {{ languageTranslation.getLanguage("bn").space }}
+                    {{ languageTranslation.getLanguage("bn").gobag }}
+                </span>
+                <span class="hidden md:inline"
+                    >{{ languageTranslation.getLanguage("bn").add }}
+                </span>
             </inertia-link>
         </div>
-
         <div class="mb-6 flex justify-between items-center">
             <search-filter
                 v-model="form.search"
@@ -35,9 +35,6 @@
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4">
                         {{ languageTranslation.getLanguage("bn").date }}
-                    </th>
-                    <th class="px-6 pt-6 pb-4">
-                        {{ languageTranslation.getLanguage("bn").ponnosheba }}
                     </th>
                     <th class="px-6 pt-6 pb-4">
                         {{ languageTranslation.getLanguage("bn").supplier }}
@@ -69,7 +66,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', service.id)"
+                            :href="route('gobag.edit', service.id)"
                         >
                             {{ service.created_at }}
                         </inertia-link>
@@ -78,22 +75,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500 text-indigo-500"
-                            :href="
-                                route('dumping.single.show', service.service_id)
-                            "
-                        >
-                            {{ service.product }} ( {{ service.product_size }} )
-                        </inertia-link>
-                    </td>
-                    <td class="border-t">
-                        <inertia-link
-                            class="px-6 py-4 flex items-center focus:text-indigo-500 text-indigo-500"
-                            :href="
-                                route(
-                                    'dumping.single.vendor',
-                                    service.supplier_id
-                                )
-                            "
+                            :href="route('gobag.vendor', service.supplier_id)"
                             tabindex="-1"
                         >
                             {{ service.supplier }}
@@ -102,17 +84,17 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('service.edit', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
-                            {{ service.quantity }}
-                            {{ languageTranslation.getLanguage("bn").piece }}
+                            {{ service.quantity
+                            }}{{ languageTranslation.getLanguage("bn").piece }}
                         </inertia-link>
                     </td>
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('service.edit', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             {{ service.size }}
@@ -121,7 +103,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('service.edit', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             &#x09F3; {{ service.unitprice }}
@@ -131,7 +113,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('service.edit', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             &#x09F3; {{ service.total }}
@@ -141,7 +123,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('service.edit', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             &#x09F3; {{ service.paid }}
@@ -151,7 +133,7 @@
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('service.edit', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             &#x09F3; {{ service.due }}
@@ -161,7 +143,7 @@
                     <td class="border-t w-px">
                         <inertia-link
                             class="px-4 flex items-center"
-                            :href="route('service.edit', service.id)"
+                            :href="route('gobag.edit', service.id)"
                             tabindex="-1"
                         >
                             <icon
@@ -169,11 +151,6 @@
                                 class="block w-6 h-6 fill-gray-400"
                             />
                         </inertia-link>
-                    </td>
-                </tr>
-                <tr v-if="services.data.length === 0">
-                    <td class="border-t px-6 py-4" colspan="4">
-                        No services found.
                     </td>
                 </tr>
             </table>
@@ -190,9 +167,9 @@ import Pagination from "@/Shared/Pagination";
 import pickBy from "lodash/pickBy";
 import SearchFilter from "@/Shared/SearchFilter";
 import throttle from "lodash/throttle";
-import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation.js";
+import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation";
 export default {
-    metaInfo: { title: languageTranslation.getLanguage("bn").sheba },
+    metaInfo: { title: languageTranslation.getLanguage("bn").gobag },
     layout: Layout,
     components: {
         Icon,
@@ -217,7 +194,7 @@ export default {
                 let query = pickBy(this.form);
                 this.$inertia.replace(
                     this.route(
-                        "expenses.services",
+                        "gobag.index",
                         Object.keys(query).length
                             ? query
                             : { remember: "forget" }
@@ -237,3 +214,5 @@ export default {
     }
 };
 </script>
+
+<style></style>

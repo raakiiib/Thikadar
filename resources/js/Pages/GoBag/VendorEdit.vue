@@ -1,13 +1,16 @@
 <template>
     <div>
-        <h2 class="mt-12 font-bold text-2xl">
+        <h2 class="font-bold text-2xl">
             <inertia-link
                 class="text-indigo-400 hover:text-indigo-600"
-                :href="route('expenses.services')"
-                >{{ form.name }}</inertia-link
+                :href="route('gobag.index')"
+                >{{ getName() }}
+
+                /</inertia-link
             >
             {{ languageTranslation.getLanguage("bn").all }}
         </h2>
+
         <div class="mt-6 bg-white rounded shadow overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <tr class="text-left font-bold">
@@ -18,78 +21,80 @@
                         {{ languageTranslation.getLanguage("bn").quantity }}
                     </th>
                     <th class="px-6 pt-6 pb-4">
-                        {{ languageTranslation.getLanguage("bn").total
-                        }}{{ languageTranslation.getLanguage("bn").space
-                        }}{{ languageTranslation.getLanguage("bn").taka }}
+                        {{ languageTranslation.getLanguage("bn").total }}
                     </th>
                     <th class="px-6 pt-6 pb-4">
-                        {{ languageTranslation.getLanguage("bn").paid
-                        }}{{ languageTranslation.getLanguage("bn").space
-                        }}{{ languageTranslation.getLanguage("bn").taka }}
+                        {{ languageTranslation.getLanguage("bn").paid }}
                     </th>
                     <th class="px-6 pt-6 pb-4" colspan="2">
-                        {{ languageTranslation.getLanguage("bn").due
-                        }}{{ languageTranslation.getLanguage("bn").space
-                        }}{{ languageTranslation.getLanguage("bn").taka }}
+                        {{ languageTranslation.getLanguage("bn").due }}
                     </th>
                 </tr>
+
                 <tr
-                    v-for="product in vendor.expenses"
-                    :key="product.id"
-                    class="hover:bg-gray-100 focus-within:bg-gray-100"
+                    v-for="service in services.data"
+                    :key="service.id"
+                    class="hover:bg-gray-400 focus-within:bg-gray-100"
                 >
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center focus:text-indigo-500"
-                            :href="route('', product.id)"
+                            :href="route('gobag.edit', service.id)"
                         >
-                            {{ product.created_at | formatDate }}
-                            <icon
-                                v-if="product.deleted_at"
-                                name="trash"
-                                class="flex-shrink-0 w-3 h-3 fill-gray-400 ml-2"
-                            />
-                        </inertia-link>
-                    </td>
-                    <td class="border-t">
-                        <inertia-link
-                            class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
-                            tabindex="-1"
-                        >
-                            {{ product.quantity * product.size }}
-                            {{ languageTranslation.getLanguage("bn").cft }}
+                            {{ service.created_at }}
                         </inertia-link>
                     </td>
 
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('')"
                             tabindex="-1"
                         >
-                            &#x09F3; {{ product.net_amount }}
+                            {{ service.quantity }}
+                            {{ languageTranslation.getLanguage("bn").piece }}
                         </inertia-link>
                     </td>
 
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('')"
                             tabindex="-1"
                         >
-                            &#x09F3; {{ product.paid_amount }}
+                            &#x09F3;
+                            {{ service.total }}
                         </inertia-link>
                     </td>
 
                     <td class="border-t">
                         <inertia-link
                             class="px-6 py-4 flex items-center"
-                            :href="route('', product.id)"
+                            :href="route('')"
                             tabindex="-1"
                         >
-                            &#x09F3; {{ product.due_amount }}
+                            &#x09F3;
+                            {{ service.paid }}
                         </inertia-link>
+                    </td>
+
+                    <td class="border-t">
+                        <inertia-link
+                            class="px-6 py-4 flex items-center"
+                            :href="route('')"
+                            tabindex="-1"
+                        >
+                            &#x09F3;
+                            {{ service.due }}
+                        </inertia-link>
+                    </td>
+
+                    <td
+                        v-if="service.length === 0"
+                        class="border-t px-6 py-4"
+                        colspan="4"
+                    >
+                        No entry found.
                     </td>
                 </tr>
                 <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -100,30 +105,28 @@
                     </th>
                     <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
-                            {{ totalQuantity() }}
-                            {{ languageTranslation.getLanguage("bn").cft }}
+                            {{ totalQuantity()
+                            }}{{ languageTranslation.getLanguage("bn").piece }}
                         </span>
                     </th>
                     <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
-                            &#x09F3; {{ totalNetAmnt() }}
+                            &#x09F3;
+                            {{ totalNetAmnt() }}
                         </span>
                     </th>
                     <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
-                            &#x09F3; {{ totalPaidAmnt() }}
+                            &#x09F3;
+                            {{ totalPaidAmnt() }}
                         </span>
                     </th>
                     <th class="border-t">
                         <span class="px-6 py-4 flex items-center">
-                            &#x09F3; {{ totalDueAmnt() }}
+                            &#x09F3;
+                            {{ totalDueAmnt() }}
                         </span>
                     </th>
-                </tr>
-                <tr v-if="vendor.expenses.length === 0">
-                    <td class="border-t px-6 py-4" colspan="4">
-                        No entry found.
-                    </td>
                 </tr>
             </table>
         </div>
@@ -137,57 +140,49 @@ import LoadingButton from "@/Shared/LoadingButton";
 import SelectInput from "@/Shared/SelectInput";
 import TextInput from "@/Shared/TextInput";
 import TrashedMessage from "@/Shared/TrashedMessage";
+import SearchFilter from "@/Shared/SearchFilter";
 import { LanguageTranslation as languageTranslation } from "./../../Language/LanguageTranslation";
 
 export default {
-    metaInfo() {
-        return { title: this.form.name };
-    },
     layout: Layout,
     components: {
         Icon,
         LoadingButton,
         SelectInput,
         TextInput,
-        TrashedMessage
+        TrashedMessage,
+        SearchFilter
     },
     props: {
-        errors: Object,
-        vendor: Object
+        services: Object
     },
-    remember: "form",
+
     data() {
-        return {
-            sending: false,
-            form: {
-                name: this.vendor.name,
-                note: this.vendor.note
-            }
-        };
+        return {};
     },
     methods: {
         totalQuantity: function() {
             let total = [];
-            Object.entries(this.vendor.expenses).forEach(([key, val]) => {
-                total.push(val.quantity * val.size); // the value of the current key.
+            Object.entries(this.services.data).forEach(([key, val]) => {
+                total.push(val.quantity);
             });
-            return total.reduce(function(total, num) {
-                return total + num;
+            return total.reduce(function(total, val) {
+                return total + val;
             }, 0);
         },
         totalNetAmnt: function() {
             let total = [];
-            Object.entries(this.vendor.expenses).forEach(([key, val]) => {
-                total.push(val.net_amount); // the value of the current key.
+            Object.entries(this.services.data).forEach(([key, val]) => {
+                total.push(val.total);
             });
-            return total.reduce(function(total, num) {
-                return total + num;
+            return total.reduce(function(total, val) {
+                return total + val;
             }, 0);
         },
         totalPaidAmnt: function() {
             let total = [];
-            Object.entries(this.vendor.expenses).forEach(([key, val]) => {
-                total.push(val.paid_amount); // the value of the current key.
+            Object.entries(this.services.data).forEach(([key, val]) => {
+                total.push(val.paid);
             });
             return total.reduce(function(total, num) {
                 return total + num;
@@ -195,43 +190,21 @@ export default {
         },
         totalDueAmnt: function() {
             let total = [];
-            Object.entries(this.vendor.expenses).forEach(([key, val]) => {
-                total.push(val.due_amount); // the value of the current key.
+            Object.entries(this.services.data).forEach(([key, val]) => {
+                total.push(val.due);
             });
             return total.reduce(function(total, num) {
                 return total + num;
             }, 0);
         },
-        created() {
-            console.log("hello");
-        },
-        beforeMount() {
-            console.log("before mount");
-        },
-        submit() {
-            console.log(this.form);
-            this.$inertia.put(
-                this.route("exptypes.update", this.vendor.id),
-                this.form,
-                {
-                    onStart: () => (this.sending = true),
-                    onFinish: () => (this.sending = false)
-                }
-            );
-        },
-        destroy() {
-            if (confirm("Are you sure you want to delete this type?")) {
-                this.$inertia.delete(
-                    this.route("exptypes.destroy", this.vendor.id)
-                );
-            }
-        },
-        restore() {
-            if (confirm("Are you sure you want to restore this type?")) {
-                this.$inertia.put(
-                    this.route("exptypes.restore", this.vendor.id)
-                );
-            }
+        getName: function() {
+            let name = [];
+            Object.entries(this.services.data).forEach(([key, val]) => {
+                name.push(val.supplier);
+            });
+            return name.reduce(function(name, num) {
+                return num;
+            }, 0);
         }
     },
     created() {

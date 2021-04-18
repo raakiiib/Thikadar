@@ -3,12 +3,11 @@
         <h1 class="mb-8 font-bold text-3xl">
             <inertia-link
                 class="text-indigo-400 hover:text-indigo-600"
-                :href="route('expenses.services')"
-                >&#8678;
-                {{ languageTranslation.getLanguage("bn").sheba }}</inertia-link
-            >
+                :href="route('gobag.index')"
+                >&#8678;{{ languageTranslation.getLanguage("bn").gobag }}
+            </inertia-link>
             <span class="text-indigo-400 font-medium">/</span>
-            {{ expense.service }}
+            {{ expense.id }}
         </h1>
         <trashed-message
             v-if="expense.deleted_at"
@@ -23,6 +22,7 @@
                     <label for="serial" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").serial }}
                         {{ languageTranslation.getLanguage("bn").ext }}
+
                         <text-input
                             disabled
                             id="serial"
@@ -41,24 +41,14 @@
                             tabindex="1"
                         />
                     </label>
-                    <label for="ponno" class="pr-6 pb-8 w-full lg:w-1/2">
-                        {{ languageTranslation.getLanguage("bn").ponno }}
-                        {{ languageTranslation.getLanguage("bn").ext }}
-                        <text-input
-                            disabled
-                            id="ponno"
-                            v-model="form.product"
-                            :error="errors.product"
-                        />
-                    </label>
                     <label for="supplier" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").supplier }}
                         {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
                             disabled
+                            id="supplier"
                             v-model="form.supplier"
                             :error="errors.supplier"
-                            id="supplier"
                         />
                     </label>
                     <label for="price" class="pr-6 pb-8 w-full lg:w-1/2">
@@ -66,11 +56,11 @@
                         {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
                             disabled
+                            id="price"
                             type="number"
                             step="any"
                             v-model="form.unit_price"
                             :error="errors.unit_price"
-                            id="price"
                         />
                     </label>
                     <label for="quantity" class="pr-6 pb-8 w-full lg:w-1/2">
@@ -85,9 +75,8 @@
                             id="quantity"
                         />
                     </label>
-                    <label for="totalmoney" class="pr-6 pb-8 w-full lg:w-1/3">
+                    <label for="totalmoney" class="pr-6 pb-8 w-full lg:w-1/2">
                         {{ languageTranslation.getLanguage("bn").total }}
-                        {{ languageTranslation.getLanguage("bn").space }}
                         {{ languageTranslation.getLanguage("bn").totalmoney }}
                         {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
@@ -99,15 +88,14 @@
                             :error="errors.net_amount"
                         />
                     </label>
-                    <label for="duemoney" class="pr-6 pb-8 w-full lg:w-1/3">
+                    <label for="duetotal" class="pr-6 pb-8 w-full lg:w-1/3">
                         {{ languageTranslation.getLanguage("bn").due }}
-                        {{ languageTranslation.getLanguage("bn").space }}
                         {{ languageTranslation.getLanguage("bn").totalmoney }}
                         {{ languageTranslation.getLanguage("bn").ext }}
                         <text-input
+                            id="duetotal"
                             type="number"
                             disabled
-                            id="duemoney"
                             step="any"
                             v-model="form.due_amount"
                             :error="errors.due_amount"
@@ -116,6 +104,7 @@
                     <label for="paid" class="pr-6 pb-8 w-full lg:w-1/3">
                         {{ languageTranslation.getLanguage("bn").paid }}
                         {{ languageTranslation.getLanguage("bn").ext }}
+
                         <text-input
                             id="paid"
                             v-if="!expense.is_all_paid"
@@ -129,12 +118,14 @@
                             tabindex="2"
                         />
                     </label>
-                    <label for="expensetype" class="pr-6 pb-8 w-full lg:w-1/4">
+                    <label for="expensetype" class="pr-6 pb-8 w-full lg:w-1/3">
                         {{ languageTranslation.getLanguage("bn").expensetype }}
                         {{ languageTranslation.getLanguage("bn").ext }}
+
                         <select-input
                             v-model="form.pay_type"
                             :error="errors.pay_type"
+                            id="expensetype"
                         >
                             <option
                                 v-for="cost in pay_types.data"
@@ -148,6 +139,7 @@
                     <label for="details" class="pr-6 pb-8 w-full lg:w-3/4">
                         {{ languageTranslation.getLanguage("bn").details }}
                         {{ languageTranslation.getLanguage("bn").ext }}
+
                         <text-input
                             v-if="!expense.is_all_paid"
                             v-model="form.note"
@@ -197,9 +189,8 @@
                         {{ languageTranslation.getLanguage("bn").details }}
                     </th>
                     <th class="px-6 pt-6 pb-4" colspan="2">
-                        {{ languageTranslation.getLanguage("bn").paid
-                        }}{{ languageTranslation.getLanguage("bn").space
-                        }}{{ languageTranslation.getLanguage("bn").totalmoney }}
+                        {{ languageTranslation.getLanguage("bn").paid }}
+                        {{ languageTranslation.getLanguage("bn").totalmoney }}
                     </th>
                 </tr>
                 <tr
@@ -302,7 +293,6 @@ export default {
             sending: false,
             form: {
                 expense_id: this.expense.id,
-                product: this.expense.service,
                 invoice_number: this.expense.invoice_number,
                 supplier: this.expense.supplier,
                 unit_price: String(this.expense.unit_price),
@@ -341,7 +331,7 @@ export default {
         submit() {
             console.log(this.form);
             this.$inertia.put(
-                this.route("service.update", this.expense.id),
+                this.route("gobag.update", this.expense.id),
                 this.form,
                 {
                     onStart: () => (this.sending = true),
@@ -353,15 +343,13 @@ export default {
             console.log(this.expense.id);
             if (confirm("Are you sure you want to delete this entry?")) {
                 this.$inertia.delete(
-                    this.route("product.destroy", this.expense.id)
+                    this.route("gobag.destroy", this.expense.id)
                 );
             }
         },
         restore() {
             if (confirm("Are you sure you want to restore this entry?")) {
-                this.$inertia.put(
-                    this.route("product.restore", this.expense.id)
-                );
+                this.$inertia.put(this.route("gobag.restore", this.expense.id));
             }
         }
     },

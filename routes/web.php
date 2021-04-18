@@ -22,6 +22,8 @@ use App\Http\Controllers\VehiclesController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GoBagController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -203,6 +205,40 @@ Route::get('expenses/dumping/{service}/show', [BlockDumpingController::class, 's
 Route::get('expenses/dumping/{vendor}/vendor', [BlockDumpingController::class, 'vendor'])
     ->name('dumping.single.vendor')
     ->middleware('auth');
+
+// GO Bag
+Route::get('/data', [DashboardController::class, 'getAllExpense'])
+    ->name('expense.data') ;
+Route::get('expenses/gobag/', [GoBagController::class, 'index'])
+    ->name('gobag.index') 
+    ->middleware('auth');
+Route::get('expenses/gobag/create', [GoBagController::class, 'create'])
+    ->name('gobag.create')
+    ->middleware('auth');
+Route::post('expenses/gobag', [GoBagController::class, 'store'])
+    ->name('gobag.store')
+    ->middleware('auth');;
+Route::get('expenses/gobag/{service}/edit', [GoBagController::class, 'edit'])
+    ->name('gobag.edit')
+    ->middleware('auth');
+Route::put('expenses/gobag/{expense}', [GoBagController::class, 'update'])
+    ->name('gobag.update')
+    ->middleware('auth');
+Route::delete('expenses/gobag/{expense}', [GoBagController::class, 'destroy'])
+    ->name('gobag.destroy')
+    ->middleware('auth');
+Route::put('expenses/gobag/{expenses}/restore', [GoBagController::class, 'restore'])
+    ->name('gobag.restore')
+    ->middleware('auth');
+Route::get('expenses/gobag/{service}/show', [GoBagController::class, 'show'])
+    ->name('gobag.vendor')
+    ->middleware('auth');
+    
+//     // GO BAG SERVICES
+// Route::get('expenses/details', [GoBagServicesController::class, 'index'])
+//     ->name('expenses.gobag')
+//     ->middleware('auth');
+
 // Create Services Expense
 // Route::get('purchases/service', [PurchasesController::class, 'createServices'])
 //     ->name('purchase.service')
